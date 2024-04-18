@@ -5,7 +5,6 @@ import {
   NavDropdown,
   Button,
   Image,
-  Form,
   Container,
 } from "react-bootstrap";
 import LogoImage from "../../assets/images/RentifyLogo.png";
@@ -20,8 +19,8 @@ export default function NavigationBar() {
 
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
-        <Container className="w-100 d-flex justify-content-between container">
-          <Nav className="lg d-flex navbar-lists">
+        <Container className="d-flex justify-content-between nav-items-container">
+          <Nav className="lg nav-links-container">
             <Nav.Link href="#home">الصفحة الرئيسية</Nav.Link>
 
             <NavDropdown
@@ -41,9 +40,12 @@ export default function NavigationBar() {
             <Nav.Link href="#about-us"> من نحن </Nav.Link>
           </Nav>
 
-          <Nav className="nav-btns">
-            <Button variant="primary" className="mr-2 nav-btn">
-              انشر إعلان جديد
+          <Nav className="nav-btns-container">
+            <Button
+              variant="primary"
+              className="mr-2 nav-btn add-newlisting-btn"
+            >
+              انشر إعلان
             </Button>
             <Button variant="secondary" className="mr-2 nav-btn">
               إنشاء حساب

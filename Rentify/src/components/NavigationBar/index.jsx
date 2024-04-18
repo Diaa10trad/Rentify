@@ -40,7 +40,7 @@ export default function NavigationBar() {
             <Nav.Link href="#about-us"> من نحن </Nav.Link>
           </Nav>
 
-          <Nav className="nav-btns-container">
+          <Nav className=" d-flex nav-btns-container">
             <Button
               variant="primary"
               className="mr-2 nav-btn add-newlisting-btn"

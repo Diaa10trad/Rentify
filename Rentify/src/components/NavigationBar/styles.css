@@ -1,11 +1,12 @@
 .brand-logo {
-  height: 40px;
+  height: 35px;
   width: auto;
   margin-right: 40px;
 }
 
 .navbar {
-  padding: 20px 0px 20px 0px;
+  padding: 10px 0px 10px 0px;
+  text-wrap: nowrap;
 }
 
 .nav-btns-container {

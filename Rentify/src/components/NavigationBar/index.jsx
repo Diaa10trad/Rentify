@@ -20,7 +20,7 @@ export default function NavigationBar() {
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Container className="d-flex justify-content-between nav-items-container">
-          <Nav className="lg nav-links-container">
+          <Nav className="lg nav-links-container align-items-center">
             <Nav.Link href="#home">الصفحة الرئيسية</Nav.Link>
 
             <NavDropdown

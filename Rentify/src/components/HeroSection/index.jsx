@@ -15,12 +15,12 @@ import HeroImage from "../../assets/images/HeroImage.png";
 export default function HeroSection() {
   return (
     <Container fluid>
-      <Row className="align-items-center justify-content-evenly">
+      <Row className="hero-row align-items-center justify-content-evenly">
         <Col md={6} className="hero-text-col w-25 ">
-          <h1 className="hero-h1 display-3">
+          <h1 className="hero-h1 d-flex display-3 justify-content-center">
             استأجر أي شيء،
-            <br /> من أي شخص،
-            <br /> في أي وقت.
+            <span> من أي شخص، </span>
+            <span> في أي وقت. </span>
           </h1>
           <p className="hero-p lead pt-4">لوريم ايبسوم الخ...</p>
         </Col>
@@ -29,8 +29,12 @@ export default function HeroSection() {
         </Col>
       </Row>
 
-      <Row className="mt-5 justify-content-center">
-        <Col md={8} lg={8} className="d-flex justify-content-center">
+      <Row className="mt-5 justify-content-center e">
+        <Col
+          md={8}
+          lg={8}
+          className="search-form-col d-flex justify-content-center "
+        >
           <div className="search-form-container d-flex">
             <Form className="search-form d-flex">
               <Form.Control
@@ -65,7 +69,10 @@ export default function HeroSection() {
                   </Col>
                 </Row>
               </Tab.Container>
-              <Button type="submit" className="search-btn">
+              <Button
+                type="submit"
+                className="search-btn d-flex align-items-center justify-content-center"
+              >
                 ابحث
               </Button>
             </Form>

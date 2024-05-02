@@ -1,0 +1,16 @@
+/* square buttons */
+.rec.rec-arrow {
+  background-color: white;
+  color: black;
+}
+/* round buttons on hover */
+.rec.rec-arrow:hover {
+  background-color: #b0dde4 !important;
+}
+.rec.rec-arrow:focus {
+  background-color: #b0dde4 !important;
+}
+/* hide disabled buttons */
+.rec.rec-arrow:disabled {
+  visibility: hidden;
+}

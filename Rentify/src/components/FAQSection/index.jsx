@@ -5,10 +5,9 @@ import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
 import Accordion from "react-bootstrap/Accordion";
 import { useAccordionButton } from "react-bootstrap/AccordionButton";
-import Card from "react-bootstrap/Card";
-import "./styles.css";
-import FAQImage from "../../assets/images/FAQ.jpg";
 
+import "./styles.css";
+import FAQImage from "@/assets/images/FAQ.jpg";
 const faqData = [
   {
     question: "Question 1",

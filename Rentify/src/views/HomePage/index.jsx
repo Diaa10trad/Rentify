@@ -3,6 +3,7 @@ import HeroSection from "@/components/HeroSection";
 import FAQSection from "@/components/FAQSection";
 import ExploreCategoriesSection from "@/components/ExploreCategoriesSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
+import WhyChooseUsSection from "@/components/WhyChooseUsSection";
 
 export default function HomePage() {
   return (
@@ -10,8 +11,9 @@ export default function HomePage() {
       <NavigationBar />
       <HeroSection />
       <HowItWorksSection />
-      <FAQSection />
       <ExploreCategoriesSection />
+      <WhyChooseUsSection />
+      <FAQSection />
     </>
   );
 }

@@ -23,9 +23,11 @@ export default function HowItWorksCard({ step }) {
           />
         </span>
 
-        <h4 className="text-nowrap fw-normal">{step.title}</h4>
+        <h4 className="text-nowrap ">{step.title}</h4>
 
-        <p style={{ color: "#8a909a" }}>لوريم ايبسوم دولور سيت اميت</p>
+        <p className="fw-normal" style={{ color: "#8a909a" }}>
+          لوريم ايبسوم دولور سيت اميت
+        </p>
       </Stack>
     </Col>
   );

@@ -8,11 +8,11 @@ export default function SectionLine() {
     >
       <span
         style={{ width: "25px", height: "6px" }}
-        className="bg-primary rounded-pill"
+        className="bg-primary rounded-pill mt-2"
       ></span>
       <span
         style={{ width: "50px", height: "6px" }}
-        className="bg-primary rounded-pill"
+        className="bg-primary rounded-pill mt-2"
       ></span>
     </Stack>
   );

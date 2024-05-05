@@ -5,6 +5,8 @@ import ExploreCategoriesSection from "@/components/ExploreCategoriesSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
 import WhyChooseUsSection from "@/components/WhyChooseUsSection";
 
+import Footer from "@/components/Footer";
+import CTASection from "@/components/CTASection";
 export default function HomePage() {
   return (
     <>
@@ -14,6 +16,8 @@ export default function HomePage() {
       <ExploreCategoriesSection />
       <WhyChooseUsSection />
       <FAQSection />
+      <CTASection />
+      <Footer />
     </>
   );
 }

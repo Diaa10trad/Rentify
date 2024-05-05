@@ -7,21 +7,30 @@ import {
   Image,
   Container,
 } from "react-bootstrap";
-import LogoImage from "../../assets/images/RentifyLogo.png";
+import LogoImage from "@/assets/images/RentifyLogo.png";
 import "./styles.css";
 
 export default function NavigationBar() {
   return (
-    <Navbar expand="lg">
-      <Navbar.Brand href="#home">
-        <Image className="brand-logo" src={LogoImage} alt="Logo" fluid />
+    <Navbar className="border border-dark" expand="lg">
+      <Navbar.Brand
+        style={{ minWidth: "150px", width: "150px" }}
+        className=""
+        href="#home"
+      >
+        <Image fluid className="brand-logo" src={LogoImage} alt="Logo" />
       </Navbar.Brand>
 
-      <Navbar.Toggle aria-controls="basic-navbar-nav" />
+      <Navbar.Toggle className="" aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
-        <Container className="d-flex justify-content-between nav-items-container">
-          <Nav className="lg nav-links-container align-items-center">
-            <Nav.Link href="#home">الصفحة الرئيسية</Nav.Link>
+        <Container
+          fluid
+          className="d-flex text-nowrap border border-dark flex-lg-row flex-column gap-5 text-center  justify-content-between nav-items-container"
+        >
+          <Nav className="border border-primary gap-3 fs-6">
+            <Nav.Link className="" href="#home">
+              الصفحة الرئيسية
+            </Nav.Link>
 
             <NavDropdown
               title="الفئات"
@@ -40,17 +49,14 @@ export default function NavigationBar() {
             <Nav.Link href="#about-us"> من نحن </Nav.Link>
           </Nav>
 
-          <Nav className=" d-flex nav-btns-container">
-            <Button
-              variant="primary"
-              className="mr-2 nav-btn add-newlisting-btn"
-            >
+          <Nav className="gap-3">
+            <Button variant="primary" className="text-nowrap text-white">
               انشر إعلان
             </Button>
-            <Button variant="secondary" className="mr-2 nav-btn">
+            <Button variant="secondary" className="text-nowrap">
               إنشاء حساب
             </Button>
-            <Button variant="outline-secondary" className="nav-btn">
+            <Button variant="outline-secondary" className="text-nowrap">
               تسجيل الدخول
             </Button>
           </Nav>

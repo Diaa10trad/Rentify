@@ -15,7 +15,7 @@ import HeroImage from "../../assets/images/HeroImage.png";
 
 export default function HeroSection() {
   return (
-    <Container className="p-4 mt-2 mb-2" fluid>
+    <Container className="p-4" fluid>
       <Row className="justify-content-center align-items-center">
         <Col md={5} xl={6} xxl={5} className="hero-text-col">
           <Stack

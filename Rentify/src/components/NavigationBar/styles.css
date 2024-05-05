@@ -1,29 +1,9 @@
-.brand-logo {
-  height: 35px;
-  width: auto;
-  margin-right: 40px;
-}
-
 .navbar {
-  padding: 10px 0px 10px 0px;
-  text-wrap: nowrap;
-}
+  --bs-navbar-active-color: #1ebbd7;
 
-.nav-btns-container {
-  gap: 5px;
-  margin-left: 30px;
+  --bs-navbar-hover-color: #1ebbd7;
 }
-
-.add-newlisting-btn {
-  --bs-btn-color: #ffffff;
-  --bs-btn-hover-color: #ffffff;
-  --bs-btn-bg: #4ac0d5;
-  --bs-btn-hover-bg: #58b1c1;
-  --bs-btn-active-color: #ffffff;
-  --bs-btn-active-bg: #58b1c1;
-}
-
-@media (max-width: 767.98px) {
+@media (max-width: 767px) {
   .nav-items-container {
     flex-direction: column;
     max-width: 100% !important;
@@ -50,28 +30,5 @@
 @media (min-width: 992px) {
   .nav-item.dropdown:hover .dropdown-menu {
     display: block;
-  }
-
-  .nav-btn {
-    margin: 5px;
-    width: auto;
-    height: auto;
-    font-size: 90%;
-    border-radius: 15px;
-  }
-  .nav-items-container {
-    flex-direction: row;
-    max-width: 100% !important;
-  }
-
-  .nav-links-container {
-    --bs-navbar-active-color: #1ebbd7;
-    margin-right: 15px;
-    gap: 7px;
-    font-size: 15px;
-  }
-
-  .nav-links-container :hover {
-    color: #1ebbd7;
   }
 }

@@ -6,16 +6,21 @@ import HowItWorksSection from "@/components/HowItWorksSection";
 import WhyChooseUsSection from "@/components/WhyChooseUsSection";
 import Footer from "@/components/Footer";
 import CTASection from "@/components/CTASection";
+import { Container, Row } from "react-bootstrap";
 export default function HomePage() {
   return (
     <>
       <NavigationBar />
-      <HeroSection />
-      <HowItWorksSection />
-      <ExploreCategoriesSection />
-      <CTASection />
-      <WhyChooseUsSection />
-      <FAQSection />
+      <Container fluid style={{ width: "98%" }}>
+        <Row className="gap-5">
+          <HeroSection />
+          <HowItWorksSection />
+          <ExploreCategoriesSection />
+          <CTASection />
+          <WhyChooseUsSection />
+          <FAQSection />
+        </Row>
+      </Container>
       <Footer />
     </>
   );

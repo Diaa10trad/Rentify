@@ -8,6 +8,7 @@ import { useAccordionButton } from "react-bootstrap/AccordionButton";
 
 import "./styles.css";
 import FAQImage from "@/assets/images/FAQ.jpg";
+import SectionLine from "../SectionLine";
 const faqData = [
   {
     question: "Question 1",
@@ -40,7 +41,7 @@ function CustomToggle({ children, eventKey }) {
 
 export default function FAQSection() {
   return (
-    <Container className="border p-4 bg-primary" fluid>
+    <Container className="p-4" fluid>
       <Row>
         <Col md={4} className="d-none d-md-block">
           <Image
@@ -51,9 +52,10 @@ export default function FAQSection() {
           />
         </Col>
         <Col md={8}>
-          <h2 className="text-md-start text-center mb-4 text-dark">
+          <h2 className="text-md-start text-center mb-2 text-dark">
             الأسئلة الأكثر تكرارًا
           </h2>
+          <SectionLine backgroundColor={"bg-primary"} />
           <Accordion>
             {faqData.map((faq, index) => (
               <Accordion.Item

@@ -1,25 +1,31 @@
 import React from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
+import Image from "react-bootstrap/Image";
 import Col from "react-bootstrap/Col";
 import Stack from "react-bootstrap/Stack";
 import { Link } from "react-router-dom";
-import logo from "@/assets/images/categories/tools.png";
+import LogoImage from "@/assets/images/RentifyLogo.png";
 export default function Footer() {
   return (
     <footer>
       <Container className="text-white bg-secondary " fluid>
-        <Row className="p-4 justify-content-evenly">
-          <Col md={3} xs={12} className="my-4">
+        <Row className="p-4 my-4 justify-content-evenly">
+          <Col md={2} xs={12} className="">
             <div>
-              <img src={logo} alt="Rentify Logo" />
+              <Image
+                className="mb-4"
+                fluid
+                src={LogoImage}
+                alt="Rentify Logo"
+              />
               <p>
                 Lorem ipsum dlor sit amet, consectetur adipisicing elit. Quis,
                 excepturi?
               </p>
             </div>
           </Col>
-          <Col md={2} xs={12} className="my-4">
+          <Col md={2} xs={12} className="">
             <h3 className="mb-4">العنوان</h3>
             <Stack gap={3}>
               <div>
@@ -44,7 +50,7 @@ export default function Footer() {
               </div>
             </Stack>
           </Col>
-          <Col md={2} xs={12} className="my-4">
+          <Col md={2} xs={12} className="">
             <h3 className="mb-4">العنوان</h3>
             <Stack gap={3}>
               <div>
@@ -61,7 +67,7 @@ export default function Footer() {
               </div>
             </Stack>
           </Col>
-          <Col md={2} xs={12} className="my-4">
+          <Col md={2} xs={12} className="">
             <h3 className="mb-4">العنوان</h3>
             <Stack gap={3}>
               <div>

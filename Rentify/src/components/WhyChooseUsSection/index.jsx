@@ -28,13 +28,11 @@ export default function WhyChooseUsSection() {
   return (
     <>
       <Container
-        className="p-5 mt-3 mb-5 d-flex flex-column align-items-center"
+        className="p-5 d-flex flex-column bg-primary align-items-center"
         fluid
         style={{
           backgroundImage: `url(${WhyUsBackground})`,
           borderRadius: "30px",
-          width: "95%",
-          backgroundColor: "#4ac0d5",
         }}
       >
         <Row>

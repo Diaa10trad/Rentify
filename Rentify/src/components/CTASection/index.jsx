@@ -8,13 +8,13 @@ import EarnMoney from "@/assets/images/earnMoney.jpg";
 import RentAnything from "@/assets/images/rentAnything.jpg";
 export default function CTASection() {
   return (
-    <Container fluid className=" p-4">
+    <Container fluid className="p-4">
       <Row className="justify-content-sm-around justify-content-md-evenly gy-3 mb-4">
         <Col lg={4} md={5} sm={6} xs={{ order: "first", span: "12" }}>
           <Image fluid src={EarnMoney} rounded />
         </Col>
         <Col
-          className="d-flex flex-column justify-content-evenly align-items-start"
+          className="d-flex flex-column justify-content-center gap-5 align-items-start"
           md={5}
           sm={6}
           xs={12}
@@ -36,7 +36,7 @@ export default function CTASection() {
 
       <Row className="justify-content-sm-around justify-content-md-evenly gy-3 mb-4">
         <Col
-          className="d-flex flex-column justify-content-evenly align-items-start"
+          className="d-flex flex-column justify-content-center gap-5 align-items-start"
           md={5}
           sm={6}
           xs={12}

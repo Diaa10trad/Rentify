@@ -1,4 +1,4 @@
-import HowItWorksCard from "@/components/Cards/HowItWorksCard";
+import HowItWorksCard from "@/components/cards/HowItWorksCard";
 import SearchIcon from "@/assets/images/howitworks/search-icon.png";
 import RequestIcon from "@/assets/images/howitworks/request-icon.png";
 import HandshakeIcon from "@/assets/images/howitworks/handshake-icon.png";

@@ -3,10 +3,10 @@ import Stack from "react-bootstrap/Stack";
 export default function CategoryCard({ category }) {
   return (
     <Container fluid>
-      <Stack className="p-5 shadow rounded gap-3 align-items-center">
+      <Stack className="p-5 my-5 bg-white text-black rounded shadow gap-3 align-items-center">
         <img
           draggable={false}
-          style={{ width: "100px" }}
+          style={{ width: "100px", borderRadius: "30px" }}
           src={category.icon}
           alt="Category"
         />

@@ -4,7 +4,6 @@ import FAQSection from "@/components/FAQSection";
 import ExploreCategoriesSection from "@/components/ExploreCategoriesSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
 import WhyChooseUsSection from "@/components/WhyChooseUsSection";
-
 import Footer from "@/components/Footer";
 import CTASection from "@/components/CTASection";
 export default function HomePage() {
@@ -14,9 +13,9 @@ export default function HomePage() {
       <HeroSection />
       <HowItWorksSection />
       <ExploreCategoriesSection />
+      <CTASection />
       <WhyChooseUsSection />
       <FAQSection />
-      <CTASection />
       <Footer />
     </>
   );

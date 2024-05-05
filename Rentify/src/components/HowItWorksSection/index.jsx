@@ -8,7 +8,7 @@ export default function HowItWorksSection() {
       className="p-4 mb-5"
       id="how-it-works"
       fluid
-      style={{ marginTop: "130px" }}
+      style={{ marginTop: "130px", width: "80%" }}
     >
       <Row className="mb-4">
         <Stack>

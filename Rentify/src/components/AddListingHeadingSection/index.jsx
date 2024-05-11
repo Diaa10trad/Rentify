@@ -1,7 +1,7 @@
 import { Container, Row, Stack } from "react-bootstrap";
 import AddListTitleBackground from "@/assets/images/why-us/why-us-bg.png";
 import SectionLine from "@/components/SectionLine";
-export default function AddListingTitle() {
+export default function AddListingHeadingSection() {
   return (
     <>
       <Container

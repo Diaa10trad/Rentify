@@ -6,21 +6,29 @@ import {
   Button,
   Image,
   Form,
-  ListGroup,
-  Tab,
   Stack,
 } from "react-bootstrap";
 import "./styles.css";
+import { useState } from "react";
 import HeroImage from "../../assets/images/HeroImage.png";
-
+import SearchBar from "@/components/SearchBar";
+import ButtonGroup from "react-bootstrap/ButtonGroup";
+import ToggleButton from "react-bootstrap/ToggleButton";
 export default function HeroSection() {
+  const [radioValue, setRadioValue] = useState("1");
+
+  const radios = [
+    { name: "منتج", value: "1" },
+    { name: "خدمة", value: "2" },
+  ];
+
   return (
     <Container className="p-4" fluid>
-      <Row className="justify-content-center align-items-center">
-        <Col md={5} xl={6} xxl={5} className="hero-text-col">
+      <Row className=" border border-dark justify-content-center align-items-center">
+        <Col xs={12} md={5} xl={6} xxl={5} className="border border-dark">
           <Stack
             style={{ width: "fit-content" }}
-            className="display-4 m-auto 
+            className="display-4 m-auto
             text-nowrap "
           >
             <div>استأجر أي شيء،</div>
@@ -29,54 +37,14 @@ export default function HeroSection() {
             <p className="lead pt-4">لوريم ايبسوم الخ...</p>
           </Stack>
         </Col>
-        <Col md={6} xl={6} xxl={5} className="d-none d-md-flex">
+        <Col md={6} xl={5} className="d-none d-md-block">
           <Image className="" src={HeroImage} alt="HeroImage" fluid />
         </Col>
       </Row>
 
-      <Row className="mt-5 justify-content-center">
-        <Col md={8} className="search-form-col d-flex justify-content-center ">
-          <Form className="d-flex w-100 gap-3 p-4 rounded-pill shadow">
-            <Form.Control
-              type="text"
-              placeholder="عن ماذا تبحث؟"
-              className="search-input d-flex "
-            />
-            <Tab.Container
-              id="list-group-tabs-example"
-              defaultActiveKey="#link1"
-            >
-              <Row>
-                <Col sm={4} className="d-flex">
-                  <ListGroup className="search-choice-container">
-                    <ListGroup.Item
-                      action
-                      href="#link1"
-                      className="search-choice-item d-flex justify-content-center
-                        align-items-center"
-                    >
-                      منتج
-                    </ListGroup.Item>
-                    <ListGroup.Item
-                      action
-                      href="#link2"
-                      className="search-choice-item d-flex justify-content-center
-                        align-items-center"
-                    >
-                      خدمة
-                    </ListGroup.Item>
-                  </ListGroup>
-                </Col>
-              </Row>
-            </Tab.Container>
-            <Button
-              type="submit"
-              style={{ width: 60, height: 60 }}
-              className="rounded-circle text-white"
-            >
-              ابحث
-            </Button>
-          </Form>
+      <Row className="align-items-center justify-content-center">
+        <Col md={8}>
+          <SearchBar />
         </Col>
       </Row>
     </Container>

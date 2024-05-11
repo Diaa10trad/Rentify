@@ -12,7 +12,7 @@ import "./styles.css";
 
 export default function NavigationBar() {
   return (
-    <Navbar className="border border-dark" expand="lg">
+    <Navbar expand="lg">
       <Navbar.Brand
         style={{ minWidth: "150px", width: "150px" }}
         className=""
@@ -25,9 +25,9 @@ export default function NavigationBar() {
       <Navbar.Collapse id="basic-navbar-nav">
         <Container
           fluid
-          className="d-flex text-nowrap border border-dark flex-lg-row flex-column gap-5 text-center  justify-content-between nav-items-container"
+          className="d-flex text-nowrap flex-lg-row flex-column gap-5 text-center  justify-content-between nav-items-container"
         >
-          <Nav className="border border-primary gap-3 fs-6">
+          <Nav className=" gap-2 fs-6">
             <Nav.Link className="" href="#home">
               الصفحة الرئيسية
             </Nav.Link>
@@ -49,14 +49,22 @@ export default function NavigationBar() {
             <Nav.Link href="#about-us"> من نحن </Nav.Link>
           </Nav>
 
-          <Nav className="gap-3">
-            <Button variant="primary" className="text-nowrap text-white">
+          <Nav className="gap-2">
+            <Button
+              size="sm"
+              variant="primary"
+              className="text-nowrap  text-white"
+            >
               انشر إعلان
             </Button>
-            <Button variant="secondary" className="text-nowrap">
+            <Button size="sm" variant="secondary" className="text-nowrap">
               إنشاء حساب
             </Button>
-            <Button variant="outline-secondary" className="text-nowrap">
+            <Button
+              size="sm"
+              variant="outline-secondary"
+              className="text-nowrap"
+            >
               تسجيل الدخول
             </Button>
           </Nav>

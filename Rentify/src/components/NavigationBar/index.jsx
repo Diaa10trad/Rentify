@@ -25,9 +25,9 @@ export default function NavigationBar() {
       <Navbar.Collapse id="basic-navbar-nav">
         <Container
           fluid
-          className="d-flex text-nowrap flex-lg-row flex-column gap-5 text-center  justify-content-between nav-items-container"
+          className="d-flex text-nowrap flex-lg-row flex-column gap-3 text-center  justify-content-between nav-items-container"
         >
-          <Nav className=" gap-2 fs-6">
+          <Nav className="gap-2 fs-6">
             <Nav.Link className="" href="#home">
               الصفحة الرئيسية
             </Nav.Link>
@@ -46,10 +46,10 @@ export default function NavigationBar() {
             </NavDropdown>
 
             <Nav.Link href="#how-it-works">كيف يعمل الموقع</Nav.Link>
-            <Nav.Link href="#about-us"> من نحن </Nav.Link>
+            <Nav.Link href="#about-us">من نحن</Nav.Link>
           </Nav>
 
-          <Nav className="gap-2">
+          <Nav className="gap-2 col-lg-auto col-12 col-sm-10 m-lg-0 m-auto">
             <Button
               size="sm"
               variant="primary"

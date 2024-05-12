@@ -8,24 +8,14 @@ import {
   Form,
   Stack,
 } from "react-bootstrap";
-import "./styles.css";
-import { useState } from "react";
-import HeroImage from "../../assets/images/HeroImage.png";
+import HeroImage from "@/assets/images/HeroImage.png";
 import SearchBar from "@/components/SearchBar";
-import ButtonGroup from "react-bootstrap/ButtonGroup";
-import ToggleButton from "react-bootstrap/ToggleButton";
+
 export default function HeroSection() {
-  const [radioValue, setRadioValue] = useState("1");
-
-  const radios = [
-    { name: "منتج", value: "1" },
-    { name: "خدمة", value: "2" },
-  ];
-
   return (
     <Container className="p-4" fluid>
-      <Row className=" border border-dark justify-content-center align-items-center">
-        <Col xs={12} md={5} xl={6} xxl={5} className="border border-dark">
+      <Row className="justify-content-center align-items-center">
+        <Col xs={12} md={5} xl={6} xxl={5} className="">
           <Stack
             style={{ width: "fit-content" }}
             className="display-4 m-auto

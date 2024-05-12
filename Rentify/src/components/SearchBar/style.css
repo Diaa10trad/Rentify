@@ -1,0 +1,5 @@
+@media screen and (min-width: 768px) {
+  .rounded-md-pill {
+    border-radius: 50rem;
+  }
+}

@@ -8,11 +8,11 @@ import {
   Button,
 } from "react-bootstrap";
 import "./style.css";
-import React, { useState } from "react";
-
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 export default function SearchBar() {
   const [radioValue, setRadioValue] = useState("1");
-
+  const navigate = useNavigate();
   const radios = [
     { name: "منتج", value: "1" },
     { name: "خدمة", value: "2" },
@@ -53,6 +53,7 @@ export default function SearchBar() {
             type="submit"
             style={{ width: 60, height: 60 }}
             className="rounded-circle text-white "
+            onClick={() => navigate("/Results")}
           >
             ابحث
           </Button>

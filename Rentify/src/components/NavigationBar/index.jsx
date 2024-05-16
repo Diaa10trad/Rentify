@@ -16,7 +16,7 @@ export default function NavigationBar() {
       <Navbar.Brand
         style={{ minWidth: "150px", width: "150px" }}
         className=""
-        href="#home"
+        href="/Home"
       >
         <Image fluid className="brand-logo" src={LogoImage} alt="Logo" />
       </Navbar.Brand>
@@ -28,7 +28,7 @@ export default function NavigationBar() {
           className="d-flex text-nowrap flex-lg-row flex-column gap-3 text-center  justify-content-between nav-items-container"
         >
           <Nav className="gap-2 fs-6">
-            <Nav.Link className="" href="#home">
+            <Nav.Link className="" href="/Home">
               الصفحة الرئيسية
             </Nav.Link>
 

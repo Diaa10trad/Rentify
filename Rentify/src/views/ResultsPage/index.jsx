@@ -6,6 +6,7 @@ import HeadingSection from "@/components/HeadingSection";
 import ResultsHeader from "@/components/Results/ResultsHeader";
 import FilterSidebar from "@/components/Results/FilterSideBar";
 import ItemCard from "@/components/cards/ItemCard";
+import Pager from "@/components/Pager";
 export default function ResultsPage() {
   return (
     <Container fluid>
@@ -13,24 +14,23 @@ export default function ResultsPage() {
         <HeadingSection title={"النتائج"} />
       </Row>
 
-      <Row className="justify-content-between">
-        <Col xs={12} className="mb-4">
+      <Row className="justify-content-between gap-4 gap-lg-0">
+        <Col xs={12} className="mb-lg-4">
           <ResultsHeader />
         </Col>
-        <Col md={4} className="p-0">
+        <Col xs={12} lg={4} xxl={3} className="p-0">
           <FilterSidebar />
         </Col>
-        <Col md={8} className="">
+        <Col xs={12} lg={8} xxl={9} className="">
           <Row className="g-4">
-            <Col xs="auto">
-              <ItemCard />
-            </Col>
-            <Col xs="auto">
-              <ItemCard />
-            </Col>
-            <Col xs="auto">
-              <ItemCard />
-            </Col>
+            {Array.from({ length: 10 }, (_, index) => (
+              <Col key={index} xs={12} sm={6} xxl={4}>
+                <ItemCard />
+              </Col>
+            ))}
+          </Row>
+          <Row className="justify-content-center my-4 align-items-center">
+            <Pager />
           </Row>
         </Col>
       </Row>

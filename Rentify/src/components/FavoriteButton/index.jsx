@@ -18,9 +18,9 @@ export default function FavoriteButton() {
       onClick={handleClick}
     >
       {isFavorite ? (
-        <span class="fa fa-heart text-white"></span>
+        <span className="fa fa-heart text-white"></span>
       ) : (
-        <span class="fa fa-heart text-white"></span>
+        <span className="fa fa-heart text-white"></span>
       )}
     </Button>
   );

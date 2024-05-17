@@ -7,9 +7,9 @@ import FavoriteButton from "@/components/FavoriteButton";
 import "./style.css";
 export default function ItemCard() {
   return (
-    <Card style={{ maxWidth: "370px" }} className="shadow border border-0">
-      <Card>
-        <Card.Img className="" variant="top" src={Camera} />
+    <Card style={{ minHeight: "100%" }} className=" shadow border border-0">
+      <Card className="position-relative overflow-hidden item-card">
+        <Card.Img className="zoom-in-effect" variant="top" src={Camera} />
 
         <Card.ImgOverlay className="p-2">
           <Stack className="h-100 justify-content-between">
@@ -17,22 +17,25 @@ export default function ItemCard() {
               <Badge bg="primary">New</Badge>
             </h5>
             <Stack direction="horizontal" className="justify-content-between">
-              <div className="text-white">1.0 دينار</div>
+              {/* <div className="text-white">1.0 دينار</div> */}
               <FavoriteButton />
             </Stack>
           </Stack>
         </Card.ImgOverlay>
       </Card>
       <Card.Body>
-        <Card.Text>
-          <span class="fa fa-star text-primary"></span>
-          <span class="fa fa-star text-primary"></span>
-          <span class="fa fa-star text-primary"></span>
-          <span class="fa fa-star text-primary"></span>
-          <span class="fa fa-star"></span> 4 (28)
+        <Card.Text className="d-flex align-items-center gap-1">
+          <span className="fa fa-star text-primary"></span>
+          <span className="fa fa-star text-primary"></span>
+          <span className="fa fa-star text-primary"></span>
+          <span className="fa fa-star text-primary"></span>
+          <span className="fa fa-star"></span>
+          <span>4 (28)</span>
         </Card.Text>
         <Card.Title>كاميرا فخمة مفش منها جدا جدا جدا جدا</Card.Title>
         <Card.Text>
+          With supporting text below as a natural lead-in to additional content.
+          With supporting text below as a natural lead-in to additional content.
           With supporting text below as a natural lead-in to additional content.
         </Card.Text>
       </Card.Body>

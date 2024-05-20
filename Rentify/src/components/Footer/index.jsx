@@ -10,12 +10,13 @@ export default function Footer() {
   return (
     <footer>
       <Container className="text-white bg-secondary " fluid>
-        <Row className="p-4 my-4 justify-content-evenly">
+        <Row className="p-4 gap-3 justify-content-evenly">
           <Col md={2} xs={12} className="">
             <div>
               <Image
                 className="mb-4"
                 fluid
+                style={{ minWidth: "150px", width: "150px" }}
                 src={LogoImage}
                 alt="Rentify Logo"
               />

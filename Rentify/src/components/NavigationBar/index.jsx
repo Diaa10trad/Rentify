@@ -12,11 +12,11 @@ import "./styles.css";
 
 export default function NavigationBar() {
   return (
-    <Navbar className="border border-dark" expand="lg">
+    <Navbar expand="lg">
       <Navbar.Brand
         style={{ minWidth: "150px", width: "150px" }}
         className=""
-        href="#home"
+        href="/Home"
       >
         <Image fluid className="brand-logo" src={LogoImage} alt="Logo" />
       </Navbar.Brand>
@@ -25,10 +25,10 @@ export default function NavigationBar() {
       <Navbar.Collapse id="basic-navbar-nav">
         <Container
           fluid
-          className="d-flex text-nowrap border border-dark flex-lg-row flex-column gap-5 text-center  justify-content-between nav-items-container"
+          className="d-flex text-nowrap flex-lg-row flex-column gap-3 text-center  justify-content-between nav-items-container"
         >
-          <Nav className="border border-primary gap-3 fs-6">
-            <Nav.Link className="" href="#home">
+          <Nav className="gap-2 fs-6">
+            <Nav.Link className="" href="/Home">
               الصفحة الرئيسية
             </Nav.Link>
 
@@ -46,17 +46,25 @@ export default function NavigationBar() {
             </NavDropdown>
 
             <Nav.Link href="#how-it-works">كيف يعمل الموقع</Nav.Link>
-            <Nav.Link href="#about-us"> من نحن </Nav.Link>
+            <Nav.Link href="#about-us">من نحن</Nav.Link>
           </Nav>
 
-          <Nav className="gap-3">
-            <Button variant="primary" className="text-nowrap text-white">
+          <Nav className="gap-2 col-lg-auto col-12 col-sm-10 m-lg-0 m-auto">
+            <Button
+              size="sm"
+              variant="primary"
+              className="text-nowrap  text-white"
+            >
               انشر إعلان
             </Button>
-            <Button variant="secondary" className="text-nowrap">
+            <Button size="sm" variant="secondary" className="text-nowrap">
               إنشاء حساب
             </Button>
-            <Button variant="outline-secondary" className="text-nowrap">
+            <Button
+              size="sm"
+              variant="outline-secondary"
+              className="text-nowrap"
+            >
               تسجيل الدخول
             </Button>
           </Nav>

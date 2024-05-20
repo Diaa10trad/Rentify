@@ -12,7 +12,7 @@ export default function ExploreCategoriesSection() {
   return (
     <Tab.Container defaultActiveKey="products">
       <Container
-        className="text-white p-5 bg-primary"
+        className="text-white py-5 px-sm-5 bg-primary"
         fluid
         style={{
           backgroundImage: `url(${WhyUsBackground})`,
@@ -22,10 +22,10 @@ export default function ExploreCategoriesSection() {
       >
         <Row className="gy-3">
           <Col
-            sm={4}
-            className="d-flex flex-column justify-content-sm-between justify-content-center align-items-center "
+            md={4}
+            className="d-flex flex-column justify-content-md-between justify-content-center align-items-center "
           >
-            <div className="d-flex flex-column align-items-center align-items-sm-stretch">
+            <div className="d-flex flex-column align-items-center align-items-md-stretch">
               <h2 className="mb-2 text-nowrap ">استكشف الفئات</h2>
               <SectionLine backgroundColor="bg-light" />
               <p className="">

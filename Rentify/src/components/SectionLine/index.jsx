@@ -1,7 +1,7 @@
 import Stack from "react-bootstrap/Stack";
 export default function SectionLine({ backgroundColor }) {
   return (
-    <div>
+    <div style={{ width: "fit-content" }}>
       <Stack
         className="align-self-center align-self-sm-stretch"
         gap={2}

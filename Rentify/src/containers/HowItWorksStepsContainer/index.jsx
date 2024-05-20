@@ -19,7 +19,7 @@ export default function HowItWorksStepsContainer() {
     },
     {
       id: 3,
-      title: "3. اتفق مع المؤجر أو مزود الخدمة",
+      title: "3. اتفق مع المعلِن",
       description: "لوريم ايبسوم دولور سيت اميت",
       icon: HandshakeIcon,
     },

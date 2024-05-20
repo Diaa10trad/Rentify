@@ -14,18 +14,19 @@ function App() {
     <>
       <BrowserRouter>
         <NavigationBar />
-        <Container fluid>
-          <Col>
-            <Routes>
-              <Route index element={<HomePage />} />
-              <Route path="/Home" element={<HomePage />} />
-              <Route path="/Sign-in" element={<HomePage />} />
-              <Route path="/Register" element={<HomePage />} />
-              <Route path="/About-Rentify" element={<HomePage />} />
-              <Route path="/Results" element={<ResultsPage />} />
-            </Routes>
-          </Col>
-        </Container>
+        {/* <Container fluid>
+          <Col> */}
+        <Routes>
+          <Route index element={<HomePage />} />
+          <Route path="/Home" element={<HomePage />} />
+          <Route path="/Sign-in" element={<HomePage />} />
+          <Route path="/Register" element={<HomePage />} />
+          <Route path="/About-Rentify" element={<HomePage />} />
+          <Route path="/Results" element={<ResultsPage />} />
+          <Route path="/AddItem" element={<AddListingPage />} />
+        </Routes>
+        {/* </Col>
+        </Container> */}
         <Footer />
       </BrowserRouter>
     </>

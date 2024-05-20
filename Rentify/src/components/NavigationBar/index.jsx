@@ -9,8 +9,11 @@ import {
 } from "react-bootstrap";
 import LogoImage from "@/assets/images/RentifyLogo.png";
 import "./styles.css";
+import { useNavigate } from "react-router-dom";
 
 export default function NavigationBar() {
+  const navigate = useNavigate();
+
   return (
     <Navbar expand="lg">
       <Navbar.Brand
@@ -51,6 +54,8 @@ export default function NavigationBar() {
 
           <Nav className="gap-2 col-lg-auto col-12 col-sm-10 m-lg-0 m-auto">
             <Button
+              type="submit"
+              onClick={() => navigate("/AddItem")}
               size="sm"
               variant="primary"
               className="text-nowrap  text-white"

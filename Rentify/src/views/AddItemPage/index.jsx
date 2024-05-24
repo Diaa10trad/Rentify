@@ -6,10 +6,11 @@ import AddItemCheckboxForm from "@/components/AddItemCheckboxForm";
 import AddItemLocationForm from "@/components/AddItemLocationForm";
 
 export default function AddItemPage() {
+  //setFormState عشان تخزين الداتا
   return (
     <>
       <Container fluid className="mb-5" style={{ width: "98%" }}>
-        <Row className="justify-content-center gap-5">
+        <Row className="flex-column align-items-center gap-5">
           <HeadingSection title={"انشر إعلان جديد"} />
           <AddItemTitleForm />
           <AddItemImageForm />

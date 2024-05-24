@@ -5,7 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NavigationBar from "@/components/NavigationBar";
 import Footer from "@/components/Footer";
 import HomePage from "@/views/HomePage";
-import AddListingPage from "@/views/AddListingPage";
+import AddItemPage from "@/views/AddItemPage";
 import ResultsPage from "@/views/ResultsPage";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
@@ -23,7 +23,7 @@ function App() {
           <Route path="/Register" element={<HomePage />} />
           <Route path="/About-Rentify" element={<HomePage />} />
           <Route path="/Results" element={<ResultsPage />} />
-          <Route path="/AddItem" element={<AddListingPage />} />
+          <Route path="/AddItem" element={<AddItemPage />} />
         </Routes>
         {/* </Col>
         </Container> */}

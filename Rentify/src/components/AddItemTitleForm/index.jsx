@@ -4,14 +4,32 @@ import { Col, Form } from "react-bootstrap";
 export default function AddItemTitleForm() {
   const [selectedType, setSelectedType] = useState("منتج");
 
+  const categories = [
+    {
+      id: 1,
+      type: "منتج",
+      category: ["اختر فئة...", "الكترونيات", "ملابس", "أدوات بناء", "أخرى"],
+    },
+
+    {
+      id: 2,
+      type: "خدمة",
+      category: ["اختر فئة...", "مواسرجي", "نجار", "فني كهرباء", "أخرى"],
+    },
+  ];
+
   const handleTypeChange = (event) => {
     setSelectedType(event.target.value);
   };
+
+  const selectedTypeObj = categories.find(
+    (categories) => categories.type === selectedType
+  );
   return (
     <>
       <Col xs={12} sm={10} md={9} lg={8}>
         <h4 className="text-center mb-3">المعلومات العامة</h4>
-        <Form className="shadow p-4 rounded-5 bg-white">
+        <Form className="shadow p-4 rounded-5">
           <Form.Group className="mb-3" controlId="">
             <Form.Label>عنوان الإعلان</Form.Label>
             <Form.Control
@@ -33,7 +51,7 @@ export default function AddItemTitleForm() {
               <option>خدمة</option>
             </Form.Select>
           </Form.Group>
-          {selectedType === "منتج" && (
+          {selectedTypeObj && (
             <Form.Group className="mb-3" controlId="">
               <Form.Label>الفئة</Form.Label>
               <Form.Select
@@ -41,29 +59,13 @@ export default function AddItemTitleForm() {
                 style={{ backgroundColor: "#f4f9f9" }}
                 defaultValue="اختر فئة.."
               >
-                <option>اختر فئة..</option>
-                <option>الكترونيات</option>
-                <option>ملابس</option>
-                <option>أخرى</option>
+                {selectedTypeObj.category.map((category) => (
+                  <option key={category}>{category}</option>
+                ))}
               </Form.Select>
             </Form.Group>
           )}
 
-          {selectedType === "خدمة" && (
-            <Form.Group className="mb-3" controlId="">
-              <Form.Label>الفئة</Form.Label>
-              <Form.Select
-                className="border border-0 p-2"
-                style={{ backgroundColor: "#f4f9f9" }}
-                defaultValue="اختر فئة.."
-              >
-                <option>اختر فئة..</option>
-                <option>مواسرجي</option>
-                <option>كهربجي</option>
-                <option>نجار</option>
-              </Form.Select>
-            </Form.Group>
-          )}
           <Form.Group controlId="">
             <Form.Label>الوصف</Form.Label>
             <Form.Control

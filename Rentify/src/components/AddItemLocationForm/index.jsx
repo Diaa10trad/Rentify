@@ -1,6 +1,7 @@
 import { Col, Row, Form } from "react-bootstrap";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import LocationCitiesContainer from "@/containers/LocationCitiesContainer";
+import LocationPicker from "../LocationPicker";
 
 export default function AddItemLocationForm() {
   const containerStyle = {
@@ -22,20 +23,16 @@ export default function AddItemLocationForm() {
 
           <Form.Group className="mb-3" controlId="formGridAddress1">
             <Form.Label>العنوان</Form.Label>
-            <Form.Control placeholder="أدخل العنوان..." />
+            <Form.Control
+              placeholder="أدخل العنوان..."
+              className="border border-0 p-2"
+              style={{ backgroundColor: "#f4f9f9" }}
+            />
           </Form.Group>
 
           <Row>
             <Col md={12}>
-              <LoadScript googleMapsApiKey="AIzaSyCBzbNOF_qefJWGRebbZRpJq3iu4gvpumQ">
-                <GoogleMap
-                  mapContainerStyle={containerStyle}
-                  center={center}
-                  zoom={14}
-                >
-                  <Marker position={center} />
-                </GoogleMap>
-              </LoadScript>
+              <LocationPicker />
             </Col>
           </Row>
         </Form>

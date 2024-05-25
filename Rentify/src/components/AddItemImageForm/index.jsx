@@ -19,7 +19,7 @@ export default function AddItemImageForm() {
               style={{ backgroundColor: "#f4f9f9" }}
             />
           </Form.Group>
-          <Button className="text-white" variant="primary" type="submit">
+          <Button className="text-white" type="submit">
             إضافة
           </Button>
         </Form>

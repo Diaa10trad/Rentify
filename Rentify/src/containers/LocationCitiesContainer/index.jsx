@@ -4,18 +4,18 @@ import { Form, Row, Col } from "react-bootstrap";
 export default function LocationCitiesContainer() {
   const [selectedCity, setSelectedCity] = useState("");
   const cities = [
-    { id: 0, city: "اختر المدينة", neighborhoods: ["اختر الحي"] },
+    { id: 0, city: "اختر المدينة...", neighborhoods: ["اختر الحي..."] },
 
     {
       id: 1,
       city: "عمان",
-      neighborhoods: ["اختر الحي", "ضاحية الأمير حسن", "طبربور", "اللويبدة"],
+      neighborhoods: ["اختر الحي...", "ضاحية الأمير حسن", "طبربور", "اللويبدة"],
     },
     {
       id: 2,
       city: "اربد",
       neighborhoods: [
-        "اختر الحي",
+        "اختر الحي...",
         "شارع الجامعة",
         "الحي الشرقي",
         "الحي الجنوبي",
@@ -34,7 +34,12 @@ export default function LocationCitiesContainer() {
       <Row className="mb-3">
         <Form.Group as={Col} controlId="">
           <Form.Label>المدينة</Form.Label>
-          <Form.Select onChange={handleCityChange} defaultValue="اختر المدينة">
+          <Form.Select
+            onChange={handleCityChange}
+            defaultValue="اختر المدينة..."
+            className="border border-0 p-2"
+            style={{ backgroundColor: "#f4f9f9" }}
+          >
             {cities.map((city) => (
               <option key={city.id}>{city.city}</option>
             ))}
@@ -43,7 +48,11 @@ export default function LocationCitiesContainer() {
         {selectedCityObj && (
           <Form.Group as={Col} controlId="">
             <Form.Label>الحي</Form.Label>
-            <Form.Select defaultValue="اختر الحي">
+            <Form.Select
+              defaultValue="اختر الحي..."
+              className="border border-0 p-2"
+              style={{ backgroundColor: "#f4f9f9" }}
+            >
               {selectedCityObj.neighborhoods.map((neighborhood) => (
                 <option key={neighborhood}>{neighborhood}</option>
               ))}

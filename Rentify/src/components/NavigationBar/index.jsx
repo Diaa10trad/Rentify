@@ -35,17 +35,25 @@ export default function NavigationBar() {
               الصفحة الرئيسية
             </Nav.Link>
 
-            <NavDropdown
-              title="الفئات"
-              id="basic-nav-dropdown"
-              renderMenuOnMount={true}
-            >
-              <NavDropdown.Item href="#action/3.1">الكترونيات</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">ملابس </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">
-                أدوات صيانة
-              </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.4"> أخرى </NavDropdown.Item>
+            <NavDropdown title="الفئات" id="basic-nav-dropdown">
+              <NavDropdown title="منتجات" drop={"end"}>
+                <NavDropdown.Item href="#action/3.1">
+                  الكترونيات
+                </NavDropdown.Item>
+                <NavDropdown.Item href="#action/3.2">ملابس </NavDropdown.Item>
+                <NavDropdown.Item href="#action/3.3">
+                  أدوات صيانة
+                </NavDropdown.Item>
+                <NavDropdown.Item href="#action/3.4"> أخرى </NavDropdown.Item>
+              </NavDropdown>
+              <NavDropdown title="خدمات" drop={"end"}>
+                <NavDropdown.Item href="#action/3.1">مواسرجي</NavDropdown.Item>
+                <NavDropdown.Item href="#action/3.2">نجار </NavDropdown.Item>
+                <NavDropdown.Item href="#action/3.3">
+                  فني كهرباء
+                </NavDropdown.Item>
+                <NavDropdown.Item href="#action/3.4"> أخرى </NavDropdown.Item>
+              </NavDropdown>
             </NavDropdown>
 
             <Nav.Link href="#how-it-works">كيف يعمل الموقع</Nav.Link>

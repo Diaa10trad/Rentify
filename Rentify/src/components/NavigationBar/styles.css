@@ -26,9 +26,3 @@
     margin-left: 30px;
   }
 }
-
-@media (min-width: 992px) {
-  .nav-item.dropdown:hover .dropdown-menu {
-    display: block;
-  }
-}

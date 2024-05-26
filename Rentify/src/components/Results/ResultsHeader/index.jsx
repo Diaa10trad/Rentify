@@ -15,18 +15,8 @@ export default function ResultsHeader() {
           <span className="text-primary"> 175</span>
         </h5>
       </Col>
-      <Col xs={12} lg={7} className="">
-        <Row className="justify-content-center gap-2  align-items-center">
-          <Col xs={12} xl={2} lg={2} className="text-center">
-            ترتيب حسب
-          </Col>
-          <Col xs={12} xl={9} lg={9}>
-            <Row className="gap-1 align-items-center justify-content-evenly">
-              <SortingOptions />
-              <SortingOptions />
-            </Row>
-          </Col>
-        </Row>
+      <Col xs={12} lg={3} xxl={2} className=" ">
+        <SortingOptions />
       </Col>
     </Row>
   );

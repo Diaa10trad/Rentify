@@ -1,5 +1,5 @@
 import CategoriesCarousel from "@/components/CategoriesCarousel";
-import CategoryImage from "@/assets/images/categories/tools.png";
+import CategoryImage from "@/assets/images/ProductsCategoriesIcons/icon_1.png";
 export default function ServicesCategoriesCarouselContainer() {
   const servicesCategories = [
     { id: 1, title: "مواسرجي", icon: CategoryImage },

@@ -9,7 +9,6 @@ export default function SortingOptions() {
   const options = ["من الأحدث للأقدم", "من الأقدم للأحدث"];
 
   const changeActiveOption = (e) => {
-    console.log(e);
     setSelectedOption(e);
   };
   return (
@@ -17,7 +16,7 @@ export default function SortingOptions() {
       style={{ maxWidth: "240px" }}
       className="d-flex gap-2 align-items-center"
     >
-      <div className="text-nowrap ">التاريخ</div>
+      <div className="text-nowrap ">ترتيب</div>
       <Dropdown className="w-100" onSelect={changeActiveOption}>
         <Dropdown.Toggle className="text-white w-100 pe-start">
           {options[selectedOption]}

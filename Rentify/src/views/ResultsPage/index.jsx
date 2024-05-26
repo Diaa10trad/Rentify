@@ -7,7 +7,11 @@ import ResultsHeader from "@/components/Results/ResultsHeader";
 import FilterSidebar from "@/components/Results/FilterSideBar";
 import ItemCard from "@/components/cards/ItemCard";
 import Pager from "@/components/Pager";
+import { useLocation } from "react-router-dom";
 export default function ResultsPage() {
+  const location = useLocation();
+  const parameters = new URLSearchParams(location.search);
+  const type = parameters.get("type");
   return (
     <Container fluid>
       <Row className="mb-3">
@@ -19,11 +23,11 @@ export default function ResultsPage() {
           <ResultsHeader />
         </Col>
         <Col xs={12} lg={4} xxl={3} className="p-0">
-          <FilterSidebar />
+          <FilterSidebar type={type} />
         </Col>
         <Col xs={12} lg={8} xxl={9} className="">
           <Row className="g-4">
-            {Array.from({ length: 10 }, (_, index) => (
+            {Array.from({ length: 24 }, (_, index) => (
               <Col key={index} xs={12} sm={6} xxl={4}>
                 <ItemCard />
               </Col>

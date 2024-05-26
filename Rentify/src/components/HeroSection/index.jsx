@@ -9,7 +9,7 @@ import {
   Stack,
 } from "react-bootstrap";
 import HeroImage from "@/assets/images/HeroImage.png";
-import SearchBar from "@/components/SearchBar";
+import SearchBarContainer from "@/containers/SearchBarContainer";
 
 export default function HeroSection() {
   return (
@@ -34,7 +34,7 @@ export default function HeroSection() {
 
       <Row className="align-items-center justify-content-center">
         <Col md={8}>
-          <SearchBar />
+          <SearchBarContainer />
         </Col>
       </Row>
     </Container>

@@ -1,5 +1,4 @@
 import {
-  Container,
   Row,
   Col,
   Form,
@@ -8,43 +7,49 @@ import {
   Button,
 } from "react-bootstrap";
 import "./style.css";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-export default function SearchBar() {
-  const [radioValue, setRadioValue] = useState("1");
-  const navigate = useNavigate();
-  const radios = [
-    { name: "منتج", value: "1" },
-    { name: "خدمة", value: "2" },
-  ];
 
+export default function SearchBar({
+  onSubmit,
+  query,
+  selectedType,
+  onTypeChange,
+}) {
   return (
-    <Form className="p-2 shadow rounded-md-pill">
+    <Form onSubmit={onSubmit} className="p-2 shadow rounded-md-pill">
       <Row className="gap-2 align-items-center justify-content-between">
         <Col className="order-md-first">
           <Form.Control
             className="rounded-pill border  p-3"
             type="text"
+            onChange={(e) => (query.current = e.target.value)}
             placeholder="عن ماذا تبحث؟"
           />
         </Col>
         <Col xs={12} md="auto" className="order-first">
           <Form.Group>
             <ButtonGroup className="w-100">
-              {radios.map((radio, idx) => (
-                <ToggleButton
-                  key={idx}
-                  id={`radio-${idx}`}
-                  type="radio"
-                  variant="outline-secondary"
-                  name="radio"
-                  value={radio.value}
-                  checked={radioValue === radio.value}
-                  onChange={(e) => setRadioValue(e.currentTarget.value)}
-                >
-                  {radio.name}
-                </ToggleButton>
-              ))}
+              <ToggleButton
+                id="منتج"
+                type="radio"
+                variant="outline-secondary"
+                name="منتج"
+                value="منتج"
+                checked={selectedType === "منتج"}
+                onChange={onTypeChange}
+              >
+                منتج
+              </ToggleButton>
+              <ToggleButton
+                id="خدمة"
+                type="radio"
+                variant="outline-secondary"
+                name="خدمة"
+                value="خدمة"
+                checked={selectedType === "خدمة"}
+                onChange={onTypeChange}
+              >
+                خدمة
+              </ToggleButton>
             </ButtonGroup>
           </Form.Group>
         </Col>
@@ -53,7 +58,6 @@ export default function SearchBar() {
             type="submit"
             style={{ width: 60, height: 60 }}
             className="rounded-circle text-white "
-            onClick={() => navigate("/Results")}
           >
             ابحث
           </Button>

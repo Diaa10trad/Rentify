@@ -1,8 +1,5 @@
 import { useState } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
-import DropdownHeader from "react-bootstrap/DropdownHeader";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
 export default function SortingOptions() {
   const [selectedOption, setSelectedOption] = useState(0);
 

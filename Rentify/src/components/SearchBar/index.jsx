@@ -29,23 +29,23 @@ export default function SearchBar({
           <Form.Group>
             <ButtonGroup className="w-100">
               <ToggleButton
-                id="منتج"
+                id="Product"
                 type="radio"
                 variant="outline-secondary"
-                name="منتج"
-                value="منتج"
-                checked={selectedType === "منتج"}
+                name="Product"
+                value="Product"
+                checked={selectedType === "Product"}
                 onChange={onTypeChange}
               >
                 منتج
               </ToggleButton>
               <ToggleButton
-                id="خدمة"
+                id="Service"
                 type="radio"
                 variant="outline-secondary"
-                name="خدمة"
-                value="خدمة"
-                checked={selectedType === "خدمة"}
+                name="Service"
+                value="Service"
+                checked={selectedType === "Service"}
                 onChange={onTypeChange}
               >
                 خدمة

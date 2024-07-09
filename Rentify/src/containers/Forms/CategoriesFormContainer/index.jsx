@@ -35,6 +35,7 @@ function CategoriesFormContainer({}, ref) {
   useImperativeHandle(ref, () => ({
     getData: () => selectedCategories,
   }));
+
   return (
     <CategoriesForm
       categories={Categories}

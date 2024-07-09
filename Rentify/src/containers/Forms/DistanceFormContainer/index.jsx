@@ -5,7 +5,7 @@ function DistanceFormContainer({}, ref) {
   const [distance, setDistance] = useState(getOneFromUrl("Distance"));
 
   useImperativeHandle(ref, () => ({
-    getData: () => (distance ? { ["Distance"]: distance } : {}),
+    getData: () => ({ ["Distance"]: distance }),
   }));
   return <DistanceForm distance={distance} setDistance={setDistance} />;
 }

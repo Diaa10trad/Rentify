@@ -5,7 +5,7 @@ function DateFormContainer({}, ref) {
   const [selectedDates, setSelectedDates] = useState(
     getFromUrlByKeyPrefix("Date")
   );
-  console.log(selectedDates);
+
   const handleChange = (key, value) => {
     const newSelectedDates = { ...selectedDates, [key]: value };
 

@@ -8,7 +8,9 @@ export default function SearchBarContainer() {
   const search = (e) => {
     e.preventDefault();
     navigate(
-      `/Results?type=${selectedType}&query=${encodeURIComponent(query.current)}`
+      `/Results?type=${selectedType}&query=${encodeURIComponent(
+        query.current
+      )}&PageNumber=1`
     );
   };
   const onTypeChange = (e) => setSelectedType(e.currentTarget.value);

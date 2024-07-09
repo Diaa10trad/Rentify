@@ -17,16 +17,12 @@ export default function ProductConditionForm({
             selectedProductConditions[`ProductCondition${index}`] == condition
           }
           onChange={(event) => {
-            const newSelectedProductConditions = {
+            setSelectedProductConditions({
               ...selectedProductConditions,
-            };
-            if (event.target.checked) {
-              newSelectedProductConditions[`ProductCondition${index}`] =
-                condition;
-            } else {
-              delete newSelectedProductConditions[`ProductCondition${index}`];
-            }
-            setSelectedProductConditions(newSelectedProductConditions);
+              [`ProductCondition${index}`]: event.target.checked
+                ? condition
+                : "",
+            });
           }}
         />
       ))}

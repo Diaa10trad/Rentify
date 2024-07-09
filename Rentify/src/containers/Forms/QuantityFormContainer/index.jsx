@@ -4,7 +4,7 @@ import getOneFromUrl from "@/utils/getOneFromUrl.js";
 function QuantityFormContainer({}, ref) {
   const [quantity, setQuantity] = useState(getOneFromUrl("Quantity"));
   useImperativeHandle(ref, () => ({
-    getData: () => (quantity ? { ["Quantity"]: quantity } : {}),
+    getData: () => ({ ["Quantity"]: quantity }),
   }));
   return <QuantityForm quantity={quantity} setQuantity={setQuantity} />;
 }

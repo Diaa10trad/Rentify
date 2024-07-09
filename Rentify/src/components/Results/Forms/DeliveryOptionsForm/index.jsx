@@ -15,15 +15,10 @@ export default function DeliveryOptionsForm({
           id={option}
           checked={selectedDeliveryOptions[`DeliveryOption${index}`] == option}
           onChange={(event) => {
-            const newSelectedDeliveryOptions = {
+            setSelectedDeliveryOptions({
               ...selectedDeliveryOptions,
-            };
-            if (event.target.checked) {
-              newSelectedDeliveryOptions[`DeliveryOption${index}`] = option;
-            } else {
-              delete newSelectedDeliveryOptions[`DeliveryOption${index}`];
-            }
-            setSelectedDeliveryOptions(newSelectedDeliveryOptions);
+              [`DeliveryOption${index}`]: event.target.checked ? option : "",
+            });
           }}
         />
       ))}

@@ -15,13 +15,10 @@ export default function CategoriesForm({
           id={category}
           checked={selectedCategories[`Category${index}`] == category}
           onChange={(event) => {
-            const newSelectedCategories = { ...selectedCategories };
-            if (event.target.checked) {
-              newSelectedCategories[`Category${index}`] = category;
-            } else {
-              delete newSelectedCategories[`Category${index}`];
-            }
-            setSelectedCategories(newSelectedCategories);
+            setSelectedCategories({
+              ...selectedCategories,
+              [`Category${index}`]: event.target.checked ? category : "",
+            });
           }}
         />
       ))}

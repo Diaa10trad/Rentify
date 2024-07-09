@@ -1,5 +1,4 @@
 import Container from "react-bootstrap/Container";
-import Stack from "react-bootstrap/Stack";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import HeadingSection from "@/components/HeadingSection";
@@ -7,7 +6,7 @@ import ResultsHeader from "@/components/Results/ResultsHeader";
 import FilterSidebar from "@/components/Results/FilterSideBar";
 import ItemCard from "@/components/cards/ItemCard";
 import Pager from "@/components/Pager";
-import { useLocation } from "react-router-dom";
+
 export default function ResultsPage() {
   return (
     <Container fluid>

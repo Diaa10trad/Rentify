@@ -1,0 +1,9 @@
+.images-carousel {
+  height: 400px; /* Set your desired fixed height */
+}
+
+.carousel-image {
+  width: 100%;
+  height: 400px; /* Set your desired fixed height */
+  object-fit: contain; /* Ensure the image covers the fixed size without distortion */
+}

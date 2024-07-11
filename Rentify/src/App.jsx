@@ -6,6 +6,7 @@ import NavigationBar from "@/components/NavigationBar";
 import Footer from "@/components/Footer";
 import HomePage from "@/views/HomePage";
 import ResultsPage from "@/views/ResultsPage";
+import ItemDetailsPage from "@/views/ItemDetailsPage";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 function App() {
@@ -22,6 +23,7 @@ function App() {
               <Route path="/Register" element={<HomePage />} />
               <Route path="/About-Rentify" element={<HomePage />} />
               <Route path="/Results" element={<ResultsPage />} />
+              <Route path="/Item-Details" element={<ItemDetailsPage />} />
             </Routes>
           </Col>
         </Container>

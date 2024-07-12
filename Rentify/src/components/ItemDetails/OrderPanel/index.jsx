@@ -12,6 +12,7 @@ function OrderPanel() {
           <h1 className="text-break">
             Sony FX3 Cinema Line Full-frame Camera - 320GB CF Card
           </h1>
+          <h6 className="text-muted">تاريخ النشر: 2024-10-3</h6>
         </Col>
         <Col xs={12}>
           <Stack

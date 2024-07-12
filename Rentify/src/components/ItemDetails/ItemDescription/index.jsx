@@ -26,8 +26,10 @@ function ItemDescription() {
 اقتنِ كاميرا [اسم الماركة أو الموديل] الآن!
 لا تفوت الفرصة واحصل على كاميرا [اسم الماركة أو الموديل] بسعر خاص لفترة محدودة. اجعل من لحظاتك ذكريات لا تُنسى بجودة استثنائية.`;
   return (
-    <div className="p-3">
-      <h3 className="mb-4">الوصف</h3>
+    <div className="">
+      <h3 className="mb-4 bg-primary text-white rounded-top-4 p-4 shadow">
+        الوصف
+      </h3>
       <p style={{ whiteSpace: "pre-wrap" }}>{productDescription}</p>
     </div>
   );

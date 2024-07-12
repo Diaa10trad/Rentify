@@ -1,23 +1,22 @@
 import React from "react";
 import InfoRow from "@/components/ItemDetails/InfoRow";
 
-function InfoRowList() {
-  const infoData = [
-    { label: "الفئة", value: "أجهزة الكترونية" },
-    { label: "حالة المنتج", value: "بحالة الجديد" },
-    {
-      label: "سياسة إلغاء الحجز",
-      value: "استرجاع 50% من المبلغ خلال أول 24 ساعة",
-    },
-    { label: "العدد", value: "1" },
-  ];
-
+function InfoRowList({ infoData, title }) {
+  const classNames = title ? "" : "shadow p-4 ";
+  const titleComponent = title ? (
+    <h5 className="bg-primary p-4 shadow text-white rounded-top-4 mt-3">
+      {title}
+    </h5>
+  ) : (
+    <></>
+  );
   return (
-    <>
+    <div className={classNames}>
+      {titleComponent}
       {infoData.map((info, index) => (
         <InfoRow key={index} label={info.label} value={info.value} />
       ))}
-    </>
+    </div>
   );
 }
 

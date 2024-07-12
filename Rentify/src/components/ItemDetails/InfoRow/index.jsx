@@ -3,12 +3,11 @@ import { Row, Col } from "react-bootstrap";
 
 function InfoRow({ label, value }) {
   return (
-    <Row className="p-2">
+    <Row className="p-3 align-items-center">
       <Col>
-        <h6>{label}</h6>
+        <h6 className="m-0">{label}</h6>
       </Col>
       <Col className="text-secondary">{value}</Col>
-      <hr />
     </Row>
   );
 }

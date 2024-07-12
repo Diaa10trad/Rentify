@@ -7,10 +7,10 @@ import "./style.css";
 function ImagesCarousel() {
   return (
     <Carousel
-      itemPosition="CENTER"
-      pagination={false}
+      pagination={true}
       className="images-carousel"
       itemPadding={[0, 5]}
+      showArrows={false}
       isRTL={true}
     >
       <Image

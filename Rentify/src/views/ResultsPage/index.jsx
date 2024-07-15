@@ -6,8 +6,9 @@ import ResultsHeader from "@/components/Results/ResultsHeader";
 import FilterSidebar from "@/components/Results/FilterSideBar";
 import ItemCard from "@/components/cards/ItemCard";
 import Pager from "@/components/Pager";
-
+import getOneFromUrl from "@/utils/getOneFromUrl.js";
 export default function ResultsPage() {
+  const type = getOneFromUrl("type");
   return (
     <Container fluid>
       <Row className="mb-3">
@@ -25,7 +26,7 @@ export default function ResultsPage() {
           <Row className="g-4">
             {Array.from({ length: 24 }, (_, index) => (
               <Col key={index} xs={12} sm={6} xxl={4}>
-                <ItemCard />
+                <ItemCard type={type} />
               </Col>
             ))}
           </Row>

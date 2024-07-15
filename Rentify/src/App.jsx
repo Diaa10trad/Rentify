@@ -7,8 +7,10 @@ import Footer from "@/components/Footer";
 import HomePage from "@/views/HomePage";
 import ResultsPage from "@/views/ResultsPage";
 import ItemDetailsPage from "@/views/ItemDetailsPage";
+import UserPage from "@/views/UserPage";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
+
 function App() {
   return (
     <>
@@ -23,8 +25,9 @@ function App() {
               <Route path="/Register" element={<HomePage />} />
               <Route path="/About-Rentify" element={<HomePage />} />
               <Route path="/Results" element={<ResultsPage />} />
-              <Route path="/Product" element={<ItemDetailsPage />} />
-              <Route path="/Service" element={<ItemDetailsPage />} />
+              <Route path="/Product/:id" element={<ItemDetailsPage />} />
+              <Route path="/Service/:id" element={<ItemDetailsPage />} />
+              <Route path="/User/:id" element={<UserPage />} />
             </Routes>
           </Col>
         </Container>

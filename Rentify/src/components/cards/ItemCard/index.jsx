@@ -3,8 +3,11 @@ import Card from "react-bootstrap/Card";
 import Badge from "react-bootstrap/Badge";
 import Camera from "@/assets/images/products/Camera.jpg";
 import FavoriteButton from "@/components/FavoriteButton";
+import Button from "react-bootstrap/Button";
+import { LinkContainer } from "react-router-bootstrap";
+
 import "./style.css";
-export default function ItemCard() {
+export default function ItemCard({ type }) {
   return (
     <Card style={{ minHeight: "100%" }} className=" shadow border border-0">
       <Card className="position-relative overflow-hidden item-card">
@@ -32,13 +35,24 @@ export default function ItemCard() {
           <span>4 (28)</span>
         </Card.Text>
         <Card.Title>كاميرا فخمة مفش منها جدا جدا جدا جدا</Card.Title>
+
         <Card.Text>
           With supporting text below as a natural lead-in to additional content.
           With supporting text below as a natural lead-in to additional content.
           With supporting text below as a natural lead-in to additional content.
+          <div className="d-grid gap-2">
+            <LinkContainer to={`/${type}/1`}>
+              <Button
+                className="fs-5 p-2 mt-3 text-white"
+                variant="primary"
+                type="submit"
+              >
+                تفاصيل الإعلان
+              </Button>
+            </LinkContainer>
+          </div>
         </Card.Text>
       </Card.Body>
-      <Card.Footer className="text-muted bg-white">2 days ago</Card.Footer>
     </Card>
   );
 }

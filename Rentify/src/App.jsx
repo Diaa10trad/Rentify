@@ -23,7 +23,8 @@ function App() {
               <Route path="/Register" element={<HomePage />} />
               <Route path="/About-Rentify" element={<HomePage />} />
               <Route path="/Results" element={<ResultsPage />} />
-              <Route path="/Item-Details" element={<ItemDetailsPage />} />
+              <Route path="/Product" element={<ItemDetailsPage />} />
+              <Route path="/Service" element={<ItemDetailsPage />} />
             </Routes>
           </Col>
         </Container>

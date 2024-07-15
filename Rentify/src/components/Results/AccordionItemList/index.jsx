@@ -72,34 +72,34 @@ function AccordionItemList({}, ref) {
       component: CategoriesFormContainer,
       refKey: "Categories",
     },
-    {
-      header: "السعر",
-      component: () => (
-        <>
-          <PriceFormContainer
-            label="يوميا"
-            idPrefix="priceDaily"
-            ref={(el) => (ref.current["priceDaily"] = el)}
-          />
-          <PriceFormContainer
-            label="أسبوعيا"
-            idPrefix="priceWeekly"
-            ref={(el) => (ref.current["priceWeekly"] = el)}
-          />
-          <PriceFormContainer
-            label="شهريا"
-            idPrefix="priceMonthly"
-            ref={(el) => (ref.current["priceMonthly"] = el)}
-          />
-        </>
-      ),
-      refKey: null,
-    },
-    {
-      header: "فترة الخدمة",
-      component: DateFormContainer,
-      refKey: "Date",
-    },
+    // {
+    //   header: "السعر",
+    //   component: () => (
+    //     <>
+    //       <PriceFormContainer
+    //         label="يوميا"
+    //         idPrefix="priceDaily"
+    //         ref={(el) => (ref.current["priceDaily"] = el)}
+    //       />
+    //       <PriceFormContainer
+    //         label="أسبوعيا"
+    //         idPrefix="priceWeekly"
+    //         ref={(el) => (ref.current["priceWeekly"] = el)}
+    //       />
+    //       <PriceFormContainer
+    //         label="شهريا"
+    //         idPrefix="priceMonthly"
+    //         ref={(el) => (ref.current["priceMonthly"] = el)}
+    //       />
+    //     </>
+    //   ),
+    //   refKey: null,
+    // },
+    // {
+    //   header: "فترة الخدمة",
+    //   component: DateFormContainer,
+    //   refKey: "Date",
+    // },
 
     {
       header: "المسافة",

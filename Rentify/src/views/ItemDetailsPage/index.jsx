@@ -17,10 +17,6 @@ function ItemDetailsPage() {
 
     { label: "العدد", value: "1" },
   ];
-  const deliveryOptions = [
-    { label: "الاستلام بمكان عام", value: "" },
-    { label: "خدمة التوصيل", value: "" },
-  ];
 
   const cancellationPolicy = [
     { label: "نسبة الاسترجاع", value: "50%" },
@@ -54,7 +50,6 @@ function ItemDetailsPage() {
           </div>
           <InfoRowList infoData={detailsInfo} />
           <InfoRowList infoData={cancellationPolicy} title={"سياسة الإلغاء"} />
-          <InfoRowList infoData={deliveryOptions} title={"طرق الاستلام"} />
           <Link className="text-decoration-none" to={"/User/1"}>
             <OwnerCard />
           </Link>

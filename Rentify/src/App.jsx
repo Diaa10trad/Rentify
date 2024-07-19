@@ -10,7 +10,7 @@ import ItemDetailsPage from "@/views/ItemDetailsPage";
 import UserPage from "@/views/UserPage";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
-
+import ProfilePage from "@/views/ProfilePage";
 function App() {
   return (
     <>
@@ -28,6 +28,7 @@ function App() {
               <Route path="/Product/:id" element={<ItemDetailsPage />} />
               <Route path="/Service/:id" element={<ItemDetailsPage />} />
               <Route path="/User/:id" element={<UserPage />} />
+              <Route path="/ProfilePage" element={<ProfilePage />} />
             </Routes>
           </Col>
         </Container>

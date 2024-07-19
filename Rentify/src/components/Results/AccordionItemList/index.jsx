@@ -1,7 +1,6 @@
 import AccordionItem from "@/components/Results/AccordionItem";
 import DateFormContainer from "@/containers/Forms/DateFormContainer";
 import PriceFormContainer from "@/containers/Forms/PriceFormContainer";
-import DeliveryOptionsFormContainer from "@/containers/Forms/DeliveryOptionsFormContainer";
 import CategoriesFormContainer from "@/containers/Forms/CategoriesFormContainer";
 import ProductConditionFormContainer from "@/containers/Forms/ProductConditionFormContainer";
 import DistanceFormContainer from "@/containers/Forms/DistanceFormContainer";
@@ -49,11 +48,6 @@ function AccordionItemList({}, ref) {
       header: "حالة المنتج",
       component: ProductConditionFormContainer,
       refKey: "ProductConditions",
-    },
-    {
-      header: "خيارات التوصيل",
-      component: DeliveryOptionsFormContainer,
-      refKey: "DeliveryOptions",
     },
     {
       header: "المسافة",

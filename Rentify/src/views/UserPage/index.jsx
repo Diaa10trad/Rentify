@@ -136,7 +136,7 @@ function UserPage() {
                 ))}
               </Row>
             </Tab>
-            <Tab eventKey="reviews" title="التعليقات والمراجعات">
+            <Tab eventKey="reviews" title="التقييمات">
               <div
                 style={{ height: "400px" }}
                 className="overflow-y-auto pe-3 my-2"

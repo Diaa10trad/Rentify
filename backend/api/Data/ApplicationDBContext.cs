@@ -3,20 +3,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Data
 {
-    public class ApplicationDBContext : DbContext
+    public class ApplicationDBContext : IdentityDbContext<AppUser>
     {
         public ApplicationDBContext(DbContextOptions dbContextOptions) : base(dbContextOptions) {
 
         }
         public DbSet<Category> Categories { get; set; }
-
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Service> Services { get; set; }
+        public DbSet<Review> Reviews { get; set; }
+        public DbSet<AppUser> AppUsers { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
              base.OnModelCreating(modelBuilder);
+
+             modelBuilder.Entity<Review>()
+                .Property(r => r.ReviewerType)
+                .HasConversion<string>();
+
+              modelBuilder.Entity<Review>()
+                .Property(r => r.ItemType)
+                .HasConversion<string>();
 
             var initialCategories = new List<Category>
             {

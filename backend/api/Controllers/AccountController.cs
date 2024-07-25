@@ -52,7 +52,6 @@ namespace api.Controllers
                     Id = user.Id,
                     Email = user.Email,
                     Token = _tokenService.CreateToken(user),
-
                 }
             );
         }

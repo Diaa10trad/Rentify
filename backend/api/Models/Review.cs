@@ -1,7 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using static api.Enums.Enums;
 namespace api.Models
 {
     public class Review
@@ -13,11 +12,14 @@ namespace api.Models
         public string? ReviewerId { get; set; }
         public AppUser Reviewer { get; set; } = null!;
 
-        [ForeignKey("Reviewee")]
-        public string? RevieweeId { get; set; }
-        public AppUser Reviewee { get; set; } = null!;
-        public int ItemId { get; set; }
+        [ForeignKey("Renter")]
+        public string? RenterId { get; set; }
+        public AppUser Renter { get; set; } = null!;
+        public int? ServiceId { get; set; }
+        public Service Service { get; set; } = null!;
       
+        public int? ProductId { get; set; }
+        public Product Product { get; set; } = null!;
 
         [Range(1, 5)]
         public int Rating { get; set; }
@@ -25,10 +27,6 @@ namespace api.Models
         public string Comment { get; set; } = string.Empty;
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
-
-        public ReviewerType ReviewerType { get; set; } 
-
-        public ItemType ItemType { get; set; }
         
     }
 }

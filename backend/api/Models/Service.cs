@@ -13,8 +13,7 @@ namespace api.Models
         public int ServiceId { get; set; }
 
         [ForeignKey("Owner")]
-        [Required]
-        public string? OwnerId { get; set; }
+        public string OwnerId { get; set; }
         public AppUser? Owner { get; set; }
 
         [ForeignKey("Category")]
@@ -35,8 +34,8 @@ namespace api.Models
         [Required]
         public CancellationPolicy CancellationPolicy { get; set; } = null!;
 
-        [Required]
-        public Location Location { get; set; } = null!;
+        // [Required]
+        // public Location Location { get; set; } = null!;
 
         public ICollection<Review> Reviews { get; set; } = new List<Review>();
     }

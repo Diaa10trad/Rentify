@@ -10,6 +10,9 @@ namespace api.Models
     {
         public string? FirstName { get; set; }
         public string? LastName { get; set;}
-    
+        
+        public ICollection<Product> OwnedProducts { get; set; } = new List<Product>();
+        public ICollection<Service> OwnedServices { get; set; } = new List<Service>();
+        //public ICollection<Review> ReviewsReceived { get; set; } = new List<Review>();
     }
 }

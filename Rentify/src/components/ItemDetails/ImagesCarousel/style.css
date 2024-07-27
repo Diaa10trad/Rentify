@@ -1,0 +1,35 @@
+.images-carousel {
+  max-height: 400px;
+}
+
+.carousel-image {
+  width: 100%;
+  max-height: 400px;
+  object-fit: contain;
+  cursor: grab;
+}
+.carousel-image:active {
+  cursor: grabbing;
+}
+
+.images-carousel .rec-dot_active {
+  background-color: #4ac0d5;
+  border-color: none;
+  box-shadow: 0 0 1px 3px #4ac0d5;
+}
+.images-carousel .rec-dot_active:focus {
+  box-shadow: 0 0 1px 3px #4ac0d5; /* Border color when focused */
+}
+
+.images-carousel .rec-dot {
+  border: none;
+  width: 12px;
+  height: 12px;
+  margin: 0px 5px;
+
+  cursor: pointer;
+}
+
+.images-carousel .rec-dot:hover {
+  box-shadow: 0px 0px 1px 3px #4ac0d5;
+}

@@ -1,7 +1,6 @@
 import AccordionItem from "@/components/Results/AccordionItem";
 import DateFormContainer from "@/containers/Forms/DateFormContainer";
 import PriceFormContainer from "@/containers/Forms/PriceFormContainer";
-import DeliveryOptionsFormContainer from "@/containers/Forms/DeliveryOptionsFormContainer";
 import CategoriesFormContainer from "@/containers/Forms/CategoriesFormContainer";
 import ProductConditionFormContainer from "@/containers/Forms/ProductConditionFormContainer";
 import DistanceFormContainer from "@/containers/Forms/DistanceFormContainer";
@@ -51,11 +50,6 @@ function AccordionItemList({}, ref) {
       refKey: "ProductConditions",
     },
     {
-      header: "خيارات التوصيل",
-      component: DeliveryOptionsFormContainer,
-      refKey: "DeliveryOptions",
-    },
-    {
       header: "المسافة",
       component: DistanceFormContainer,
       refKey: "Distance",
@@ -72,34 +66,34 @@ function AccordionItemList({}, ref) {
       component: CategoriesFormContainer,
       refKey: "Categories",
     },
-    {
-      header: "السعر",
-      component: () => (
-        <>
-          <PriceFormContainer
-            label="يوميا"
-            idPrefix="priceDaily"
-            ref={(el) => (ref.current["priceDaily"] = el)}
-          />
-          <PriceFormContainer
-            label="أسبوعيا"
-            idPrefix="priceWeekly"
-            ref={(el) => (ref.current["priceWeekly"] = el)}
-          />
-          <PriceFormContainer
-            label="شهريا"
-            idPrefix="priceMonthly"
-            ref={(el) => (ref.current["priceMonthly"] = el)}
-          />
-        </>
-      ),
-      refKey: null,
-    },
-    {
-      header: "فترة الخدمة",
-      component: DateFormContainer,
-      refKey: "Date",
-    },
+    // {
+    //   header: "السعر",
+    //   component: () => (
+    //     <>
+    //       <PriceFormContainer
+    //         label="يوميا"
+    //         idPrefix="priceDaily"
+    //         ref={(el) => (ref.current["priceDaily"] = el)}
+    //       />
+    //       <PriceFormContainer
+    //         label="أسبوعيا"
+    //         idPrefix="priceWeekly"
+    //         ref={(el) => (ref.current["priceWeekly"] = el)}
+    //       />
+    //       <PriceFormContainer
+    //         label="شهريا"
+    //         idPrefix="priceMonthly"
+    //         ref={(el) => (ref.current["priceMonthly"] = el)}
+    //       />
+    //     </>
+    //   ),
+    //   refKey: null,
+    // },
+    // {
+    //   header: "فترة الخدمة",
+    //   component: DateFormContainer,
+    //   refKey: "Date",
+    // },
 
     {
       header: "المسافة",

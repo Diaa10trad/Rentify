@@ -13,7 +13,7 @@ namespace api.Interfaces
         Task<Product?> GetProductByIdAsync(int id);
         Task<Product?> CreateProductAsync(Product productModel);
         Task<Product?> UpdateProductAsync(int id, ProductUpdateDTO productDto, string OwnerId);
-        // Task<Product?> DeleteProductAsync(int id);
+        Task<Product?> DeleteProductAsync(int id, string OwnerId);
         // Task<IEnumerable<Product>> GetProductsByOwnerAsync(string ownerId);
         // Task<IEnumerable<Product>> GetProductsByCategoryAsync(int categoryId);
     }

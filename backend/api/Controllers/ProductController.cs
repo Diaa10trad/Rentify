@@ -90,7 +90,6 @@ namespace api.Controllers
             }
         }
 
-        // PUT: api/product/5
         [HttpPut("{id}")]
         [Authorize]
         public async Task<IActionResult> UpdateProduct([FromRoute] int id, [FromBody] ProductUpdateDTO productUpdateDto)
@@ -119,37 +118,44 @@ namespace api.Controllers
             }
         }
 
-        // // DELETE: api/product/5
-        // [HttpDelete("{id}")]
-        // public async Task<IActionResult> DeleteProduct(int id)
-        // {
-        //     var product = await _productRepo.GetProductByIdAsync(id);
-        //     if (product == null)
-        //     {
-        //         return NotFound();
-        //     }
+        [HttpDelete("{id}")]
+        [Authorize]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            try
+            {
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var productModel = await _productRepository.DeleteProductAsync(id, userId);
+                if (productModel == null)
+                {
+                    return NotFound();
+                }
 
-        //     await _productRepo.DeleteProductAsync(id);
-        //     return NoContent();
-        // }
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
 
-        // // GET: api/product/owner/{ownerId}
-        // [HttpGet("owner/{ownerId}")]
-        // public async Task<IActionResult> GetProductsByOwner([FromRoute] string ownerId)
-        // {
-        //     var products = await _productRepo.GetProductsByOwnerAsync(ownerId);
-        //     var productDTO = products.Select(p => p.ToProductDTO());
-        //     return Ok(productDTO);
-        // }
+            // // GET: api/product/owner/{ownerId}
+            // [HttpGet("owner/{ownerId}")]
+            // public async Task<IActionResult> GetProductsByOwner([FromRoute] string ownerId)
+            // {
+            //     var products = await _productRepo.GetProductsByOwnerAsync(ownerId);
+            //     var productDTO = products.Select(p => p.ToProductDTO());
+            //     return Ok(productDTO);
+            // }
 
-        // // GET: api/product/category/{categoryId}
-        // [HttpGet("category/{categoryId}")]
-        // public async Task<IActionResult> GetProductsByCategory([FromRoute] int categoryId)
-        // {
-        //     var products = await _productRepo.GetProductsByCategoryAsync(categoryId);
-        //     var productDTO = products.Select(p => p.ToProductDTO());
-        //     return Ok(productDTO);
-        // }
+            // // GET: api/product/category/{categoryId}
+            // [HttpGet("category/{categoryId}")]
+            // public async Task<IActionResult> GetProductsByCategory([FromRoute] int categoryId)
+            // {
+            //     var products = await _productRepo.GetProductsByCategoryAsync(categoryId);
+            //     var productDTO = products.Select(p => p.ToProductDTO());
+            //     return Ok(productDTO);
+            // }
 
+        }
     }
 }

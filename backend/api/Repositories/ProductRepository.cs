@@ -23,8 +23,8 @@ namespace api.Repositories
         public async Task<IEnumerable<Product>> GetAllProductsAsync()
         {
             return await _dbContext.Products
-                                .Include(p => p.Owner)
-                                .Include(p => p.Category)
+                                .Include(product => product.Owner)
+                                .Include(product => product.Category)
 
                                 .ToListAsync();
         }
@@ -88,9 +88,21 @@ namespace api.Repositories
             return existingProduct;
         }
 
-        public Task<Product?> DeleteProductAsync(int id)
+        public async Task<Product?> DeleteProductAsync(int id, string OwnerId)
         {
-            throw new NotImplementedException();
+            var productModel = await _dbContext.Products.FirstOrDefaultAsync(product => product.ProductId == id);
+            if (productModel == null)
+            {
+                return null;
+            }
+            if (productModel.OwnerId != OwnerId)
+            {
+                return null;
+            }
+            _dbContext.Products.Remove(productModel);
+            await _dbContext.SaveChangesAsync();
+
+            return productModel;
         }
 
 

@@ -12,82 +12,114 @@ namespace api.Repositories
 {
     public class ProductRepository : IProductRepository
     {
-        private readonly ApplicationDBContext _context;
-        public ProductRepository(ApplicationDBContext context)
+        private readonly ApplicationDBContext _dbContext;
+        private readonly ICategoryRepository _categoryRepository;
+        public ProductRepository(ApplicationDBContext context, ICategoryRepository categoryRepository)
         {
-            _context = context;
+            _dbContext = context;
+            _categoryRepository = categoryRepository;
         }
 
         public async Task<IEnumerable<Product>> GetAllProductsAsync()
         {
-            return await _context.Products
-                .Include(p => p.Owner)
-                .Include(p => p.Category)
-                .Include(p => p.Reviews)
-                .ToListAsync();
+            return await _dbContext.Products
+                                .Include(product => product.Owner)
+                                .Include(product => product.Category)
+
+                                .ToListAsync();
         }
 
         public async Task<Product?> GetProductByIdAsync(int id)
         {
-            return await _context.Products
-                .Include(p => p.Owner)
-                .Include(p => p.Category)
-                .Include(p => p.Reviews)
-                .FirstOrDefaultAsync(p => p.ProductId == id);
+            return await _dbContext.Products
+                                .Include(product => product.Owner)
+                                .Include(product => product.Category)
+                                .FirstOrDefaultAsync(product => product.ProductId == id);
         }
 
-        public async Task<Product> AddProductAsync(Product product)
+        public async Task<Product?> CreateProductAsync(Product productModel)
         {
-            _context.Products.Add(product);
-            await _context.SaveChangesAsync();
-            return product;
-        }
-
-        public async Task<Product?> UpdateProductAsync(Product product)
-        {
-            _context.Products.Update(product);
-            await _context.SaveChangesAsync();
-            return product;
-        }
-
-        public async Task<Stock?> DeleteProductAsync(int id)
-        {
-            var product = await _context.Products.FindAsync(id);
-            if (product != null)
+            var category = await _categoryRepository.GetCategoryByIdAsync(productModel.CategoryId);
+            if (category == null || category.CategoryType == "service")
             {
-                _context.Products.Remove(product);
-                await _context.SaveChangesAsync();
+                return null;
             }
+
+            await _dbContext.Products.AddAsync(productModel);
+            await _dbContext.SaveChangesAsync();
+            return productModel;
         }
 
-        public async Task<IEnumerable<Product>> GetProductsByOwnerAsync(string ownerId)
+
+        public async Task<Product?> UpdateProductAsync(int id, ProductUpdateDTO productDto, string OwnerId)
         {
-            return await _context.Products
-                .Where(p => p.OwnerId == ownerId)
-                .Include(p => p.Owner)
-                .Include(p => p.Category)
-                .Include(p => p.Reviews)
-                .ToListAsync();
+            var existingProduct = await _dbContext.Products.Include(product => product.CancellationPolicy)
+                                                        .Include(product => product.Category)
+                                                        .FirstOrDefaultAsync(product => product.ProductId == id);
+
+            if (existingProduct == null || existingProduct.OwnerId != OwnerId)
+            {
+                return null;
+            }
+
+            existingProduct.Title = productDto.Title;
+            existingProduct.ProductCondition = productDto.ProductCondition;
+            existingProduct.Quantity = productDto.Quantity;
+            existingProduct.PriceMonthly = productDto.PriceMonthly;
+            existingProduct.PriceWeekly = productDto.PriceWeekly;
+            existingProduct.PriceDaily = productDto.PriceDaily;
+            existingProduct.Title = productDto.Title;
+            existingProduct.Description = productDto.Description;
+            existingProduct.CategoryId = productDto.CategoryId;
+            existingProduct.AdditionalInfo = productDto.AdditionalInfo;
+            if (existingProduct.CancellationPolicy != null)
+            {
+                existingProduct.CancellationPolicy.Refund = productDto.Refund;
+                existingProduct.CancellationPolicy.PermittedDuration = productDto.PermittedDuration;
+            }
+
+            if (existingProduct.Location != null)
+            {
+                existingProduct.Location.Latitude = productDto.Latitude;
+                existingProduct.Location.Longitude = productDto.Longitude;
+            }
+
+            await _dbContext.SaveChangesAsync();
+            return existingProduct;
         }
 
-        public async Task<IEnumerable<Product>> GetProductsByCategoryAsync(int categoryId)
+        public async Task<Product?> DeleteProductAsync(int id, string OwnerId)
         {
-            return await _context.Products
-                .Where(p => p.CategoryId == categoryId)
-                .Include(p => p.Owner)
-                .Include(p => p.Category)
-                .Include(p => p.Reviews)
-                .ToListAsync();
+            var productModel = await _dbContext.Products.FirstOrDefaultAsync(product => product.ProductId == id);
+            if (productModel == null)
+            {
+                return null;
+            }
+            if (productModel.OwnerId != OwnerId)
+            {
+                return null;
+            }
+            _dbContext.Products.Remove(productModel);
+            await _dbContext.SaveChangesAsync();
+
+            return productModel;
         }
 
-        public async Task<IEnumerable<Product>> SearchProductsAsync(string searchTerm)
+
+        public Task<IEnumerable<Product>> GetProductsByCategoryAsync(int categoryId)
         {
-            return await _context.Products
-                .Where(p => p.Title.Contains(searchTerm) || p.Description.Contains(searchTerm))
-                .Include(p => p.Owner)
-                .Include(p => p.Category)
-                .Include(p => p.Reviews)
-                .ToListAsync();
+            throw new NotImplementedException();
         }
+
+        public Task<IEnumerable<Product>> GetProductsByOwnerAsync(string ownerId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<Product>> SearchProductsAsync(string searchTerm)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

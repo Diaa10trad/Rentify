@@ -10,7 +10,8 @@ namespace api.Data
 {
     public class ApplicationDBContext : IdentityDbContext<AppUser>
     {
-        public ApplicationDBContext(DbContextOptions dbContextOptions) : base(dbContextOptions) {
+        public ApplicationDBContext(DbContextOptions dbContextOptions) : base(dbContextOptions)
+        {
 
         }
         public DbSet<Category> Categories { get; set; }
@@ -73,7 +74,7 @@ namespace api.Data
                 new Category { Id = 26, CategoryName = "ergtg", CategoryType = "service" }
             };
 
-            modelBuilder.Entity<Category>().HasData(initialCategories);            
+            modelBuilder.Entity<Category>().HasData(initialCategories);
         }
     }
 }

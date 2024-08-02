@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace api.Models
 {
-    public class Product 
-    {   
+    public class Product
+    {
         [Key]
         public int ProductId { get; set; }
 
@@ -36,6 +36,7 @@ namespace api.Models
 
         [Required]
         public Location Location { get; set; } = null!;
+
         [Required]
         public string ProductCondition { get; set; } = string.Empty;
 

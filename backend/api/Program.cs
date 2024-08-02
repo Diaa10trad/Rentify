@@ -10,11 +10,18 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddControllers()
+.AddNewtonsoftJson(options =>
+{
+    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+});
 
 builder.Services.AddSwaggerGen(option =>
 {
@@ -47,7 +54,8 @@ builder.Services.AddSwaggerGen(option =>
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddIdentity<AppUser, IdentityRole>(options => {
+builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
+{
 
     options.Password.RequireDigit = true;
     options.Password.RequiredLength = 8;
@@ -60,15 +68,15 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options => {
 
 builder.Services.AddAuthentication(options =>
 {
-    options.DefaultAuthenticateScheme = 
-    options.DefaultScheme = 
+    options.DefaultAuthenticateScheme =
+    options.DefaultScheme =
     options.DefaultChallengeScheme =
     options.DefaultForbidScheme =
-    options.DefaultSignInScheme = 
+    options.DefaultSignInScheme =
     options.DefaultSignOutScheme =
     JwtBearerDefaults.AuthenticationScheme;
 }
-).AddJwtBearer(options =>   
+).AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
     {
@@ -85,10 +93,9 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
 builder.Services.AddScoped<IBookingRepository, BookingServiceRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
-
 builder.Services.AddControllers();
-
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin",

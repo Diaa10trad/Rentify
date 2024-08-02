@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api.Dtos.Product;
 using api.Models;
 
 namespace api.Interfaces
@@ -9,12 +10,11 @@ namespace api.Interfaces
     public interface IProductRepository
     {
         Task<IEnumerable<Product>> GetAllProductsAsync();
-        Task<Product> GetProductByIdAsync(int id);
-        Task<Product> AddProductAsync(Product product);
-        Task<Product> UpdateProductAsync(Product product);
-        Task DeleteProductAsync(int id);
-        Task<IEnumerable<Product>> GetProductsByOwnerAsync(string ownerId);
-        Task<IEnumerable<Product>> GetProductsByCategoryAsync(int categoryId);
-        Task<IEnumerable<Product>> SearchProductsAsync(string searchTerm);
+        Task<Product?> GetProductByIdAsync(int id);
+        Task<Product?> CreateProductAsync(Product productModel);
+        Task<Product?> UpdateProductAsync(int id, ProductUpdateDTO productDto, string OwnerId);
+        Task<Product?> DeleteProductAsync(int id, string OwnerId);
+        // Task<IEnumerable<Product>> GetProductsByOwnerAsync(string ownerId);
+        // Task<IEnumerable<Product>> GetProductsByCategoryAsync(int categoryId);
     }
 }

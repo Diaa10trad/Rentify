@@ -3,42 +3,43 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api.Dtos.Product
 {
     public class ProductUpdateDTO
     {
         [Required]
-        public int ProductId { get; set; }
-
-        [Required]
-        public string OwnerId { get; set; }
-
-        [Required]
         public int CategoryId { get; set; }
 
         [Required]
         [StringLength(100, MinimumLength = 5)]
-        public string Title { get; set; }
+        public string Title { get; set; } = string.Empty;
 
         [Required]
         [StringLength(1000, MinimumLength = 20)]
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
 
         [StringLength(500)]
-        public string AdditionalInfo { get; set; }
+        public string AdditionalInfo { get; set; } = string.Empty;
 
         [Required]
-        [StringLength(100)]
-        public string CancellationPolicy { get; set; }
+        public int Refund { get; set; }
 
         [Required]
-        [StringLength(200)]
-        public string Location { get; set; }
+        public int PermittedDuration { get; set; }
+
+        [Required]
+        [Column(TypeName = "decimal(9, 6)")]
+        public decimal Longitude { get; set; }
+
+        [Required]
+        [Column(TypeName = "decimal(9, 6)")]
+        public decimal Latitude { get; set; }
 
         [Required]
         [StringLength(50)]
-        public string ProductCondition { get; set; }
+        public string ProductCondition { get; set; } = string.Empty;
 
         [Required]
         [Range(1, int.MaxValue)]
@@ -52,5 +53,6 @@ namespace api.Dtos.Product
 
         [Range(0, double.MaxValue)]
         public decimal PriceDaily { get; set; }
+
     }
 }

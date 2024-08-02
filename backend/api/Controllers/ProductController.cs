@@ -16,114 +16,130 @@ namespace api.Controllers
     [Route("api/product")]
     public class ProductController : ControllerBase
     {
-        private readonly IProductRepository _productRepo;
+        private readonly IProductRepository _productRepository;
 
-        public ProductController(IProductRepository productRepo)
+        public ProductController(IProductRepository productRepository)
         {
-            _productRepo = productRepo;
+            _productRepository = productRepository;
         }
 
-        // GET: api/product
         [HttpGet]
         public async Task<IActionResult> GetAllProducts()
         {
-            var products = await _productRepo.GetAllProductsAsync();
-            var productDTOs = products.Select(p => p.ToProductDTO());
-            return Ok(productDTOs);
+            try
+            {
+                var productModels = await _productRepository.GetAllProductsAsync();
+                var productDtos = productModels.Select(p => p.ToProductDtoFromProduct());
+                return Ok(productDtos);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
-        // GET: api/product/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProductById([FromRoute] int id)
         {
-            var product = await _productRepo.GetProductByIdAsync(id);
-            if (product == null)
+            var productModel = await _productRepository.GetProductByIdAsync(id);
+            if (productModel == null)
             {
                 return NotFound();
             }
-            var productDTO = product.ToProductDTO();
-            return Ok(productDTO);
+            var productDto = productModel.ToProductDtoFromProduct();
+            return Ok(productDto);
+
         }
 
-        // POST: api/product
+        // [HttpPost("{stockId}")] التأكد من فيديو 18، لأنه البرودكت تشايلد للكاتيجوري
+        // public async Task<IActionResult> CreateProduct([FromRoute] int CategoryId, [FromBody] ProductCreateDTO productCreateDTO)
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateProduct([FromBody] ProductCreateDTO productCreateDTO)
+
         {
-            if (!ModelState.IsValid)
+            try
             {
-              return BadRequest(ModelState);
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var productModel = productCreateDTO.ToProductFromProductCreateDto();
+
+                if (userId == null)
+                {
+                    return Unauthorized();
+                }
+
+                productModel.OwnerId = userId;
+
+                var created = await _productRepository.CreateProductAsync(productModel);
+                if (created == null)
+                {
+                    return BadRequest("The category does not exist");
+                }
+
+                var productDto = productModel.ToProductDtoFromProduct();
+                return CreatedAtAction(nameof(GetProductById), new { id = productModel.ProductId }, productDto);
             }
-            
-            var product = productCreateDTO.ToProduct();
-            await _productRepo.AddProductAsync(product);
-            var productDTO = product.ToProductDTO();
-            return CreatedAtAction(nameof(GetProductById), new { id = product.ProductId }, productDTO);
+
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
-        // PUT: api/product/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProduct([FromRoute] int id, [FromBody] ProductUpdateDTO productUpdateDTO)
+        [Authorize]
+        public async Task<IActionResult> UpdateProduct([FromRoute] int id, [FromBody] ProductUpdateDTO productUpdateDto)
         {
-            if (id != productUpdateDTO.ProductId)
+            try
             {
-                return BadRequest();
-            }
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var updatedProduct = await _productRepository.UpdateProductAsync(id, productUpdateDto, userId);
 
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            
-            var existingStock = await _productRepo.GetProductByIdAsync(id);
-            if (existingStock == null)
-            {
-                return NotFound();
-            }
+                if (updatedProduct == null)
+                {
+                    return NotFound();
+                }
 
-            existingStock.UpdateProduct(productUpdateDTO);
-            await _productRepo.UpdateProductAsync(existingStock);
-            return NoContent();
+                var productDto = updatedProduct.ToProductDtoFromProduct();
+                return Ok(productDto);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
-        // DELETE: api/product/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProduct(int id)
+        [Authorize]
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var product = await _productRepo.GetProductByIdAsync(id);
-            if (product == null)
+            try
             {
-                return NotFound();
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var productModel = await _productRepository.DeleteProductAsync(id, userId);
+                if (productModel == null)
+                {
+                    return NotFound();
+                }
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
             }
 
-            await _productRepo.DeleteProductAsync(id);
-            return NoContent();
-        }
+          
 
-        // GET: api/product/owner/{ownerId}
-        [HttpGet("owner/{ownerId}")]
-        public async Task<IActionResult> GetProductsByOwner([FromRoute] string ownerId)
-        {
-            var products = await _productRepo.GetProductsByOwnerAsync(ownerId);
-            var productDTO = products.Select(p => p.ToProductDTO());
-            return Ok(productDTO);
-        }
-
-        // GET: api/product/category/{categoryId}
-        [HttpGet("category/{categoryId}")]
-        public async Task<IActionResult> GetProductsByCategory([FromRoute] int categoryId)
-        {
-            var products = await _productRepo.GetProductsByCategoryAsync(categoryId);
-            var productDTO = products.Select(p => p.ToProductDTO());
-            return Ok(productDTO);
-        }
-
-        // GET: api/product/search
-        [HttpGet("search")]
-        public async Task<IActionResult> SearchProducts([FromQuery] string searchTerm)
-        {
-            var products = await _productRepo.SearchProductsAsync(searchTerm);
-            var productDTO = products.Select(p => p.ToProductDTO());
-            return Ok(productDTO);
         }
     }
 }

@@ -19,10 +19,12 @@ namespace api.Dtos.Service
         public string Description { get; set; } = string.Empty;
 
         public string AdditionalInfo { get; set; } = string.Empty;
-
+        
         [Required]
+        [Range(0, 100)]
         public int Refund { get; set;}
         [Required]
+        [Range(0, int.MaxValue)]
         public int PermittedDuration { get; set;}
 
     }

@@ -13,16 +13,15 @@ namespace api.Models
         public int ProductId { get; set; }
 
         [ForeignKey("Owner")]
-        [Required]
         public string? OwnerId { get; set; }
         public AppUser? Owner { get; set; }
 
         [ForeignKey("Category")]
-        [Required]
         public int CategoryId { get; set; }
         public Category? Category { get; set; }
 
         [Required]
+        [StringLength(200, MinimumLength = 10)]
         public string Title { get; set; } = string.Empty;
 
         [Required]
@@ -41,9 +40,14 @@ namespace api.Models
         public string ProductCondition { get; set; } = string.Empty;
 
         [Required]
+        [Range(0, int.MaxValue)]
         public int Quantity { get; set; }
+
+        [Column(TypeName = "decimal(18, 2)")]
         public decimal PriceMonthly { get; set; }
+        [Column(TypeName = "decimal(18, 2)")]
         public decimal PriceWeekly { get; set; }
+        [Column(TypeName = "decimal(18, 2)")]
         public decimal PriceDaily { get; set; }
 
         public ICollection<Review> Reviews { get; set; } = new List<Review>();

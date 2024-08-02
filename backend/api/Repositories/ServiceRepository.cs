@@ -33,13 +33,14 @@ namespace api.Repositories
 
         public async Task<Service?> DeleteAsync(int id, string OwnerId)
         {
-            var serviceModel = await _dbContext.Services.FirstOrDefaultAsync(S => S.ServiceId == id);
+            var serviceModel = await _dbContext.Services.Include(S => S.CancellationPolicy).FirstOrDefaultAsync(S => S.ServiceId == id);
             if (serviceModel == null) {
                 return null;
             }
             if (serviceModel.OwnerId != OwnerId) {
                 return null;
             }
+            _dbContext.CancellationPolicies.Remove(serviceModel.CancellationPolicy);
             _dbContext.Services.Remove(serviceModel);
             await _dbContext.SaveChangesAsync();
 
@@ -65,11 +66,14 @@ namespace api.Repositories
            var existingService = await _dbContext.Services.Include(s => s.CancellationPolicy)
                                                           .Include(s => s.Category)
                                                           .FirstOrDefaultAsync(S => S.ServiceId == id);
+           var existingCategory = await _categoryRepository.GetCategoryByIdAsync(serviceDto.CategoryId);
                                                           
            if (existingService == null || existingService.OwnerId != OwnerId) {
             return null;
            }
-
+           if (existingCategory == null || existingCategory.CategoryType == "product") {
+            throw new Exception("The Category does not exist");
+           }
            existingService.Title = serviceDto.Title;
            existingService.Description = serviceDto.Description;
            existingService.CategoryId = serviceDto.CategoryId;      

@@ -12,8 +12,8 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20240724151318_newedition")]
-    partial class newedition
+    [Migration("20240802112439_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -178,9 +178,11 @@ namespace api.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
@@ -229,6 +231,74 @@ namespace api.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("api.Models.Booking", b =>
+                {
+                    b.Property<int>("BookingId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BookingId"));
+
+                    b.Property<int>("CancellationPolicyId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("FinalPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("OwnerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("PickUpCode")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("PickUpDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RenterId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("ReturnCode")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ReturnDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("ServiceId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("BookingId");
+
+                    b.HasIndex("CancellationPolicyId");
+
+                    b.HasIndex("OwnerId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("RenterId");
+
+                    b.HasIndex("ServiceId");
+
+                    b.ToTable("Bookings");
+                });
+
             modelBuilder.Entity("api.Models.CancellationPolicy", b =>
                 {
                     b.Property<int>("Id")
@@ -240,12 +310,12 @@ namespace api.Migrations
                     b.Property<int>("PermittedDuration")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Refund")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("Refund")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("CancellationPolicy");
+                    b.ToTable("CancellationPolicies");
                 });
 
             modelBuilder.Entity("api.Models.Category", b =>
@@ -418,6 +488,12 @@ namespace api.Migrations
                             Id = 25,
                             CategoryName = "مستلزمات الخياطة",
                             CategoryType = "product"
+                        },
+                        new
+                        {
+                            Id = 26,
+                            CategoryName = "ergtg",
+                            CategoryType = "service"
                         });
                 });
 
@@ -430,10 +506,10 @@ namespace api.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("Latitude")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(9, 6)");
 
                     b.Property<decimal>("Longitude")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(9, 6)");
 
                     b.HasKey("Id");
 
@@ -472,13 +548,13 @@ namespace api.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("PriceDaily")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<decimal>("PriceMonthly")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<decimal>("PriceWeekly")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<string>("ProductCondition")
                         .IsRequired()
@@ -489,7 +565,8 @@ namespace api.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.HasKey("ProductId");
 
@@ -525,14 +602,11 @@ namespace api.Migrations
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
-                    b.Property<string>("RevieweeId")
+                    b.Property<string>("RenterId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ReviewerId")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("ReviewerType")
-                        .HasColumnType("int");
 
                     b.Property<int?>("ServiceId")
                         .HasColumnType("int");
@@ -541,7 +615,7 @@ namespace api.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.HasIndex("RevieweeId");
+                    b.HasIndex("RenterId");
 
                     b.HasIndex("ReviewerId");
 
@@ -645,6 +719,46 @@ namespace api.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("api.Models.Booking", b =>
+                {
+                    b.HasOne("api.Models.CancellationPolicy", "CancellationPolicy")
+                        .WithMany()
+                        .HasForeignKey("CancellationPolicyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("api.Models.AppUser", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("api.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
+
+                    b.HasOne("api.Models.AppUser", "Renter")
+                        .WithMany()
+                        .HasForeignKey("RenterId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("api.Models.Service", "Service")
+                        .WithMany()
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("CancellationPolicy");
+
+                    b.Navigation("Owner");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Renter");
+
+                    b.Navigation("Service");
+                });
+
             modelBuilder.Entity("api.Models.Product", b =>
                 {
                     b.HasOne("api.Models.CancellationPolicy", "CancellationPolicy")
@@ -666,7 +780,7 @@ namespace api.Migrations
                         .IsRequired();
 
                     b.HasOne("api.Models.AppUser", "Owner")
-                        .WithMany()
+                        .WithMany("OwnedProducts")
                         .HasForeignKey("OwnerId");
 
                     b.Navigation("CancellationPolicy");
@@ -684,9 +798,9 @@ namespace api.Migrations
                         .WithMany("Reviews")
                         .HasForeignKey("ProductId");
 
-                    b.HasOne("api.Models.AppUser", "Reviewee")
+                    b.HasOne("api.Models.AppUser", "Renter")
                         .WithMany()
-                        .HasForeignKey("RevieweeId");
+                        .HasForeignKey("RenterId");
 
                     b.HasOne("api.Models.AppUser", "Reviewer")
                         .WithMany()
@@ -698,7 +812,7 @@ namespace api.Migrations
 
                     b.Navigation("Product");
 
-                    b.Navigation("Reviewee");
+                    b.Navigation("Renter");
 
                     b.Navigation("Reviewer");
 
@@ -720,7 +834,7 @@ namespace api.Migrations
                         .IsRequired();
 
                     b.HasOne("api.Models.AppUser", "Owner")
-                        .WithMany()
+                        .WithMany("OwnedServices")
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -730,6 +844,13 @@ namespace api.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("api.Models.AppUser", b =>
+                {
+                    b.Navigation("OwnedProducts");
+
+                    b.Navigation("OwnedServices");
                 });
 
             modelBuilder.Entity("api.Models.Product", b =>

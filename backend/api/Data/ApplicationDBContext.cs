@@ -17,11 +17,31 @@ namespace api.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<Service> Services { get; set; }
         public DbSet<Booking> Bookings { get; set; }
+        public DbSet<CancellationPolicy> CancellationPolicies { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<AppUser> AppUsers { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Booking>()
+            .HasOne(bs => bs.Owner)
+            .WithMany()
+            .HasForeignKey(bs => bs.OwnerId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Booking>()
+            .HasOne(bs => bs.Renter)
+            .WithMany()
+            .HasForeignKey(bs => bs.RenterId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Booking>()
+            .HasOne(bs => bs.Service)
+            .WithMany()
+            .HasForeignKey(bs => bs.ServiceId)
+            .OnDelete(DeleteBehavior.Restrict);
+
 
             var initialCategories = new List<Category>
             {
@@ -49,7 +69,8 @@ namespace api.Data
                 new Category { Id = 22, CategoryName = "معدات البناء", CategoryType = "product" },
                 new Category { Id = 23, CategoryName = "معدات الصيد", CategoryType = "product" },
                 new Category { Id = 24, CategoryName = "مستلزمات التخييم", CategoryType = "product" },
-                new Category { Id = 25, CategoryName = "مستلزمات الخياطة", CategoryType = "product" }
+                new Category { Id = 25, CategoryName = "مستلزمات الخياطة", CategoryType = "product" },
+                new Category { Id = 26, CategoryName = "ergtg", CategoryType = "service" }
             };
 
             modelBuilder.Entity<Category>().HasData(initialCategories);            

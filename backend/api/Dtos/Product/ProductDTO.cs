@@ -23,6 +23,6 @@ namespace api.Dtos.Product
         public decimal PriceMonthly { get; set; }
         public decimal PriceWeekly { get; set; }
         public decimal PriceDaily { get; set; }
-        public ICollection<ReviewDTO> Reviews { get; set; }
+       // public ICollection<ReviewDTO> Reviews { get; set; }
     }
 }

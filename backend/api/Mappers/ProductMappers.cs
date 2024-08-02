@@ -30,39 +30,40 @@ namespace api.Mappers
             };
         }
 
-        public static Product ToProduct(this ProductCreateDTO productCreateDTO)
+        public static Product ToProductFromProductCreateDto(this ProductCreateDTO productCreateDto)
         {
             return new Product
             {
-                OwnerId = productCreateDTO.OwnerId,
-                CategoryId = productCreateDTO.CategoryId,
-                Title = productCreateDTO.Title,
-                Description = productCreateDTO.Description,
-                AdditionalInfo = productCreateDTO.AdditionalInfo,
-                CancellationPolicy = new CancellationPolicy { PolicyName = productCreateDTO.CancellationPolicy },
-                Location = new Location { Address = productCreateDTO.Location },
-                ProductCondition = productCreateDTO.ProductCondition,
-                Quantity = productCreateDTO.Quantity,
-                PriceMonthly = productCreateDTO.PriceMonthly,
-                PriceWeekly = productCreateDTO.PriceWeekly,
-                PriceDaily = productCreateDTO.PriceDaily
+                Title = productCreateDto.Title,
+                CategoryId = productCreateDto.CategoryId,
+                Description = productCreateDto.Description,
+                AdditionalInfo = productCreateDto.AdditionalInfo,
+                CancellationPolicy = new CancellationPolicy { Refund = productCreateDto.Refund, PermittedDuration = productCreateDto.PermittedDuration },
+                Location = new Location { Latitude = productCreateDto.Latitude, Longitude = productCreateDto.Longitude },
+                ProductCondition = productCreateDto.ProductCondition,
+                Quantity = productCreateDto.Quantity,
+                PriceMonthly = productCreateDto.PriceMonthly,
+                PriceWeekly = productCreateDto.PriceWeekly,
+                PriceDaily = productCreateDto.PriceDaily
             };
         }
 
-        public static void ToProduct(this Product product, ProductUpdateDTO productUpdateDTO)
+        public static Product ToProductFromProductUpdateDto(this Product product, ProductUpdateDTO productUpdateDto)
         {
-            product.OwnerId = productUpdateDTO.OwnerId;
-            product.CategoryId = productUpdateDTO.CategoryId;
-            product.Title = productUpdateDTO.Title;
-            product.Description = productUpdateDTO.Description;
-            product.AdditionalInfo = productUpdateDTO.AdditionalInfo;
-            product.CancellationPolicy = new CancellationPolicy { PolicyName = productUpdateDTO.CancellationPolicy };
-            product.Location = new Location { Address = productUpdateDTO.Location };
-            product.ProductCondition = productUpdateDTO.ProductCondition;
-            product.Quantity = productUpdateDTO.Quantity;
-            product.PriceMonthly = productUpdateDTO.PriceMonthly;
-            product.PriceWeekly = productUpdateDTO.PriceWeekly;
-            product.PriceDaily = productUpdateDTO.PriceDaily;
+            return new Product
+            {
+                Title = productUpdateDto.Title,
+                CategoryId = productUpdateDto.CategoryId,
+                Description = productUpdateDto.Description,
+                AdditionalInfo = productUpdateDto.AdditionalInfo,
+                CancellationPolicy = new CancellationPolicy { Refund = productUpdateDto.Refund, PermittedDuration = productUpdateDto.PermittedDuration },
+                Location = new Location { Latitude = productUpdateDto.Latitude, Longitude = productUpdateDto.Longitude },
+                ProductCondition = productUpdateDto.ProductCondition,
+                Quantity = productUpdateDto.Quantity,
+                PriceMonthly = productUpdateDto.PriceMonthly,
+                PriceWeekly = productUpdateDto.PriceWeekly,
+                PriceDaily = productUpdateDto.PriceDaily
+            };
         }
     }
 }

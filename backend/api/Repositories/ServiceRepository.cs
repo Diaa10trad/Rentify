@@ -23,7 +23,8 @@ namespace api.Repositories
         public async Task<Service?> CreateAsync(Service serviceModel)
         {
             var category = await _categoryRepository.GetCategoryByIdAsync(serviceModel.CategoryId);
-            if (category == null || category.CategoryType == "product") {
+            if (category == null || category.CategoryType == "product")
+            {
                 return null;
             }
             await _dbContext.Services.AddAsync(serviceModel);
@@ -33,13 +34,16 @@ namespace api.Repositories
 
         public async Task<Service?> DeleteAsync(int id, string OwnerId)
         {
-            var serviceModel = await _dbContext.Services.FirstOrDefaultAsync(S => S.ServiceId == id);
-            if (serviceModel == null) {
+            var serviceModel = await _dbContext.Services.Include(s => s.Reviews).FirstOrDefaultAsync(S => S.ServiceId == id);
+            if (serviceModel == null)
+            {
                 return null;
             }
-            if (serviceModel.OwnerId != OwnerId) {
+            if (serviceModel.OwnerId != OwnerId)
+            {
                 return null;
             }
+            _dbContext.Reviews.RemoveRange(serviceModel.Reviews);
             _dbContext.Services.Remove(serviceModel);
             await _dbContext.SaveChangesAsync();
 
@@ -48,43 +52,55 @@ namespace api.Repositories
 
         public async Task<IEnumerable<Service>> GetAllAsync()
         {
-           return await _dbContext.Services.Include(S => S.CancellationPolicy)
-                                           .Include(S => S.Category).ToListAsync();
+            return await _dbContext.Services.Include(S => S.CancellationPolicy)
+                                            .Include(S => S.Category)
+                                            .Include(S => S.Reviews)
+                                            .ThenInclude(r => r.Reviewer)
+                                            .ToListAsync();
+
         }
 
         public async Task<Service?> GetByIdAsync(int id)
         {
             return await _dbContext.Services.Include(S => S.CancellationPolicy)
                                             .Include(S => S.Category)
+                                            .Include(S => S.Reviews)
+                                            .ThenInclude(r => r.Reviewer)
                                             .FirstOrDefaultAsync(service => service.ServiceId == id);
-        
+
         }
+
+        // public Task<bool> ServiceExists(int id)
+        // {
+        //     return _dbContext.Services.AnyAsync(service => service.ServiceId == id);
+        // }
 
         public async Task<Service?> UpdateAsync(int id, ServiceUpdateDto serviceDto, string OwnerId)
         {
-           var existingService = await _dbContext.Services.Include(s => s.CancellationPolicy)
-                                                          .Include(s => s.Category)
-                                                          .FirstOrDefaultAsync(S => S.ServiceId == id);
-                                                          
-           if (existingService == null || existingService.OwnerId != OwnerId) {
-            return null;
-           }
+            var existingService = await _dbContext.Services.Include(s => s.CancellationPolicy)
+                                                           .Include(s => s.Category)
+                                                           .FirstOrDefaultAsync(S => S.ServiceId == id);
 
-           existingService.Title = serviceDto.Title;
-           existingService.Description = serviceDto.Description;
-           existingService.CategoryId = serviceDto.CategoryId;      
-           existingService.AdditionalInfo = serviceDto.AdditionalInfo;
+            if (existingService == null || existingService.OwnerId != OwnerId)
+            {
+                return null;
+            }
+
+            existingService.Title = serviceDto.Title;
+            existingService.Description = serviceDto.Description;
+            existingService.CategoryId = serviceDto.CategoryId;
+            existingService.AdditionalInfo = serviceDto.AdditionalInfo;
             if (existingService.CancellationPolicy != null)
             {
-                    existingService.CancellationPolicy.Refund = serviceDto.Refund;
-                    existingService.CancellationPolicy.PermittedDuration = serviceDto.PermittedDuration;
+                existingService.CancellationPolicy.Refund = serviceDto.Refund;
+                existingService.CancellationPolicy.PermittedDuration = serviceDto.PermittedDuration;
             }
 
 
-   
 
-           await _dbContext.SaveChangesAsync();
-           return existingService;
+
+            await _dbContext.SaveChangesAsync();
+            return existingService;
         }
     }
 }

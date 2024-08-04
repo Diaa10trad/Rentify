@@ -51,8 +51,6 @@ namespace api.Controllers
 
         }
 
-        // [HttpPost("{stockId}")] التأكد من فيديو 18، لأنه البرودكت تشايلد للكاتيجوري
-        // public async Task<IActionResult> CreateProduct([FromRoute] int CategoryId, [FromBody] ProductCreateDTO productCreateDTO)
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> CreateProduct([FromBody] ProductCreateDTO productCreateDTO)

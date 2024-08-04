@@ -25,7 +25,8 @@ namespace api.Repositories
             return await _dbContext.Products
                                 .Include(product => product.Owner)
                                 .Include(product => product.Category)
-
+                                .Include(product => product.Reviews)
+                                .ThenInclude(r => r.Reviewer)
                                 .ToListAsync();
         }
 
@@ -34,6 +35,8 @@ namespace api.Repositories
             return await _dbContext.Products
                                 .Include(product => product.Owner)
                                 .Include(product => product.Category)
+                                .Include(product => product.Reviews)
+                                .ThenInclude(r => r.Reviewer)
                                 .FirstOrDefaultAsync(product => product.ProductId == id);
         }
 
@@ -105,21 +108,9 @@ namespace api.Repositories
             return productModel;
         }
 
-
-        public Task<IEnumerable<Product>> GetProductsByCategoryAsync(int categoryId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<Product>> GetProductsByOwnerAsync(string ownerId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<Product>> SearchProductsAsync(string searchTerm)
-        {
-            throw new NotImplementedException();
-        }
-
+        // public Task<bool> ProductExists(int id)
+        // {
+        //     return _dbContext.Products.AnyAsync(product => product.ProductId == id);
+        // }
     }
 }

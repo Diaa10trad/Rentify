@@ -15,11 +15,20 @@ namespace api.Models
         [ForeignKey("Renter")]
         public string? RenterId { get; set; }
         public AppUser Renter { get; set; } = null!;
-        public int? ServiceId { get; set; }
-        public Service Service { get; set; } = null!;
-      
+
         public int? ProductId { get; set; }
-        public Product Product { get; set; } = null!;
+
+        [Required]
+        public string ItemType { get; set; } = string.Empty;
+
+
+        public Product? Product { get; set; }
+        public int? ServiceId { get; set; }
+        public Service? Service { get; set; }
+
+        // [ForeignKey("Product")]
+        // public int? ProductId { get; set; }
+        // public Product Product { get; set; } = null!;
 
         [Range(1, 5)]
         public int Rating { get; set; }
@@ -27,6 +36,6 @@ namespace api.Models
         public string Comment { get; set; } = string.Empty;
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
-        
+
     }
 }

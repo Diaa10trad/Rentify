@@ -9,8 +9,19 @@ namespace api.Mappers
 {
     public static class ServiceMappers
     {
-        public static ServiceDto ToServiceDtoFromService(this Service serviceModel) {
-            return new ServiceDto {
+        public static ServiceReviewDto ToServiceReviewDtoFromService(this Service serviceModel)
+        {
+            return new ServiceReviewDto
+            {
+                ServiceId = serviceModel.ServiceId,
+                OwnerId = serviceModel.OwnerId,
+                Title = serviceModel.Title,
+            };
+        }
+        public static ServiceDto ToServiceDtoFromService(this Service serviceModel)
+        {
+            return new ServiceDto
+            {
                 ServiceId = serviceModel.ServiceId,
                 OwnerId = serviceModel.OwnerId,
                 Title = serviceModel.Title,
@@ -19,10 +30,13 @@ namespace api.Mappers
                 Category = serviceModel.Category,
                 CreatedAt = serviceModel.CreatedAt,
                 CancellationPolicy = serviceModel.CancellationPolicy,
+                Reviews = serviceModel.Reviews.Select(r => r.ToReviewDtoFromReview()).ToList()
             };
         }
-        public static Service ToServiceFromServiceCreateDto(this ServiceCreateDto serviceCreateDto) {
-            return new Service {
+        public static Service ToServiceFromServiceCreateDto(this ServiceCreateDto serviceCreateDto)
+        {
+            return new Service
+            {
                 Title = serviceCreateDto.Title,
                 Description = serviceCreateDto.Description,
                 AdditionalInfo = serviceCreateDto.AdditionalInfo,
@@ -31,8 +45,10 @@ namespace api.Mappers
             };
         }
 
-        public static Service ToServiceFromServiceUpdateDto(this ServiceUpdateDto serviceUpdateDto) {
-            return new Service {
+        public static Service ToServiceFromServiceUpdateDto(this ServiceUpdateDto serviceUpdateDto)
+        {
+            return new Service
+            {
                 Title = serviceUpdateDto.Title,
                 Description = serviceUpdateDto.Description,
                 AdditionalInfo = serviceUpdateDto.AdditionalInfo,

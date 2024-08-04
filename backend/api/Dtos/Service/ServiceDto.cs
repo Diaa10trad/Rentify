@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api.Dtos.Review;
 using api.Models;
 
 namespace api.Dtos.Service
@@ -19,6 +20,8 @@ namespace api.Dtos.Service
         public string AdditionalInfo { get; set; }
 
         public CancellationPolicy CancellationPolicy { get; set; }
-       
+
+        public ICollection<ReviewDto> Reviews { get; set; }
+
     }
 }

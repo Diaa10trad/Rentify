@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -34,9 +35,10 @@ namespace api.Models
         [Required]
         public CancellationPolicy CancellationPolicy { get; set; } = null!;
 
-        // [Required]
-        // public Location Location { get; set; } = null!;
+        [Required]
+        public Location Location { get; set; } = null!;
 
+        public ICollection<ServiceImage> Images { get; set; } = new List<ServiceImage>();
         public ICollection<Review> Reviews { get; set; } = new List<Review>();
     }
 }

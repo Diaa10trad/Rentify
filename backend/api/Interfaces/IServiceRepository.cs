@@ -12,9 +12,12 @@ namespace api.Interfaces
         Task<IEnumerable<Service>> GetAllAsync();
         Task<Service?> GetByIdAsync(int id);
         Task<Service?> CreateAsync(Service serviceModel);
-        //Task<Service?> UpdateAsync(int id);
         Task<Service?> DeleteAsync(int id, string OwnerId);
         Task<Service?> UpdateAsync(int id, ServiceUpdateDto serviceDto, string OwnerId);
+
+        Task<List<ServiceImage>> AddImagesToNewServiceAsync(int ServiceId, List<IFormFile> images);
+
+        Task<List<ServiceImage>> AddImagesToExistServiceAsync(int ServiceId, List<IFormFile> images);
 
     }
 }

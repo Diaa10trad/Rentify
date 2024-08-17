@@ -6,7 +6,7 @@ using api.Models;
 
 namespace api.Interfaces
 {
-    public interface IBookingRepository
+    public interface IBookingServiceRepository
     {
         public Task<Booking?> GetByIdAsync(string role, int bookingId, string RequesterId);
         public Task<List<Booking>?> GetAllAsync(string role, string RequesterId);

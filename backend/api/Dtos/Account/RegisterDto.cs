@@ -12,13 +12,16 @@ namespace api.Dtos.Account
         public string? FirstName { get; set; }
 
         [Required]
-        public string? LastName { get; set;}
+        public string? LastName { get; set; }
 
         [Required]
         [EmailAddress]
-        public required string Email { get; set;}
+        public required string Email { get; set; }
 
         [Required]
-        public required string Password { get; set;}
+        public required string Password { get; set; }
+
+        [Required]
+        public required string ConfirmPassword { get; set; }
     }
 }

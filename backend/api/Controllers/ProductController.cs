@@ -51,12 +51,9 @@ namespace api.Controllers
 
         }
 
-        // [HttpPost("{stockId}")] التأكد من فيديو 18، لأنه البرودكت تشايلد للكاتيجوري
-        // public async Task<IActionResult> CreateProduct([FromRoute] int CategoryId, [FromBody] ProductCreateDTO productCreateDTO)
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> CreateProduct([FromBody] ProductCreateDTO productCreateDTO)
-
+        public async Task<IActionResult> CreateProduct([FromForm] ProductCreateDTO productCreateDTO)
         {
             try
             {
@@ -79,6 +76,7 @@ namespace api.Controllers
                 {
                     return BadRequest("The category does not exist");
                 }
+                var productImages = await _productRepository.AddImagesToNewProductAsync(created.ProductId, productCreateDTO.Images);
 
                 var productDto = productModel.ToProductDtoFromProduct();
                 return CreatedAtAction(nameof(GetProductById), new { id = productModel.ProductId }, productDto);
@@ -92,7 +90,7 @@ namespace api.Controllers
 
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> UpdateProduct([FromRoute] int id, [FromBody] ProductUpdateDTO productUpdateDto)
+        public async Task<IActionResult> UpdateProduct([FromRoute] int id, [FromForm] ProductUpdateDTO productUpdateDto)
         {
             try
             {
@@ -138,7 +136,7 @@ namespace api.Controllers
                 return BadRequest(new { message = ex.Message });
             }
 
-          
+
 
         }
     }

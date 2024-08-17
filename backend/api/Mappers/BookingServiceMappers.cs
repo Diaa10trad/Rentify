@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using api.Dtos.Booking;
+using api.Dtos.Booking.BookingService;
 using api.Models;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace api.Mappers
 {
-    public static class BookingMappers
+    public static class BookingServiceMappers
     {
         public static BookingServiceForOwnerDto FromBookingToBookingServiceForOwnerDto(this Booking bookingModel) {
             return new BookingServiceForOwnerDto {

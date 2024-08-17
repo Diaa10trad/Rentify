@@ -22,12 +22,14 @@ namespace api.Dtos.Product
                 public string Description { get; set; } = string.Empty;
 
                 [StringLength(500)]
-                public string AdditionalInfo { get; set; } = string.Empty;
+                public string AdditionalInfo { get; set; }
 
                 [Required]
+                [Range(0, 100)]
                 public int Refund { get; set; }
 
                 [Required]
+                [Range(0, int.MaxValue)]
                 public int PermittedDuration { get; set; }
 
                 [Required]
@@ -54,5 +56,6 @@ namespace api.Dtos.Product
 
                 [Range(0, double.MaxValue)]
                 public decimal PriceDaily { get; set; }
+                public List<IFormFile> Images { get; set; }
         }
 }

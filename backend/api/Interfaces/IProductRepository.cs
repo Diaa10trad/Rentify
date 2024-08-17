@@ -14,7 +14,8 @@ namespace api.Interfaces
         Task<Product?> CreateProductAsync(Product productModel);
         Task<Product?> UpdateProductAsync(int id, ProductUpdateDTO productDto, string OwnerId);
         Task<Product?> DeleteProductAsync(int id, string OwnerId);
-        // Task<IEnumerable<Product>> GetProductsByOwnerAsync(string ownerId);
-        // Task<IEnumerable<Product>> GetProductsByCategoryAsync(int categoryId);
+        Task<List<ProductImage>> AddImagesToNewProductAsync(int ProductId, List<IFormFile> images);
+
+        Task<List<ProductImage>> AddImagesToExistProductAsync(int ProductId, List<IFormFile> images);
     }
 }

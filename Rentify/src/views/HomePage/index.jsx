@@ -4,8 +4,8 @@ import ExploreCategoriesSection from "@/components/ExploreCategoriesSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
 import WhyChooseUsSection from "@/components/WhyChooseUsSection";
 import CTASection from "@/components/CTASection";
-
 import { Container, Row } from "react-bootstrap";
+
 export default function HomePage() {
   return (
     <>

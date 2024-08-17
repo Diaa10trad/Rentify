@@ -11,10 +11,10 @@ import {
   Card,
   Image,
 } from "react-bootstrap";
-import ChangeImage from "@/components/Profile/ChangeImage";
 import Person from "@/assets/images/Person.jpg";
 import ItemCard from "@/components/cards/ItemCard";
 import Review from "@/components/ItemDetails/Review";
+import SettingsForm from "@/components/Profile/SettingsForm";
 
 function ProfilePage() {
   const [user, setUser] = useState({
@@ -24,7 +24,6 @@ function ProfilePage() {
     raterCount: 100,
     email: "john.doe@example.com",
     phoneNumber: "123-456-7890",
-    password: "",
     idVerification: "",
     paymentMethods: [
       { type: "Visa", details: "**** **** **** 1234" },
@@ -32,12 +31,7 @@ function ProfilePage() {
     ],
     favourites: ["Item 1", "Item 2", "Item 3"],
   });
-  const handleAvatarChange = (newAvatar) => {
-    setUser((prevUser) => ({
-      ...prevUser,
-      avatar: newAvatar,
-    }));
-  };
+
   const fakeReviews = [
     {
       reviewerName: "John Doe",
@@ -204,65 +198,7 @@ function ProfilePage() {
                 </Card>
               </Tab.Pane>
               <Tab.Pane eventKey="settings" className="">
-                <Form>
-                  <ChangeImage
-                    userAvatar={user.avatar}
-                    setUserAvatar={handleAvatarChange}
-                  />
-                  <Form.Group className="m-4">
-                    <Form.Label>البريد الإلكتروني</Form.Label>
-                    <Form.Control
-                      type="email"
-                      name="email"
-                      value={user.email}
-                    />
-                  </Form.Group>
-                  <Form.Group className="m-4">
-                    <Form.Label>رقم الهاتف</Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="phoneNumber"
-                      value={user.phoneNumber}
-                    />
-                  </Form.Group>
-                  <Form.Group className="m-4">
-                    <Form.Label>كلمة السر</Form.Label>
-                    <Form.Control
-                      type="password"
-                      name="password"
-                      value={user.password}
-                    />
-                  </Form.Group>
-                  <Form.Group className="d-flex flex-column m-4">
-                    <Form.Label>
-                      <p>
-                        التحقق من الهوية
-                        <span className="fs-6 text-danger"> (غير محقق)</span>
-                      </p>
-                    </Form.Label>
-                    <Button
-                      variant="none"
-                      size="sm"
-                      style={{ width: "fit-content" }}
-                      className="text-primary border"
-                      onClick={() => document.getElementById("IDInput").click()}
-                    >
-                      اضف وثيقة
-                    </Button>
-                    <Form.Control
-                      type="file"
-                      id="IDInput"
-                      style={{ display: "none" }}
-                    />
-                  </Form.Group>
-                  <Button
-                    className="m-4 text-white"
-                    variant="primary"
-                    type="submit"
-                  >
-                    حفظ التغييرات
-                  </Button>
-                </Form>
+                <SettingsForm user={user} setUser={setUser} />
               </Tab.Pane>
               <Tab.Pane eventKey="payment-methods">
                 {user.paymentMethods.map((method, index) => (

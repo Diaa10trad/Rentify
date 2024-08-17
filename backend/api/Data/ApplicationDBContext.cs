@@ -17,24 +17,29 @@ namespace api.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Service> Services { get; set; }
+        public DbSet<Location> Locations { get; set; }
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<CancellationPolicy> CancellationPolicies { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<AppUser> AppUsers { get; set; }
+
+        public DbSet<ServiceImage> ServiceImages { get; set; }
+
+        public DbSet<ProductImage> ProductImages { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Booking>()
-            .HasOne(bs => bs.Owner)
+            .HasOne(b => b.Owner)
             .WithMany()
-            .HasForeignKey(bs => bs.OwnerId)
+            .HasForeignKey(b => b.OwnerId)
             .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Booking>()
-            .HasOne(bs => bs.Renter)
+            .HasOne(b => b.Renter)
             .WithMany()
-            .HasForeignKey(bs => bs.RenterId)
+            .HasForeignKey(b => b.RenterId)
             .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Booking>()
@@ -43,6 +48,11 @@ namespace api.Data
             .HasForeignKey(bs => bs.ServiceId)
             .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<Booking>()
+            .HasOne(bp => bp.Product)
+            .WithMany()
+            .HasForeignKey(bp => bp.ProductId)
+            .OnDelete(DeleteBehavior.Restrict);
 
             var initialCategories = new List<Category>
             {
@@ -71,7 +81,7 @@ namespace api.Data
                 new Category { Id = 23, CategoryName = "معدات الصيد", CategoryType = "product" },
                 new Category { Id = 24, CategoryName = "مستلزمات التخييم", CategoryType = "product" },
                 new Category { Id = 25, CategoryName = "مستلزمات الخياطة", CategoryType = "product" },
-                new Category { Id = 26, CategoryName = "ergtg", CategoryType = "service" }
+                new Category { Id = 26, CategoryName = "سباك", CategoryType = "service" }
             };
 
             modelBuilder.Entity<Category>().HasData(initialCategories);

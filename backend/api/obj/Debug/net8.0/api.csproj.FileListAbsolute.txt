@@ -294,3 +294,8 @@ C:\MyFiles\Graduation Project\Rentify\Rentify\backend\api\bin\Debug\net8.0\Micro
 C:\MyFiles\Graduation Project\Rentify\Rentify\backend\api\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 C:\MyFiles\Graduation Project\Rentify\Rentify\backend\api\bin\Debug\net8.0\Newtonsoft.Json.dll
 C:\MyFiles\Graduation Project\Rentify\Rentify\backend\api\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+C:\Users\moham\Desktop\Computer Engineering\Graduation Project\Rentify\backend\api\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\moham\Desktop\Computer Engineering\Graduation Project\Rentify\backend\api\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Users\moham\Desktop\Computer Engineering\Graduation Project\Rentify\backend\api\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Users\moham\Desktop\Computer Engineering\Graduation Project\Rentify\backend\api\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+C:\Users\moham\Desktop\Computer Engineering\Graduation Project\Rentify\backend\api\bin\Debug\net8.0\CloudinaryDotNet.dll

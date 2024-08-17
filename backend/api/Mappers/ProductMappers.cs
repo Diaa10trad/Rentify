@@ -15,6 +15,7 @@ namespace api.Mappers
             {
                 ProductId = product.ProductId,
                 OwnerId = product.OwnerId,
+                Owner = product.Owner?.ToAppUserDtoFromAppUser(),
                 Category = product.Category,
                 Title = product.Title,
                 Description = product.Description,
@@ -26,7 +27,9 @@ namespace api.Mappers
                 Quantity = product.Quantity,
                 PriceMonthly = product.PriceMonthly,
                 PriceWeekly = product.PriceWeekly,
-                PriceDaily = product.PriceDaily
+                PriceDaily = product.PriceDaily,
+                productImages = product.Images.Select(image => image.ToProductImageDtoFromProductImage()).ToList(),
+
             };
         }
 
@@ -45,6 +48,7 @@ namespace api.Mappers
                 PriceMonthly = productCreateDto.PriceMonthly,
                 PriceWeekly = productCreateDto.PriceWeekly,
                 PriceDaily = productCreateDto.PriceDaily
+
             };
         }
 

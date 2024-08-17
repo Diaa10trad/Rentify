@@ -4,6 +4,7 @@ using api.Interfaces;
 using api.Models;
 using api.Repositories;
 using api.Services;
+using CloudinaryDotNet;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -89,12 +90,22 @@ builder.Services.AddAuthentication(options =>
     };
 }
 );
-
+builder.Services.AddSingleton(x =>
+{
+    var cloudinaryAccount = new Account(
+        builder.Configuration["Cloudinary:CloudName"],
+        builder.Configuration["Cloudinary:ApiKey"],
+        builder.Configuration["Cloudinary:ApiSecret"]
+    );
+    return new Cloudinary(cloudinaryAccount);
+});
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
-builder.Services.AddScoped<IBookingRepository, BookingServiceRepository>();
+builder.Services.AddScoped<IBookingServiceRepository, BookingServiceRepository>();
+builder.Services.AddScoped<IBookingProductRepository, BookingProductRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<ICloudinaryImageService, CloudinaryImageService>();
 builder.Services.AddControllers();
 builder.Services.AddCors(options =>
 {

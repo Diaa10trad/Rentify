@@ -7,8 +7,10 @@ namespace api.Dtos.AppUser
 {
     public class UserBookingDto
     {
-        public string UserId { get; set;} = string.Empty;
+        public string UserId { get; set; } = string.Empty;
         public string FirstName { get; set; } = string.Empty;
-        public string LastName { get; set;} = string.Empty;
+        public string LastName { get; set; } = string.Empty;
+
+        public string Avatar { get; set; } = string.Empty;
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using api.Dtos.Booking;
+using api.Dtos.Booking.BookingService;
 using api.Interfaces;
 using api.Mappers;
 using api.Models;
@@ -11,73 +11,82 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
-{   
-    
+{
+
     [Authorize]
     [Route("api/booking-service")]
     [ApiController]
     public class BookingServiceController : ControllerBase
     {
-        private readonly IBookingRepository _bookingRepository;
-        public BookingServiceController(IBookingRepository bookingRepository)
+        private readonly IBookingServiceRepository _bookingRepository;
+        public BookingServiceController(IBookingServiceRepository bookingRepository)
         {
             _bookingRepository = bookingRepository;
         }
 
         [HttpGet("{role}/{bookingId}")]
         [Authorize]
-        public async Task<IActionResult> GetById([FromRoute] string role,[FromRoute] int bookingId) {
+        public async Task<IActionResult> GetById([FromRoute] string role, [FromRoute] int bookingId)
+        {
             var RequesterId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (role != "renter" && role != "owner") {
+            if (role != "renter" && role != "owner")
+            {
                 return BadRequest("Invalid Request");
             }
-            
+
             var bookingModel = await _bookingRepository.GetByIdAsync(role, bookingId, RequesterId);
-            if (bookingModel == null) {
+            if (bookingModel == null)
+            {
                 return NotFound();
             }
-            object bookingDto = role == "renter" ? bookingModel.FromBookingToBookingServiceForRenterDto() 
+            object bookingDto = role == "renter" ? bookingModel.FromBookingToBookingServiceForRenterDto()
                                                  : bookingModel.FromBookingToBookingServiceForOwnerDto();
             return Ok(bookingDto);
 
         }
-        
+
         [HttpGet("{role}")]
         [Authorize]
-        public async Task<IActionResult> GetAll([FromRoute] string role) {
+        public async Task<IActionResult> GetAll([FromRoute] string role)
+        {
             var RequesterId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (role != "renter" && role != "owner") {
+            if (role != "renter" && role != "owner")
+            {
                 return BadRequest("Invalid Request");
             }
-            
+
             var bookingModels = await _bookingRepository.GetAllAsync(role, RequesterId);
-            
-            if (bookingModels == null) {
+
+            if (bookingModels == null)
+            {
                 return NotFound();
             }
-            object bookingDtos = role == "renter" ? bookingModels.Select(b => b.FromBookingToBookingServiceForRenterDto()).ToList() 
-                                                 : bookingModels.Select(b => b.FromBookingToBookingServiceForOwnerDto()).ToList() ;
-            
+            object bookingDtos = role == "renter" ? bookingModels.Select(b => b.FromBookingToBookingServiceForRenterDto()).ToList()
+                                                 : bookingModels.Select(b => b.FromBookingToBookingServiceForOwnerDto()).ToList();
+
             return Ok(bookingDtos);
 
         }
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Create([FromBody] BookingServiceCreateDto bookingDto) {
+        public async Task<IActionResult> Create([FromBody] BookingServiceCreateDto bookingDto)
+        {
             try
             {
-                if (!ModelState.IsValid) {
+                if (!ModelState.IsValid)
+                {
                     return BadRequest(ModelState);
                 }
                 var RequesterId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 var createdBooking = await _bookingRepository.CreateAsync(bookingDto.ToBookingFromBookingServiceCreateDto(), RequesterId);
-                if (createdBooking == null) {
+                if (createdBooking == null)
+                {
                     return BadRequest("The Booking Is Not Created");
-                } 
+                }
 
-                return CreatedAtAction(nameof(GetById), new {role = "owner", bookingId = createdBooking.BookingId}, createdBooking);
+                return CreatedAtAction(nameof(GetById), new { role = "owner", bookingId = createdBooking.BookingId }, createdBooking);
 
-                
+
             }
             catch (Exception ex)
             {
@@ -92,20 +101,21 @@ namespace api.Controllers
         {
             try
             {
-                if (!ModelState.IsValid) {
-                        return BadRequest(ModelState);
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
                 }
                 var RequesterId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 var updateModel = updateDto.ToBookingFromBookingServiceOwnerUpdateDto();
-                
+
                 var updatedBooking = await _bookingRepository.UpdateAsync("owner", bookingId, updateModel, RequesterId);
-                
+
                 if (updatedBooking == null)
                 {
                     return BadRequest(new { Message = "Update failed or booking not found." });
                 }
 
-                return Ok(updatedBooking.FromBookingToBookingServiceForOwnerDto());        
+                return Ok(updatedBooking.FromBookingToBookingServiceForOwnerDto());
             }
             catch (Exception ex)
             {
@@ -113,7 +123,7 @@ namespace api.Controllers
             }
 
         }
-        
+
         [HttpPut("{bookingId}/confirm-pickup")]
         [Authorize]
         public async Task<IActionResult> ConfirmPickUpBookingForOwner([FromRoute] int bookingId, [FromBody] int pickupCode)
@@ -127,7 +137,7 @@ namespace api.Controllers
                 };
 
                 var updatedBooking = await _bookingRepository.UpdateAsync("owner", bookingId, updateModel, RequesterId);
-                
+
                 if (updatedBooking == null)
                 {
                     return NotFound();
@@ -154,7 +164,7 @@ namespace api.Controllers
                 };
 
                 var updatedBooking = await _bookingRepository.UpdateAsync("renter", bookingId, updateModel, RequesterId);
-                
+
                 if (updatedBooking == null)
                 {
                     return NotFound();
@@ -182,7 +192,7 @@ namespace api.Controllers
                 };
 
                 var updatedBooking = await _bookingRepository.UpdateAsync("renter", bookingId, updateModel, RequesterId);
-                
+
                 if (updatedBooking == null)
                 {
                     return NotFound();
@@ -192,7 +202,7 @@ namespace api.Controllers
             }
             catch (Exception ex)
             {
-                
+
                 return BadRequest(new { message = ex.Message });
             }
 
@@ -211,7 +221,7 @@ namespace api.Controllers
                 };
 
                 var updatedBooking = await _bookingRepository.UpdateAsync("renter", bookingId, updateModel, RequesterId);
-                
+
                 if (updatedBooking == null)
                 {
                     return NotFound();
@@ -221,19 +231,21 @@ namespace api.Controllers
             }
             catch (Exception ex)
             {
-                 return BadRequest(new { message = ex.Message });
+                return BadRequest(new { message = ex.Message });
             }
 
         }
 
         [HttpDelete("{bookingId}")]
         [Authorize]
-        public async Task<IActionResult> Delete([FromRoute] int bookingId) {
+        public async Task<IActionResult> Delete([FromRoute] int bookingId)
+        {
             try
             {
                 var requesterId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 var bookingModel = await _bookingRepository.DeleteAsync(bookingId, requesterId);
-                if (bookingModel == null) {
+                if (bookingModel == null)
+                {
                     return NotFound();
                 }
 
@@ -243,7 +255,7 @@ namespace api.Controllers
             {
                 return BadRequest(new { message = ex.Message });
             }
- 
+
         }
     }
 }

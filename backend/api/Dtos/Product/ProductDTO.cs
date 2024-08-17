@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api.Dtos.AppUser;
+using api.Dtos.ProductImage;
 using api.Models;
 
 namespace api.Dtos.Product
@@ -10,6 +12,8 @@ namespace api.Dtos.Product
     {
         public int ProductId { get; set; }
         public required string OwnerId { get; set; }
+
+        public AppUserDto? Owner { get; set; }
         public Category Category { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
@@ -22,6 +26,8 @@ namespace api.Dtos.Product
         public decimal PriceMonthly { get; set; }
         public decimal PriceWeekly { get; set; }
         public decimal PriceDaily { get; set; }
+
+        public List<ProductImageDto> productImages { get; set; }
 
     }
 }

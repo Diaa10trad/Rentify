@@ -50,7 +50,7 @@ namespace api.Models
         public decimal PriceWeekly { get; set; }
         [Column(TypeName = "decimal(18, 2)")]
         public decimal PriceDaily { get; set; }
-
+        public ICollection<ProductImage> Images { get; set; } = new List<ProductImage>();
         public ICollection<Review> Reviews { get; set; } = new List<Review>();
     }
 }

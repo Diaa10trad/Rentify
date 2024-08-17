@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
 {
-    [Route("service")]
+    [Route("api/service")]
     [ApiController]
     public class ServiceController : ControllerBase
     {
@@ -19,28 +19,31 @@ namespace api.Controllers
         public ServiceController(IServiceRepository serviceRepository)
         {
             _serviceRepository = serviceRepository;
-            
+
         }
         [HttpGet]
-        public async Task<IActionResult> GetAllServices() {
+        public async Task<IActionResult> GetAllServices()
+        {
             try
             {
                 var serviceModels = await _serviceRepository.GetAllAsync();
-                
+
                 var serviceDtos = serviceModels.Select(S => S.ToServiceDtoFromService());
                 return Ok(serviceDtos);
             }
             catch (Exception ex)
             {
-                    
+
                 return BadRequest(new { message = ex.Message });
             }
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById([FromRoute] int id) {
+        public async Task<IActionResult> GetById([FromRoute] int id)
+        {
             var serviceModel = await _serviceRepository.GetByIdAsync(id);
-            if (serviceModel == null) {
+            if (serviceModel == null)
+            {
                 return NotFound();
             }
 
@@ -48,68 +51,79 @@ namespace api.Controllers
         }
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Create([FromBody] ServiceCreateDto serviceCreateDto) {
-
+        public async Task<IActionResult> Create([FromForm] ServiceCreateDto serviceCreateDto)
+        {
             try
             {
-                if (!ModelState.IsValid) {
-                return BadRequest(ModelState);
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
                 }
                 var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 var serviceModel = serviceCreateDto.ToServiceFromServiceCreateDto();
 
-                if (userId == null) {
+                if (userId == null)
+                {
                     return Unauthorized();
                 }
 
                 serviceModel.OwnerId = userId;
 
                 var created = await _serviceRepository.CreateAsync(serviceModel);
-                if (created == null) {
+                if (created == null)
+                {
                     return BadRequest("The category does not exist");
-                }         
-                return CreatedAtAction(nameof(GetById), new {id = serviceModel.ServiceId}, serviceModel.ToServiceDtoFromService());
-                
+                }
+                var serviceImages = await _serviceRepository.AddImagesToNewServiceAsync(created.ServiceId, serviceCreateDto.Images);
+
+                return CreatedAtAction(nameof(GetById), new { id = serviceModel.ServiceId }, serviceModel.ToServiceDtoFromService());
+
             }
             catch (Exception ex)
             {
-                
-                 return BadRequest(new { message = ex.Message });
+
+                return BadRequest(new { message = ex.Message });
             }
-            
+
         }
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] ServiceUpdateDto serviceUpdateDto) {
+        public async Task<IActionResult> Update([FromRoute] int id, [FromForm] ServiceUpdateDto serviceUpdateDto)
+        {
             try
             {
-                if (!ModelState.IsValid) {
+                if (!ModelState.IsValid)
+                {
                     return BadRequest(ModelState);
                 }
-               var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-               var updatedService = await _serviceRepository.UpdateAsync(id, serviceUpdateDto, userId);
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-               if (updatedService == null) {
-                return NotFound();
-               }
+                var updatedService = await _serviceRepository.UpdateAsync(id, serviceUpdateDto, userId);
 
-               return Ok(updatedService.ToServiceDtoFromService());
+                if (updatedService == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(updatedService.ToServiceDtoFromService());
             }
             catch (Exception ex)
             {
-                
+
                 return BadRequest(new { message = ex.Message });
             }
         }
 
         [HttpDelete("{id}")]
         [Authorize]
-        public async Task<IActionResult> Delete([FromRoute] int id) {
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
             try
             {
                 var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 var serviceModel = await _serviceRepository.DeleteAsync(id, userId);
-                if (serviceModel == null) {
+                if (serviceModel == null)
+                {
                     return NotFound();
                 }
 
@@ -119,7 +133,7 @@ namespace api.Controllers
             {
                 return BadRequest(new { message = ex.Message });
             }
- 
+
         }
     }
 }

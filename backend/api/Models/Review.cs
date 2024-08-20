@@ -15,13 +15,9 @@ namespace api.Models
         [ForeignKey("Renter")]
         public string? RenterId { get; set; }
         public AppUser Renter { get; set; } = null!;
-
         public int? ProductId { get; set; }
-
         [Required]
         public string ItemType { get; set; } = string.Empty;
-
-
         public Product? Product { get; set; }
         public int? ServiceId { get; set; }
         public Service? Service { get; set; }

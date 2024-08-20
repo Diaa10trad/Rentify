@@ -19,10 +19,16 @@ namespace api.Data
         public DbSet<Service> Services { get; set; }
         // public DbSet<Booking> Bookings { get; set; }
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<Favorite> Favorites { get; set; }
         public DbSet<AppUser> AppUsers { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Favorite>()
+                        .HasOne(f => f.User)
+                        .WithMany(u => u.Favorites)
+                        .HasForeignKey(f => f.UserId);
 
             modelBuilder.Entity<Review>()
                         .HasOne(r => r.Product)

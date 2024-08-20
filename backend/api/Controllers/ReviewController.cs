@@ -18,7 +18,7 @@ namespace api.Controllers
     {
         private readonly IReviewRepository _reviewRepository;
 
-        public ReviewController(IReviewRepository reviewRepository, ICategoryRepository categoryRepository, IProductRepository productRepository, IServiceRepository serviceRepository)
+        public ReviewController(IReviewRepository reviewRepository)
         {
             _reviewRepository = reviewRepository;
         }

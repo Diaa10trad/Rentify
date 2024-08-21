@@ -21,6 +21,7 @@ namespace api.Data
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<CancellationPolicy> CancellationPolicies { get; set; }
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<Favorite> Favorites { get; set; }
         public DbSet<AppUser> AppUsers { get; set; }
 
         public DbSet<ServiceImage> ServiceImages { get; set; }
@@ -54,6 +55,23 @@ namespace api.Data
             .HasForeignKey(bp => bp.ProductId)
             .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<Favorite>()
+                        .HasOne(f => f.User)
+                        .WithMany(u => u.Favorites)
+                        .HasForeignKey(f => f.UserId);
+
+            modelBuilder.Entity<Review>()
+                        .HasOne(r => r.Product)
+                        .WithMany(p => p.Reviews)
+                        .HasForeignKey(r => r.ProductId)
+                        .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Review>()
+                        .HasOne(r => r.Service)
+                        .WithMany(s => s.Reviews)
+                        .HasForeignKey(r => r.ServiceId)
+                        .OnDelete(DeleteBehavior.NoAction);
+
             var initialCategories = new List<Category>
             {
                 new Category { Id = 1, CategoryName = "أدوات ومعدات", CategoryType = "product" },
@@ -82,6 +100,8 @@ namespace api.Data
                 new Category { Id = 24, CategoryName = "مستلزمات التخييم", CategoryType = "product" },
                 new Category { Id = 25, CategoryName = "مستلزمات الخياطة", CategoryType = "product" },
                 new Category { Id = 26, CategoryName = "سباك", CategoryType = "service" }
+,
+
             };
 
             modelBuilder.Entity<Category>().HasData(initialCategories);

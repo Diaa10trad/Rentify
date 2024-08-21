@@ -9,6 +9,16 @@ namespace api.Mappers
 {
     public static class ProductMappers
     {
+        public static ProductReviewDto ToProductReviewDtoFromProduct(this Product product)
+        {
+            return new ProductReviewDto
+            {
+                ProductId = product.ProductId,
+                OwnerId = product.OwnerId,
+                Title = product.Title,
+
+            };
+        }
         public static ProductDTO ToProductDtoFromProduct(this Product product)
         {
             return new ProductDTO
@@ -28,6 +38,8 @@ namespace api.Mappers
                 PriceMonthly = product.PriceMonthly,
                 PriceWeekly = product.PriceWeekly,
                 PriceDaily = product.PriceDaily,
+                Reviews = product.Reviews.Select(review => review.ToReviewDtoFromReview()).ToList(),
+
                 productImages = product.Images.Select(image => image.ToProductImageDtoFromProductImage()).ToList(),
 
             };

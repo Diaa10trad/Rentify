@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using api.Dtos.AppUser;
 using api.Dtos.ProductImage;
+using api.Dtos.Review;
 using api.Models;
 
 namespace api.Dtos.Product
@@ -26,6 +27,7 @@ namespace api.Dtos.Product
         public decimal PriceMonthly { get; set; }
         public decimal PriceWeekly { get; set; }
         public decimal PriceDaily { get; set; }
+        public ICollection<ReviewDto> Reviews { get; set; }
 
         public List<ProductImageDto> productImages { get; set; }
 

@@ -9,6 +9,17 @@ namespace api.Mappers
 {
     public static class ServiceMappers
     {
+        public static ServiceReviewDto ToServiceReviewDtoFromService(this Service serviceModel)
+
+        {
+            return new ServiceReviewDto
+
+            {
+                ServiceId = serviceModel.ServiceId,
+                OwnerId = serviceModel.OwnerId,
+                Title = serviceModel.Title,
+            };
+        }
         public static ServiceDto ToServiceDtoFromService(this Service serviceModel)
         {
             return new ServiceDto
@@ -24,6 +35,7 @@ namespace api.Mappers
                 CreatedAt = serviceModel.CreatedAt,
                 CancellationPolicy = serviceModel.CancellationPolicy,
                 serviceImages = serviceModel.Images.Select(image => image.ToServiceImageDtoFromServiceImage()).ToList(),
+                Reviews = serviceModel.Reviews.Select(r => r.ToReviewDtoFromReview()).ToList()
             };
         }
         public static Service ToServiceFromServiceCreateDto(this ServiceCreateDto serviceCreateDto)

@@ -30,7 +30,8 @@ namespace api.Repositories
                                 .Include(product => product.Location)
                                 .Include(product => product.Owner)
                                 .Include(product => product.Category)
-                                .Include(product => product.Images)
+                                .Include(product => product.Images).Include(product => product.Reviews)
+                                .ThenInclude(r => r.Reviewer)
                                 .ToListAsync();
         }
 
@@ -42,6 +43,8 @@ namespace api.Repositories
                                 .Include(product => product.Owner)
                                 .Include(product => product.Category)
                                 .Include(product => product.Images)
+                                .Include(product => product.Reviews)
+                                .ThenInclude(r => r.Reviewer)
                                 .FirstOrDefaultAsync(product => product.ProductId == id);
         }
 

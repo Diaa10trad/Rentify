@@ -40,8 +40,9 @@ namespace api.Repositories
             var serviceModel = await _dbContext.Services.Include(S => S.CancellationPolicy)
                                                         .Include(S => S.Location)
                                                         .Include(S => S.Images)
-                                                        .FirstOrDefaultAsync(S => S.ServiceId == id);
+                                                        .Include(s => s.Reviews).FirstOrDefaultAsync(S => S.ServiceId == id);
             if (serviceModel == null)
+
             {
                 return null;
             }
@@ -62,6 +63,7 @@ namespace api.Repositories
             }
             _dbContext.CancellationPolicies.Remove(serviceModel.CancellationPolicy);
             _dbContext.Locations.Remove(serviceModel.Location);
+            _dbContext.Reviews.RemoveRange(serviceModel.Reviews);
             _dbContext.Services.Remove(serviceModel);
 
             await _dbContext.SaveChangesAsync();
@@ -73,9 +75,13 @@ namespace api.Repositories
         {
             return await _dbContext.Services.Include(S => S.CancellationPolicy)
                                             .Include(S => S.Owner)
-                                            .Include(S => S.Location)
-                                            .Include(S => S.Images)
-                                            .Include(S => S.Category).ToListAsync();
+                                           .Include(S => S.Location)
+                                           .Include(S => S.Images)
+                                           .Include(S => S.Category)
+                                           .Include(S => S.Reviews)
+                                           .ThenInclude(r => r.Reviewer)
+                                           .ToListAsync();
+
         }
 
         public async Task<Service?> GetByIdAsync(int id)
@@ -85,9 +91,16 @@ namespace api.Repositories
                                             .Include(S => S.Owner)
                                             .Include(S => S.Category)
                                             .Include(S => S.Images)
+                                            .Include(S => S.Reviews)
+                                            .ThenInclude(r => r.Reviewer)
                                             .FirstOrDefaultAsync(service => service.ServiceId == id);
 
         }
+
+        // public Task<bool> ServiceExists(int id)
+        // {
+        //     return _dbContext.Services.AnyAsync(service => service.ServiceId == id);
+        // }
 
         public async Task<Service?> UpdateAsync(int id, ServiceUpdateDto serviceDto, string OwnerId)
         {

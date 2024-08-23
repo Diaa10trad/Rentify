@@ -14,33 +14,35 @@ import Col from "react-bootstrap/Col";
 import ProfilePage from "@/views/ProfilePage";
 import LoginPage from "@/views/LoginPage";
 import SignupPage from "@/views/SignupPage";
-
+import { AuthProvider } from "@/context/AuthContext";
 function App() {
   return (
     <>
-      <BrowserRouter>
-        <NavigationBar />
-        <Container fluid>
-          <Col>
-            <Routes>
-              <Route index element={<HomePage />} />
-              <Route path="/Home" element={<HomePage />} />
-              <Route path="/Sign-in" element={<HomePage />} />
-              <Route path="/Register" element={<HomePage />} />
-              <Route path="/About-Rentify" element={<HomePage />} />
-              <Route path="/Results" element={<ResultsPage />} />
-              <Route path="/Product/:id" element={<ItemDetailsPage />} />
-              <Route path="/Service/:id" element={<ItemDetailsPage />} />
-              <Route path="/User/:id" element={<UserPage />} />
-              <Route path="/ProfilePage" element={<ProfilePage />} />
-              <Route path="/AddItem" element={<AddItemPage />} />
-              <Route path="/Login" element={<LoginPage />} />
-              <Route path="/SignUp" element={<SignupPage />} />
-            </Routes>
-          </Col>
-        </Container>
-        <Footer />
-      </BrowserRouter>
+      <AuthProvider>
+        <BrowserRouter>
+          <NavigationBar />
+          <Container fluid>
+            <Col>
+              <Routes>
+                <Route index element={<HomePage />} />
+                <Route path="/Home" element={<HomePage />} />
+                <Route path="/Sign-in" element={<HomePage />} />
+                <Route path="/Register" element={<HomePage />} />
+                <Route path="/About-Rentify" element={<HomePage />} />
+                <Route path="/Results" element={<ResultsPage />} />
+                <Route path="/Product/:id" element={<ItemDetailsPage />} />
+                <Route path="/Service/:id" element={<ItemDetailsPage />} />
+                <Route path="/User/:id" element={<UserPage />} />
+                <Route path="/ProfilePage" element={<ProfilePage />} />
+                <Route path="/AddItem" element={<AddItemPage />} />
+                <Route path="/Login" element={<LoginPage />} />
+                <Route path="/SignUp" element={<SignupPage />} />
+              </Routes>
+            </Col>
+          </Container>
+          <Footer />
+        </BrowserRouter>
+      </AuthProvider>
     </>
   );
 }

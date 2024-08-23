@@ -1,9 +1,56 @@
-import { Container, Row, Col, Form, Button, Stack } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
+import axios from "axios";
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  Button,
+  Stack,
+  Alert,
+} from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
 import SectionLine from "@/components/SectionLine";
+import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 
 function SignupPage() {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+  const { login } = useAuth();
+
+  const handleSignup = async (e) => {
+    e.preventDefault();
+    if (password !== confirmPassword) {
+      setError("كلمة السر غير متطابقة.");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        "http://localhost:5079/api/account/register",
+        {
+          firstName,
+          lastName,
+          email,
+          password,
+          confirmPassword,
+        }
+      );
+
+      const { token, user } = response.data;
+      login(token, user);
+
+      navigate("/Home");
+    } catch (err) {
+      setError("فشل التسجيل، يرجى المحاولة مرة أخرى.");
+    }
+  };
+
   return (
     <Container>
       <Row
@@ -16,13 +63,17 @@ function SignupPage() {
             <SectionLine backgroundColor="bg-primary" />
           </Stack>
 
-          <Form>
+          {error && <Alert variant="danger">{error}</Alert>}
+
+          <Form onSubmit={handleSignup}>
             <Form.Group controlId="formFirstName" className="mb-3">
               <Form.Label>الاسم الأول</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="أدخل الاسم الأول"
                 required
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
                 className="border border-0 p-2"
                 style={{ backgroundColor: "#f4f9f9" }}
               />
@@ -34,6 +85,8 @@ function SignupPage() {
                 type="text"
                 placeholder="أدخل الاسم الأخير"
                 required
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
                 className="border border-0 p-2"
                 style={{ backgroundColor: "#f4f9f9" }}
               />
@@ -45,6 +98,8 @@ function SignupPage() {
                 type="email"
                 placeholder="أدخل البريد الإلكتروني"
                 required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 style={{ textAlign: "right", backgroundColor: "#f4f9f9" }}
                 className="border border-0 p-2"
               />
@@ -56,6 +111,8 @@ function SignupPage() {
                 type="password"
                 placeholder="أدخل كلمة السر"
                 required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="border border-0 p-2"
                 style={{ backgroundColor: "#f4f9f9" }}
               />
@@ -67,6 +124,8 @@ function SignupPage() {
                 type="password"
                 placeholder="أعد إدخال كلمة السر"
                 required
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
                 className="border border-0 p-2"
                 style={{ backgroundColor: "#f4f9f9" }}
               />

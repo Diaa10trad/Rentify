@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
-using api.Dtos.AppUserDto;
+using api.Dtos.AppUser;
 using api.Dtos.Product;
 using api.Dtos.Service;
 using api.Models;

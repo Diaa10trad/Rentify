@@ -1,9 +1,47 @@
-import { Container, Row, Col, Form, Button, Stack } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
+import axios from "axios";
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  Button,
+  Stack,
+  Alert,
+} from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
 import SectionLine from "@/components/SectionLine";
+import { useState, useContext } from "react";
+import { AuthContext } from "@/context/AuthContext.jsx";
 
 function LoginPage() {
+  const { login } = useContext(AuthContext);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        "http://localhost:5079/api/account/login",
+        {
+          email,
+          password,
+        }
+      );
+
+      // Store token and user data
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("user", JSON.stringify(response.data.user)); // Assuming the response contains user info
+      login(response.data.user);
+
+      navigate("/Home");
+    } catch (err) {
+      setError("البريد الإلكتروني أو كلمة السر غير صحيحة.");
+    }
+  };
+
   return (
     <Container>
       <Row
@@ -16,13 +54,17 @@ function LoginPage() {
             <SectionLine backgroundColor="bg-primary" />
           </Stack>
 
-          <Form>
+          {error && <Alert variant="danger">{error}</Alert>}
+
+          <Form onSubmit={handleLogin}>
             <Form.Group controlId="formEmail" className="mb-3">
               <Form.Label>البريد الإلكتروني</Form.Label>
               <Form.Control
                 type="email"
                 placeholder="أدخل البريد الإلكتروني"
                 required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 style={{ textAlign: "right", backgroundColor: "#f4f9f9" }}
                 className="border border-0 p-2"
               />
@@ -34,6 +76,8 @@ function LoginPage() {
                 type="password"
                 placeholder="أدخل كلمة السر"
                 required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="border border-0 p-2"
                 style={{ backgroundColor: "#f4f9f9" }}
               />

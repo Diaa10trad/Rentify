@@ -34,28 +34,6 @@ export default function NavigationBar() {
             <Nav.Link className="" href="/Home">
               الصفحة الرئيسية
             </Nav.Link>
-
-            <NavDropdown title="الفئات" id="basic-nav-dropdown">
-              <NavDropdown title="منتجات" drop={"end"}>
-                <NavDropdown.Item href="#action/3.1">
-                  الكترونيات
-                </NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">ملابس </NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3">
-                  أدوات صيانة
-                </NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.4"> أخرى </NavDropdown.Item>
-              </NavDropdown>
-              <NavDropdown title="خدمات" drop={"end"}>
-                <NavDropdown.Item href="#action/3.1">مواسرجي</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">نجار </NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3">
-                  فني كهرباء
-                </NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.4"> أخرى </NavDropdown.Item>
-              </NavDropdown>
-            </NavDropdown>
-
             <Nav.Link href="#how-it-works">كيف يعمل الموقع</Nav.Link>
             <Nav.Link href="#about-us">من نحن</Nav.Link>
           </Nav>
@@ -70,10 +48,16 @@ export default function NavigationBar() {
             >
               انشر إعلان
             </Button>
-            <Button size="sm" variant="secondary" className="text-nowrap">
+            <Button
+              onClick={() => navigate("/SignUp")}
+              size="sm"
+              variant="secondary"
+              className="text-nowrap"
+            >
               إنشاء حساب
             </Button>
             <Button
+              onClick={() => navigate("/Login")}
               size="sm"
               variant="outline-secondary"
               className="text-nowrap"

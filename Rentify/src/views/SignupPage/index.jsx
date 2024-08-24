@@ -25,6 +25,15 @@ function SignupPage() {
 
   const handleSignup = async (e) => {
     e.preventDefault();
+
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+    if (!passwordRegex.test(password)) {
+      setError("كلمة السر يجب أن تحتوي على أحرف كبيرة وصغيرة، أرقام، ورموز.");
+      return;
+    }
+
     if (password !== confirmPassword) {
       setError("كلمة السر غير متطابقة.");
       return;
@@ -47,7 +56,11 @@ function SignupPage() {
 
       navigate("/Home");
     } catch (err) {
-      setError("فشل التسجيل، يرجى المحاولة مرة أخرى.");
+      if (err.response && err.response.status === 500) {
+        setError("البريد الإلكتروني مستخدم بالفعل.");
+      } else {
+        setError("فشل التسجيل، يرجى المحاولة مرة أخرى.");
+      }
     }
   };
 

@@ -28,9 +28,9 @@ export default function ExploreCategoriesSection() {
             <div className="d-flex flex-column align-items-center align-items-md-stretch">
               <h2 className="mb-2 text-nowrap ">استكشف الفئات</h2>
               <SectionLine backgroundColor="bg-light" />
-              <p className="">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                Nostrum, sapiente.
+              <p className="fw-normal">
+                ابحث عن الفئة التي تناسب احتياجاتك بسهولة <br />
+                من بين مجموعة واسعة من المنتجات والخدمات.
               </p>
             </div>
 

@@ -1,15 +1,22 @@
 import CategoriesCarousel from "@/components/CategoriesCarousel";
-import CategoryImage from "@/assets/images/ProductsCategoriesIcons/icon_1.png";
+import { useEffect, useState } from "react";
+import importIcons from "@/utils/importIcons.js";
+
 export default function ServicesCategoriesCarouselContainer() {
-  const servicesCategories = [
-    { id: 1, title: "مواسرجي", icon: CategoryImage },
-    { id: 2, title: "عامل بناء", icon: CategoryImage },
-    { id: 3, title: "كهربجي", icon: CategoryImage },
-    { id: 4, title: "أستاذ", icon: CategoryImage },
-    { id: 6, title: "وغيره", icon: CategoryImage },
-    { id: 7, title: "وغيراته", icon: CategoryImage },
-    { id: 8, title: "item #8", icon: CategoryImage },
-    { id: 9, title: "item #9", icon: CategoryImage },
-  ];
+  const [servicesCategories, setServicesCategories] = useState([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const categories = await importIcons("service");
+        setServicesCategories(categories);
+      } catch (error) {
+        console.error("Error fetching service categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
   return <CategoriesCarousel categories={servicesCategories} />;
 }

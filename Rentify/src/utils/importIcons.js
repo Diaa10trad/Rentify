@@ -3,6 +3,12 @@
 import axios from "axios";
 
 const importIcons = async (categoryType) => {
+  const storedCategories = localStorage.getItem(`categories_${categoryType}`);
+
+  if (storedCategories) {
+    return JSON.parse(storedCategories);
+  }
+
   // Vite's import.meta.glob to dynamically import all .png files
   const modules = import.meta.glob(
     "../assets/images/ProductsCategoriesIcons/*.png"
@@ -31,6 +37,12 @@ const importIcons = async (categoryType) => {
 
   // Resolve all the promises to get the final icons array
   const iconsArray = await Promise.all(importPromises);
+
+  localStorage.setItem(
+    `categories_${categoryType}`,
+    JSON.stringify(iconsArray)
+  );
+
   return iconsArray;
 };
 

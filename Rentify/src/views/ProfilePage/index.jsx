@@ -151,7 +151,7 @@ function ProfilePage() {
                 </Nav.Link>
               </Nav.Item>
               <Nav.Item>
-                <Nav.Link eventKey="user data" className="p-3">
+                <Nav.Link eventKey="favorites" className="p-3">
                   المفضلة
                 </Nav.Link>
               </Nav.Item>
@@ -206,7 +206,10 @@ function ProfilePage() {
                             {userData.services &&
                               userData.services.map((service, index) => (
                                 <Col key={index} xs={12} md={6} xxl={4}>
-                                  <ItemCard type={"Service"} />
+                                  <ItemCard
+                                    type={"service"}
+                                    details={service}
+                                  />
                                 </Col>
                               ))}
                           </Row>
@@ -219,7 +222,10 @@ function ProfilePage() {
                             {userData.products &&
                               userData.products.map((product, index) => (
                                 <Col key={index} xs={12} md={6} xxl={4}>
-                                  <ItemCard type={"Product"} />
+                                  <ItemCard
+                                    type={"product"}
+                                    details={product}
+                                  />
                                 </Col>
                               ))}
                           </Row>
@@ -254,21 +260,25 @@ function ProfilePage() {
                 ))}
                 <Button variant="success">Add Payment Method</Button>
               </Tab.Pane>
-              <Tab.Pane eventKey="user data">
+              <Tab.Pane eventKey="favorites">
                 {loadingUserData && <p>Loading user data...</p>}
                 {error && <p>{error}</p>}
                 <Row className="g-4 mt-2">
                   {userData.favorites &&
-                    userData.favorites.map((item, index) => (
-                      <Col key={index} xs={12} md={6} xxl={4}>
-                        <ItemCard
-                          type={
-                            item.itemType === "product" ? "Product" : "Service"
-                          }
-                          item={item} // Pass the item details to ItemCard
-                        />
-                      </Col>
-                    ))}
+                    userData.favorites.map((item, index) => {
+                      return (
+                        <Col key={index} xs={12} md={6} xxl={4}>
+                          <ItemCard
+                            type={item.itemType}
+                            details={
+                              item.itemType == "product"
+                                ? item.product
+                                : item.service
+                            }
+                          />
+                        </Col>
+                      );
+                    })}
                 </Row>
               </Tab.Pane>
             </Tab.Content>

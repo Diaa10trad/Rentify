@@ -77,6 +77,7 @@ namespace api.Repositories
         public async Task<List<Favorite>> GetAllFavoritesAsync(string userId)
         {
             return await _dbContext.Favorites.Include(F => F.Product)
+
                                              .Include(F => F.Service)
                                              .Where(F => F.UserId == userId)
                                              .ToListAsync();

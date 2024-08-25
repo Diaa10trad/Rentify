@@ -244,9 +244,21 @@ namespace api.Controllers
 
                                      .Include(u => u.Favorites)
                                      .ThenInclude(f => f.Product)
+                                     .ThenInclude(p => p.Images)
+
+                                    .Include(u => u.Favorites)
+                                     .ThenInclude(f => f.Product)
+                                     .ThenInclude(p => p.Reviews)
 
                                      .Include(u => u.Favorites)
                                      .ThenInclude(f => f.Service)
+                                     .ThenInclude(s => s.Images)
+
+                                     .Include(u => u.Favorites)
+                                     .ThenInclude(f => f.Service)
+                                     .ThenInclude(s => s.Reviews)
+
+
                                      .FirstOrDefaultAsync(u => u.Id == userId);
 
             var userDtos = user?.ToAppUserSpecificDtoFromAppUser();

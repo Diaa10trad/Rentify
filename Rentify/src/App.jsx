@@ -5,7 +5,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NavigationBar from "@/components/NavigationBar";
 import Footer from "@/components/Footer";
 import HomePage from "@/views/HomePage";
-import AddItemPage from "@/views/AddItemPage";
 import ResultsPage from "@/views/ResultsPage";
 import ItemDetailsPage from "@/views/ItemDetailsPage";
 import UserPage from "@/views/UserPage";
@@ -34,7 +33,6 @@ function App() {
                 <Route path="/service/:id" element={<ItemDetailsPage />} />
                 <Route path="/User/:id" element={<UserPage />} />
                 <Route path="/ProfilePage" element={<ProfilePage />} />
-                <Route path="/AddItem" element={<AddItemPage />} />
                 <Route path="/ChatPage" element={<ChatPage />} />
                 <Route path="/AddItem" element={<AddItemPage />} />
                 <Route path="/Login" element={<LoginPage />} />

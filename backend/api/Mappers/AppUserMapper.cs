@@ -34,5 +34,27 @@ namespace api.Mappers
 
             };
         }
+
+        public static UserBookingDto ToUserBookingDtoFromAppUser(this AppUser appUser)
+        {
+            return new UserBookingDto
+            {
+                UserId = appUser.Id,
+                FirstName = appUser.FirstName,
+                LastName = appUser.LastName,
+                Avatar = appUser.Avatar,
+            };
+        }
+
+        public static AppUserDto ToAppUserDtoFromAppUser(this AppUser appUser)
+        {
+            return new AppUserDto
+            {
+                UserId = appUser.Id,
+                FirstName = appUser.FirstName,
+                LastName = appUser.LastName,
+                Avatar = appUser.Avatar,
+            };
+        }
     }
 }

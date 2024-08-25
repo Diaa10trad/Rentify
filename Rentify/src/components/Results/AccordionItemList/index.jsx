@@ -101,7 +101,7 @@ function AccordionItemList({}, ref) {
       refKey: "Distance",
     },
   ];
-  const formConfig = type === "Product" ? productFormConfig : serviceFormConfig;
+  const formConfig = type === "product" ? productFormConfig : serviceFormConfig;
   return formConfig.map(({ header, component: Component, refKey }, index) => (
     <AccordionItem eventKey={index} key={index} header={header}>
       {refKey ? (

@@ -27,6 +27,8 @@ namespace api.Data
         public DbSet<ServiceImage> ServiceImages { get; set; }
 
         public DbSet<ProductImage> ProductImages { get; set; }
+
+        public DbSet<Chat> Chats { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -71,6 +73,18 @@ namespace api.Data
                         .WithMany(s => s.Reviews)
                         .HasForeignKey(r => r.ServiceId)
                         .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Chat>()
+                       .HasOne(c => c.UserOne)
+                       .WithMany()  // Assuming a one-to-many relationship; adjust as needed
+                       .HasForeignKey(c => c.UserOneId)
+                       .OnDelete(DeleteBehavior.Restrict); // Or DeleteBehavior.NoAction
+
+            modelBuilder.Entity<Chat>()
+                .HasOne(c => c.UserTwo)
+                .WithMany()  // Assuming a one-to-many relationship; adjust as needed
+                .HasForeignKey(c => c.UserTwoId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             var initialCategories = new List<Category>
             {

@@ -4,7 +4,7 @@ import Camera from "@/assets/images/products/Camera.jpg";
 import FAQImage from "@/assets/images/FAQ.jpg";
 import EarnMoney from "@/assets/images/earnMoney.jpg";
 import "./style.css";
-function ImagesCarousel() {
+function ImagesCarousel({ images }) {
   return (
     <Carousel
       pagination={true}
@@ -13,35 +13,15 @@ function ImagesCarousel() {
       showArrows={false}
       isRTL={true}
     >
-      <Image
-        draggable={false}
-        src={Camera}
-        alt="blabla"
-        fluid
-        className="carousel-image"
-      />
-      <Image
-        draggable={false}
-        src={EarnMoney}
-        alt="blabla"
-        fluid
-        className=" carousel-image"
-      />
-      <Image
-        draggable={false}
-        src={FAQImage}
-        className=" carousel-image"
-        alt="blabla"
-        fluid
-      />
-
-      <Image
-        draggable={false}
-        src={Camera}
-        alt="blabla"
-        fluid
-        className="carousel-image"
-      />
+      {images.map((image) => (
+        <Image
+          key={image.publicId}
+          draggable={false}
+          src={image.imageUrl}
+          fluid
+          className="carousel-image"
+        />
+      ))}
     </Carousel>
   );
 }

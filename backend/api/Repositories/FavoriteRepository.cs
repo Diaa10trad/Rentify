@@ -78,6 +78,7 @@ namespace api.Repositories
         {
             return await _dbContext.Favorites.Include(F => F.Product)
                                              .Include(F => F.Service)
+
                                              .ToListAsync();
         }
 
@@ -85,6 +86,7 @@ namespace api.Repositories
         {
             return await _dbContext.Favorites.Include(F => F.Product)
                                             .Include(F => F.Service)
+
                                             .FirstOrDefaultAsync(F => F.FavoriteId == id);
         }
     }

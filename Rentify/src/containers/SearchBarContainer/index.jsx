@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "@/components/SearchBar";
 export default function SearchBarContainer() {
-  const [selectedType, setSelectedType] = useState("Product");
+  const [selectedType, setSelectedType] = useState("product");
   const query = useRef("");
   const navigate = useNavigate();
   const search = (e) => {

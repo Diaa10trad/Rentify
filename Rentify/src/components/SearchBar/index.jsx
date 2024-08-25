@@ -33,8 +33,8 @@ export default function SearchBar({
                 type="radio"
                 variant="outline-secondary"
                 name="Product"
-                value="Product"
-                checked={selectedType === "Product"}
+                value="product"
+                checked={selectedType === "product"}
                 onChange={onTypeChange}
               >
                 منتج
@@ -44,8 +44,8 @@ export default function SearchBar({
                 type="radio"
                 variant="outline-secondary"
                 name="Service"
-                value="Service"
-                checked={selectedType === "Service"}
+                value="service"
+                checked={selectedType === "service"}
                 onChange={onTypeChange}
               >
                 خدمة

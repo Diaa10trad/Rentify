@@ -1,6 +1,5 @@
 import { Card, Image, Stack } from "react-bootstrap";
-import Person from "@/assets/images/Person.jpg";
-function OwnerCard() {
+function OwnerCard({ person }) {
   return (
     <Card className="shadow border border-0 mt-3">
       <Card.Body className="">
@@ -13,11 +12,13 @@ function OwnerCard() {
               height={50}
               width={50}
               roundedCircle
-              src={Person}
+              src={person.avatar}
               alt={`صورة المالك`}
               className="me-3 object-fit-cover"
             />
-            <Card.Title className="m-0 fs-6">{"اسم المالك"}</Card.Title>
+            <Card.Title className="m-0 fs-6">
+              {person.firstName + " " + person.lastName}
+            </Card.Title>
           </span>
           <Card.Text className="d-flex align-items-center gap-1 px-3 mb-0">
             <span className="fa fa-star text-primary"></span>

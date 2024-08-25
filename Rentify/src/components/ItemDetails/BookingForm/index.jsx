@@ -3,11 +3,23 @@ import Form from "react-bootstrap/Form";
 import DateFormGroup from "@/components/ItemDetails/DateFormGroup";
 import BookingBreakdown from "@/components/ItemDetails/BookingBreakdown";
 import { useCallback, useState } from "react";
-import { useLocation } from "react-router-dom";
-function BookingForm({ priceDaily, priceWeekly, priceMonthly }) {
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+
+function BookingForm({ priceDaily, priceWeekly, priceMonthly, ownerId }) {
   const location = useLocation();
   const pathname = location.pathname;
-  const isProductPage = pathname.includes("/Product");
+  const { itemId } = useParams();
+  const navigate = useNavigate();
+
+  const goToChat = () => {
+    const data = {
+      itemId: itemId,
+      receiverId: ownerId,
+    };
+    navigate("/chatpage", { state: data });
+  };
+
+  const isProductPage = pathname.includes("/product");
 
   const [selectedDates, setSelectedDates] = useState({
     fromDate: "",
@@ -17,7 +29,7 @@ function BookingForm({ priceDaily, priceWeekly, priceMonthly }) {
     setSelectedDates({ fromDate, toDate });
   }, []);
   return (
-    <Form className="">
+    <Form className="" onSubmit={goToChat}>
       {isProductPage && <DateFormGroup onDateChange={handleDateChange} />}
       {selectedDates.fromDate && selectedDates.toDate && (
         <BookingBreakdown

@@ -299,3 +299,4 @@ C:\Users\moham\Desktop\Computer Engineering\Graduation Project\Rentify\backend\a
 C:\Users\moham\Desktop\Computer Engineering\Graduation Project\Rentify\backend\api\bin\Debug\net8.0\Newtonsoft.Json.dll
 C:\Users\moham\Desktop\Computer Engineering\Graduation Project\Rentify\backend\api\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
 C:\Users\moham\Desktop\Computer Engineering\Graduation Project\Rentify\backend\api\bin\Debug\net8.0\CloudinaryDotNet.dll
+C:\Users\moham\Desktop\Computer Engineering\Graduation Project\Rentify\backend\api\bin\Debug\net8.0\System.Net.WebSockets.WebSocketProtocol.dll

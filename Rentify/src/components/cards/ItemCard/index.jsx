@@ -5,13 +5,25 @@ import Camera from "@/assets/images/products/Camera.jpg";
 import FavoriteButton from "@/components/FavoriteButton";
 import Button from "react-bootstrap/Button";
 import { LinkContainer } from "react-router-bootstrap";
-
 import "./style.css";
-export default function ItemCard({ type }) {
+export default function ItemCard({ type, details }) {
+  function truncateText(text, wordLimit) {
+    const words = text.split(" "); // Split the text into an array of words
+    if (words.length > wordLimit) {
+      return words.slice(0, wordLimit).join(" ") + "..."; // Join the first 100 words and add '...'
+    }
+    return text; // If the text is less than or equal to 100 words, return it as is
+  }
+
   return (
-    <Card style={{ minHeight: "100%" }} className=" shadow border border-0">
+    <Card style={{ minHeight: "100%" }} className="shadow border border-0">
       <Card className="position-relative overflow-hidden item-card">
-        <Card.Img className="zoom-in-effect" variant="top" src={Camera} />
+        <Card.Img
+          className="zoom-in-effect object-fit-cover"
+          variant="top"
+          style={{ height: "300px" }}
+          src={details[`${type}Images`][0].imageUrl}
+        />
 
         <Card.ImgOverlay className="p-2">
           <Stack className="h-100 justify-content-between">
@@ -32,16 +44,14 @@ export default function ItemCard({ type }) {
           <span className="fa fa-star text-primary"></span>
           <span className="fa fa-star text-primary"></span>
           <span className="fa fa-star"></span>
-          <span>4 (28)</span>
+          <span>4 ({details.reviews.length})</span>
         </Card.Text>
-        <Card.Title>كاميرا فخمة مفش منها جدا جدا جدا جدا</Card.Title>
+        <Card.Title>{details.title}</Card.Title>
 
         <Card.Text>
-          With supporting text below as a natural lead-in to additional content.
-          With supporting text below as a natural lead-in to additional content.
-          With supporting text below as a natural lead-in to additional content.
+          {truncateText(details.description, 20)}
           <div className="d-grid gap-2">
-            <LinkContainer to={`/${type}/1`}>
+            <LinkContainer to={`/${type}/${details[`${type}Id`]}`}>
               <Button
                 className="fs-5 p-2 mt-3 text-white"
                 variant="primary"

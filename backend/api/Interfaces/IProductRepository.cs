@@ -9,7 +9,7 @@ namespace api.Interfaces
 {
     public interface IProductRepository
     {
-        Task<IEnumerable<Product>> GetAllProductsAsync();
+        Task<List<Product>> GetAllProductsAsync();
         Task<Product?> GetProductByIdAsync(int id);
         Task<Product?> CreateProductAsync(Product productModel);
         Task<Product?> UpdateProductAsync(int id, ProductUpdateDTO productDto, string OwnerId);

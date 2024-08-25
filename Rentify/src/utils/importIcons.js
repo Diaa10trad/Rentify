@@ -1,53 +1,48 @@
 // src/utils/importIcons.js
 
-const categoryMapping = {
-  icon_1: "أدوات ومعدات",
-  icon_2: "السيارات",
-  icon_3: "الإلكترونيات",
-  icon_4: "أجهزة إلكترونية",
-  icon_5: "المطبخ والمنزل",
-  icon_6: "معدات البستنة",
-  icon_7: "أدوات رياضية",
-  icon_8: "أدوات الحيوانات الأليفة",
-  icon_9: "الفنون والحرف",
-  icon_10: "السفر والأمتعة",
-  icon_11: "الكرفانات",
-  icon_12: "الآلات الموسيقية",
-  icon_13: "الحفلات والمناسبات",
-  icon_14: "الملابس والبدلات",
-  icon_15: "المعدات الطبية",
-  icon_16: "ألعاب الطاولة والألغاز",
-  icon_17: "مستلزمات التعلم",
-  icon_18: "الألعاب الإلكترونية",
-  icon_19: "المركبات المائية",
-  icon_20: "أثاث المنزل",
-  icon_21: "مستلزمات المكتب",
-  icon_22: "معدات البناء",
-  icon_23: "معدات الصيد",
-  icon_24: "مستلزمات التخييم",
-  icon_25: "مستلزمات الخياطة",
-};
+import axios from "axios";
 
-const importIcons = async () => {
+const importIcons = async (categoryType) => {
+  const storedCategories = localStorage.getItem(`categories_${categoryType}`);
+
+  if (storedCategories) {
+    return JSON.parse(storedCategories);
+  }
+
   // Vite's import.meta.glob to dynamically import all .png files
   const modules = import.meta.glob(
     "../assets/images/ProductsCategoriesIcons/*.png"
   );
 
-  const importPromises = Object.keys(modules).map(async (path, index) => {
-    const mod = await modules[path]();
-    const fileName = path.split("/").pop().replace(".png", "");
-    const title = categoryMapping[fileName];
+  // Fetch categories from the backend depending on the categoryType (product/service)
+  const response = await axios.get(
+    `http://localhost:5079/api/category?categoryType=${categoryType}`
+  );
+  const categoriesData = response.data;
 
-    return {
-      id: index + 1,
-      title: title || fileName, // Use fileName if no mapping is found
-      icon: mod.default,
-    };
+  const importPromises = categoriesData.map(async (category) => {
+    // Construct the icon file path based on the category ID
+    const iconPath = `../assets/images/ProductsCategoriesIcons/icon_${category.id}.png`;
+
+    // Dynamically import the icon if it exists
+    if (modules[iconPath]) {
+      const mod = await modules[iconPath]();
+      return {
+        id: category.id,
+        categoryName: category.categoryName,
+        icon: mod.default || "Category",
+      };
+    }
   });
 
   // Resolve all the promises to get the final icons array
   const iconsArray = await Promise.all(importPromises);
+
+  localStorage.setItem(
+    `categories_${categoryType}`,
+    JSON.stringify(iconsArray)
+  );
+
   return iconsArray;
 };
 

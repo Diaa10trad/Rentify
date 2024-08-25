@@ -1,7 +1,8 @@
-import { Col, Row, Form } from "react-bootstrap";
+import { Col, Row, Form, Stack } from "react-bootstrap";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import LocationCitiesContainer from "@/containers/LocationCitiesContainer";
 import LocationPicker from "../LocationPicker";
+import SectionLine from "@/components/SectionLine";
 
 export default function AddItemLocationForm() {
   const containerStyle = {
@@ -17,7 +18,10 @@ export default function AddItemLocationForm() {
   return (
     <>
       <Col xs={12} sm={10} md={9} lg={8}>
-        <h4 className="text-center mb-3">الموقع</h4>
+        <Stack className="align-items-center mb-3">
+          <h4 className="text-center">الموقع</h4>
+          <SectionLine backgroundColor="bg-primary" />
+        </Stack>
         <Form className="shadow p-4 rounded-5">
           <LocationCitiesContainer />
 

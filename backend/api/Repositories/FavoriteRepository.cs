@@ -74,20 +74,19 @@ namespace api.Repositories
             return favoriteModel;
         }
 
-        public async Task<List<Favorite>> GetAllFavoritesAsync()
+        public async Task<List<Favorite>> GetAllFavoritesAsync(string userId)
         {
             return await _dbContext.Favorites.Include(F => F.Product)
                                              .Include(F => F.Service)
-
+                                             .Where(F => F.UserId == userId)
                                              .ToListAsync();
         }
 
-        public async Task<Favorite?> GetFavoriteByIdAsync(int id)
+        public async Task<Favorite?> GetFavoriteByIdAsync(int id, string userId)
         {
             return await _dbContext.Favorites.Include(F => F.Product)
                                             .Include(F => F.Service)
-
-                                            .FirstOrDefaultAsync(F => F.FavoriteId == id);
+                                             .FirstOrDefaultAsync(F => F.FavoriteId == id && F.UserId == userId);
         }
     }
 }

@@ -8,8 +8,8 @@ namespace api.Interfaces
 {
     public interface IFavoriteRepository
     {
-        Task<List<Favorite>> GetAllFavoritesAsync();
-        Task<Favorite?> GetFavoriteByIdAsync(int id);
+        Task<List<Favorite>> GetAllFavoritesAsync(string userId);
+        Task<Favorite?> GetFavoriteByIdAsync(int id, string userId);
         Task<Favorite> CreateFavoriteAsync(Favorite favoriteModel);
         Task<Favorite?> DeleteFavoriteAsync(int id);
     }

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using api.Dtos.Account;
 using api.Dtos.AppUser;
 using api.Interfaces;
+using api.Mappers;
 using api.Models;
 using api.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -213,6 +214,43 @@ namespace api.Controllers
             return Ok("Logged out successfully");
         }
 
+        [HttpGet("data")]
+        [Authorize]
+        public async Task<IActionResult> GetAllUserData()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized(new { message = "User not authenticated" });
+            }
+            var user = await _userManager.Users
+                                     .Include(u => u.Products)
+                                     .ThenInclude(p => p.Category)
 
+                                     .Include(u => u.Products)
+                                     .ThenInclude(p => p.Images)
+
+                                     .Include(u => u.Products)
+                                     .ThenInclude(p => p.Reviews)
+
+                                    .Include(u => u.Services)
+                                     .ThenInclude(s => s.Category)
+
+                                     .Include(u => u.Services)
+                                     .ThenInclude(s => s.Images)
+
+                                     .Include(u => u.Services)
+                                     .ThenInclude(s => s.Reviews)
+
+                                     .Include(u => u.Favorites)
+                                     .ThenInclude(f => f.Product)
+
+                                     .Include(u => u.Favorites)
+                                     .ThenInclude(f => f.Service)
+                                     .FirstOrDefaultAsync(u => u.Id == userId);
+
+            var userDtos = user?.ToAppUserSpecificDtoFromAppUser();
+            return Ok(userDtos);
+        }
     }
 }

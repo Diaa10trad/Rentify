@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Col, Form } from "react-bootstrap";
+import { Col, Form, Stack } from "react-bootstrap";
+import SectionLine from "@/components/SectionLine";
 
 export default function AddItemTitleForm() {
   const [selectedType, setSelectedType] = useState("منتج");
@@ -28,7 +29,10 @@ export default function AddItemTitleForm() {
   return (
     <>
       <Col xs={12} sm={10} md={9} lg={8}>
-        <h4 className="text-center mb-3">المعلومات العامة</h4>
+        <Stack className="align-items-center mb-3">
+          <h4 className="text-center">المعلومات العامة</h4>
+          <SectionLine backgroundColor="bg-primary" />
+        </Stack>
         <Form className="shadow p-4 rounded-5">
           <Form.Group className="mb-3" controlId="">
             <Form.Label>عنوان الإعلان</Form.Label>

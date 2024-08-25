@@ -23,7 +23,7 @@ namespace api.Repositories
             _cloudinaryImageService = cloudinaryImageService;
         }
 
-        public async Task<IEnumerable<Product>> GetAllProductsAsync()
+        public async Task<List<Product>> GetAllProductsAsync()
         {
             return await _dbContext.Products
                                 .Include(product => product.CancellationPolicy)

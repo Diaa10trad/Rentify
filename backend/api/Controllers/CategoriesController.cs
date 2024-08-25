@@ -13,22 +13,28 @@ namespace api.Controllers
     [Route("api/category")]
     public class CategoriesController : ControllerBase
     {
-         private readonly ICategoryRepository _categoryRepository;
+        private readonly ICategoryRepository _categoryRepository;
 
         public CategoriesController(ICategoryRepository categoryRepository)
         {
             _categoryRepository = categoryRepository;
         }
 
-   
+
         [HttpGet]
-        public async Task<IActionResult> GetCategories()
+        public async Task<IActionResult> GetCategories([FromQuery] string categoryType)
         {
             var categories = await _categoryRepository.GetAllCategoriesAsync();
+
+            if (!string.IsNullOrEmpty(categoryType))
+            {
+                categories = categories.Where(c => c.CategoryType.Equals(categoryType, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
             return Ok(categories);
         }
 
-        
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCategory(int id)
         {

@@ -113,9 +113,11 @@ namespace api.Data
                 new Category { Id = 23, CategoryName = "معدات الصيد", CategoryType = "product" },
                 new Category { Id = 24, CategoryName = "مستلزمات التخييم", CategoryType = "product" },
                 new Category { Id = 25, CategoryName = "مستلزمات الخياطة", CategoryType = "product" },
-                new Category { Id = 26, CategoryName = "سباك", CategoryType = "service" }
-,
-
+                new Category { Id = 26, CategoryName = "خدمات تنظيف", CategoryType = "service" },
+                new Category { Id = 27, CategoryName = "مواسرجي", CategoryType = "service" },
+                new Category { Id = 28, CategoryName = "عامل بناء", CategoryType = "service" },
+                new Category { Id = 29, CategoryName = "فني كهرباء", CategoryType = "service" },
+                new Category { Id = 30, CategoryName = "معلم", CategoryType = "service" }
             };
 
             modelBuilder.Entity<Category>().HasData(initialCategories);

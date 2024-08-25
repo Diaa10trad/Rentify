@@ -1,4 +1,5 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import axios from "axios";
 import {
   Container,
   Row,
@@ -15,8 +16,10 @@ import Person from "@/assets/images/Person.jpg";
 import ItemCard from "@/components/cards/ItemCard";
 import Review from "@/components/ItemDetails/Review";
 import SettingsForm from "@/components/Profile/SettingsForm";
+import { useAuth } from "@/context/AuthContext"; // Custom hook for auth context
 
 function ProfilePage() {
+  const { auth } = useAuth(); // Get the auth token from the context
   const [user, setUser] = useState({
     fullName: "John Doe",
     avatar: Person,
@@ -29,8 +32,37 @@ function ProfilePage() {
       { type: "Visa", details: "**** **** **** 1234" },
       { type: "PayPal", details: "john.doe@example.com" },
     ],
-    favourites: ["Item 1", "Item 2", "Item 3"],
   });
+
+  const [loadingUserData, setloadingUserData] = useState(false);
+  const [error, setError] = useState("");
+  const [userData, setUserData] = useState([]);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (!auth.isAuthenticated) return; // Ensure the user is authenticated
+      setloadingUserData(true);
+      try {
+        const response = await axios.get(
+          "http://localhost:5079/api/account/data",
+          {
+            headers: {
+              Authorization: `Bearer ${auth.token}`, // Use the token from AuthContext
+            },
+          }
+        );
+        setUserData(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error("Failed to fetch user data:", error);
+        setError("Failed to load user data.");
+      } finally {
+        setloadingUserData(false);
+      }
+    };
+
+    fetchUserData();
+  }, [auth]);
 
   const fakeReviews = [
     {
@@ -119,7 +151,7 @@ function ProfilePage() {
                 </Nav.Link>
               </Nav.Item>
               <Nav.Item>
-                <Nav.Link eventKey="favourites" className="p-3">
+                <Nav.Link eventKey="user data" className="p-3">
                   المفضلة
                 </Nav.Link>
               </Nav.Item>
@@ -135,11 +167,13 @@ function ProfilePage() {
                         thumbnail
                         height={200}
                         width={200}
-                        src={user.avatar}
+                        src={userData.avatar}
                         alt={`صورة المالك`}
                         className="object-fit-cover mb-3"
                       />
-                      <h4>{user.fullName}</h4>
+                      <h4>
+                        {userData.firstName} {userData.lastName}
+                      </h4>
                       <p>
                         <Card.Text className="d-flex justify-content-center align-items-center gap-1 mb-0">
                           <span className="fa fa-star text-primary"></span>
@@ -166,20 +200,28 @@ function ProfilePage() {
                       <Tab.Content>
                         <Tab.Pane eventKey="services">
                           <Row className="g-4 mt-2">
-                            {Array.from({ length: 12 }, (_, index) => (
-                              <Col key={index} xs={12} md={6} xxl={4}>
-                                <ItemCard type={"Service"} />
-                              </Col>
-                            ))}
+                            {loadingUserData && <p>Loading user data...</p>}
+
+                            {error && <p>{error}</p>}
+                            {userData.services &&
+                              userData.services.map((service, index) => (
+                                <Col key={index} xs={12} md={6} xxl={4}>
+                                  <ItemCard type={"Service"} />
+                                </Col>
+                              ))}
                           </Row>
                         </Tab.Pane>
                         <Tab.Pane eventKey="products">
                           <Row className="g-4 mt-2">
-                            {Array.from({ length: 3 }, (_, index) => (
-                              <Col key={index} xs={12} md={6} xxl={4}>
-                                <ItemCard type={"Product"} />
-                              </Col>
-                            ))}
+                            {loadingUserData && <p>Loading user data...</p>}
+
+                            {error && <p>{error}</p>}
+                            {userData.products &&
+                              userData.products.map((product, index) => (
+                                <Col key={index} xs={12} md={6} xxl={4}>
+                                  <ItemCard type={"Product"} />
+                                </Col>
+                              ))}
                           </Row>
                         </Tab.Pane>
                         <Tab.Pane eventKey="reviews">
@@ -212,12 +254,22 @@ function ProfilePage() {
                 ))}
                 <Button variant="success">Add Payment Method</Button>
               </Tab.Pane>
-              <Tab.Pane eventKey="favourites">
-                <ListGroup>
-                  {user.favourites.map((favourite, index) => (
-                    <ListGroup.Item key={index}>{favourite}</ListGroup.Item>
-                  ))}
-                </ListGroup>
+              <Tab.Pane eventKey="user data">
+                {loadingUserData && <p>Loading user data...</p>}
+                {error && <p>{error}</p>}
+                <Row className="g-4 mt-2">
+                  {userData.favorites &&
+                    userData.favorites.map((item, index) => (
+                      <Col key={index} xs={12} md={6} xxl={4}>
+                        <ItemCard
+                          type={
+                            item.itemType === "product" ? "Product" : "Service"
+                          }
+                          item={item} // Pass the item details to ItemCard
+                        />
+                      </Col>
+                    ))}
+                </Row>
               </Tab.Pane>
             </Tab.Content>
           </Col>

@@ -34,7 +34,7 @@ namespace api.Controllers
                 return Unauthorized();
             }
 
-            var favorites = await _favoriteRepository.GetAllFavoritesAsync();
+            var favorites = await _favoriteRepository.GetAllFavoritesAsync(RequesterId);
 
             var favoriteDto = favorites.Select(favorite => favorite.ToFavoriteDtoFromFavorite());
 
@@ -52,7 +52,7 @@ namespace api.Controllers
                 return Unauthorized();
             }
 
-            var favorite = await _favoriteRepository.GetFavoriteByIdAsync(id);
+            var favorite = await _favoriteRepository.GetFavoriteByIdAsync(id, RequesterId);
 
             if (favorite == null)
             {

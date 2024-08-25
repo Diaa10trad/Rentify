@@ -3,11 +3,11 @@ import { Nav, Navbar, Button, Image, Container } from "react-bootstrap";
 import LogoImage from "@/assets/images/RentifyLogo.png";
 import profileImagePlaceholder from "@/assets/images/Profile-Image-Placeholder.jpg";
 import "./styles.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 
 export default function NavigationBar() {
-  const { auth, logout } = useAuth(); // Get auth state and logout from useAuth
+  const { auth, logout } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -17,7 +17,11 @@ export default function NavigationBar() {
 
   return (
     <Navbar expand="lg">
-      <Navbar.Brand style={{ minWidth: "150px", width: "150px" }} href="/Home">
+      <Navbar.Brand
+        as={Link}
+        to="/Home"
+        style={{ minWidth: "150px", width: "150px" }}
+      >
         <Image fluid className="brand-logo" src={LogoImage} alt="Logo" />
       </Navbar.Brand>
 
@@ -28,14 +32,15 @@ export default function NavigationBar() {
           className="d-flex text-nowrap flex-lg-row flex-column gap-3 text-center justify-content-between nav-items-container"
         >
           <Nav className="gap-2 fs-6">
-            <Nav.Link href="/Home">الصفحة الرئيسية</Nav.Link>
+            <Nav.Link as={Link} to="/Home">
+              الصفحة الرئيسية
+            </Nav.Link>
             <Nav.Link href="#how-it-works">كيف يعمل الموقع</Nav.Link>
             <Nav.Link href="#about-us">من نحن</Nav.Link>
           </Nav>
 
           <Nav className="gap-2 col-lg-auto col-12 col-sm-10 m-lg-0 m-auto">
             <Button
-              type="submit"
               onClick={() => navigate("/AddItem")}
               size="sm"
               variant="primary"

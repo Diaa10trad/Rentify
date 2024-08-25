@@ -31,10 +31,8 @@ function LoginPage() {
         }
       );
 
-      // Store token and user data
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("user", JSON.stringify(response.data.user)); // Assuming the response contains user info
-      login(response.data.user);
+      const { token, id } = response.data;
+      login(token, id);
 
       navigate("/Home");
     } catch (err) {

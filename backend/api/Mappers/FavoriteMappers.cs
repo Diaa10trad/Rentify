@@ -15,6 +15,8 @@ namespace api.Mappers
             {
                 FavoriteId = favoriteModel.FavoriteId,
                 ItemType = favoriteModel.ItemType,
+                product = favoriteModel.Product?.ToProductDtoFromProduct(),
+                service = favoriteModel.Service?.ToServiceDtoFromService(),
                 ProductId = favoriteModel.ProductId ?? null,
                 ServiceId = favoriteModel.ServiceId ?? null
             };

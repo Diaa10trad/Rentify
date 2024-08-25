@@ -9,7 +9,9 @@ namespace api.Models
 {
     public class AppUser : IdentityUser
     {
-        public ICollection<Favorite>? Favorites { get; set; }
+        public List<Favorite> Favorites { get; set; } = new List<Favorite>();
+        public List<Product> Products { get; set; } = new List<Product>();
+        public List<Service> Services { get; set; } = new List<Service>();
 
         // public ICollection<Product> OwnedProducts { get; set; } = new List<Product>();
         // public ICollection<Service> OwnedServices { get; set; } = new List<Service>();

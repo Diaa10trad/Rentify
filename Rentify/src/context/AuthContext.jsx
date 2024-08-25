@@ -5,56 +5,55 @@ export const AuthContext = createContext();
 export function AuthProvider({ children }) {
   const [auth, setAuth] = useState({
     isAuthenticated: false,
-    user: null,
+    id: null,
     token: null,
   });
 
+  const [loading, setLoading] = useState(true); // Loading state to delay rendering
+
   useEffect(() => {
-    // Check if a token and user exists in localStorage
+    // Check if a token and user exist in localStorage
     const token = localStorage.getItem("token");
-    const userString = localStorage.getItem("user");
+    const id = localStorage.getItem("id");
 
-    // Only parse the user if userString is not null or undefined
-    let user = null;
-    if (userString) {
-      try {
-        user = JSON.parse(userString);
-      } catch (error) {
-        console.error("Error parsing user JSON:", error);
-        // Handle corrupted JSON by clearing the user from localStorage
-        localStorage.removeItem("user");
-      }
-    }
+    console.log("Token in localStorage:", token); // Check if the token is being retrieved correctly
+    console.log("User in localStorage:", id); // Check if the user data is being retrieved correctly
 
-    // If both token and user are valid, set the auth state
-    if (token && user) {
+    if (token && id) {
       setAuth({
         isAuthenticated: true,
-        user,
+        id,
         token,
       });
+    } else {
+      console.log("No token or user found in localStorage."); // Log when no token or user is found
     }
+    setLoading(false); // Loading is complete after the initial check
   }, []);
 
-  const login = (token, user) => {
+  const login = (token, id) => {
     localStorage.setItem("token", token);
-    localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem("id", JSON.stringify(id));
     setAuth({
       isAuthenticated: true,
-      user,
+      id,
       token,
     });
   };
 
   const logout = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    localStorage.removeItem("id");
     setAuth({
       isAuthenticated: false,
-      user: null,
+      id: null,
       token: null,
     });
   };
+
+  if (loading) {
+    return <div>Loading...</div>; // Show a loading indicator until auth state is restored
+  }
 
   return (
     <AuthContext.Provider value={{ auth, login, logout }}>
@@ -63,7 +62,7 @@ export function AuthProvider({ children }) {
   );
 }
 
-//custom hook for easy access to the AuthContext
+// Custom hook for easy access to the AuthContext
 export function useAuth() {
   return useContext(AuthContext);
 }

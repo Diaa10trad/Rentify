@@ -51,8 +51,8 @@ function SignupPage() {
         }
       );
 
-      const { token, user } = response.data;
-      login(token, user);
+      const { token, id } = response.data;
+      login(token, id);
 
       navigate("/Home");
     } catch (err) {

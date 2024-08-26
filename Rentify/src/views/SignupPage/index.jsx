@@ -27,7 +27,7 @@ function SignupPage() {
     e.preventDefault();
 
     const passwordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_])[A-Za-z\d@$!%*?&_]{8,}$/;
 
     if (!passwordRegex.test(password)) {
       setError("كلمة السر يجب أن تحتوي على أحرف كبيرة وصغيرة، أرقام، ورموز.");
@@ -66,10 +66,7 @@ function SignupPage() {
 
   return (
     <Container>
-      <Row
-        className="justify-content-center align-items-center"
-        style={{ height: "100vh" }}
-      >
+      <Row className="justify-content-center align-items-center mt-5 mb-5">
         <Col xs={11} md={8} className="shadow-lg p-4 rounded-5 ">
           <Stack className="align-items-center mb-2">
             <h2 className="text-center">إنشاء حساب جديد</h2>

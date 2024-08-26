@@ -14,6 +14,7 @@ import {
 } from "react-bootstrap";
 import Person from "@/assets/images/Person.jpg";
 import ItemCard from "@/components/cards/ItemCard";
+import RentedItemsCard from "@/components/cards/RentedItemsCard";
 import Review from "@/components/ItemDetails/Review";
 import SettingsForm from "@/components/Profile/SettingsForm";
 import { useAuth } from "@/context/AuthContext"; // Custom hook for auth context
@@ -134,7 +135,7 @@ function ProfilePage() {
       <Tab.Container defaultActiveKey="view-info">
         <Row>
           <Col sm={3}>
-            <Nav variant="pills" className="flex-column">
+            <Nav variant="pills" className="flex-column gap-2 mt-3 mb-5">
               <Nav.Item>
                 <Nav.Link eventKey="view-info" className="p-3">
                   عرض الملف الشخصي
@@ -151,8 +152,18 @@ function ProfilePage() {
                 </Nav.Link>
               </Nav.Item>
               <Nav.Item>
-                <Nav.Link eventKey="favorites" className="p-3">
+                <Nav.Link eventKey="favorites" className="p-3 ">
                   المفضلة
+                </Nav.Link>
+              </Nav.Item>
+              <Nav.Item>
+                <Nav.Link eventKey="rented-items" className="p-3">
+                  السلع والخدمات المستأجرة
+                </Nav.Link>
+              </Nav.Item>
+              <Nav.Item>
+                <Nav.Link eventKey="rented-out-items" className="p-3">
+                  السلع والخدمات المؤجّرة
                 </Nav.Link>
               </Nav.Item>
             </Nav>
@@ -200,8 +211,7 @@ function ProfilePage() {
                       <Tab.Content>
                         <Tab.Pane eventKey="services">
                           <Row className="g-4 mt-2">
-                            {loadingUserData && <p>Loading user data...</p>}
-
+                            {loadingUserData && <p>جارِ التحميل...</p>}
                             {error && <p>{error}</p>}
                             {userData.services &&
                               userData.services.map((service, index) => (
@@ -216,8 +226,7 @@ function ProfilePage() {
                         </Tab.Pane>
                         <Tab.Pane eventKey="products">
                           <Row className="g-4 mt-2">
-                            {loadingUserData && <p>Loading user data...</p>}
-
+                            {loadingUserData && <p>جارِ التحميل...</p>}
                             {error && <p>{error}</p>}
                             {userData.products &&
                               userData.products.map((product, index) => (
@@ -245,9 +254,11 @@ function ProfilePage() {
                   </Card.Body>
                 </Card>
               </Tab.Pane>
+
               <Tab.Pane eventKey="settings" className="">
                 <SettingsForm user={user} setUser={setUser} />
               </Tab.Pane>
+
               <Tab.Pane eventKey="payment-methods">
                 {user.paymentMethods.map((method, index) => (
                   <div key={index} className="mb-3">
@@ -260,10 +271,11 @@ function ProfilePage() {
                 ))}
                 <Button variant="success">Add Payment Method</Button>
               </Tab.Pane>
+
               <Tab.Pane eventKey="favorites">
                 {loadingUserData && <p>Loading user data...</p>}
                 {error && <p>{error}</p>}
-                <Row className="g-4 mt-2">
+                <Row className="g-4 mt-1 mb-5 w-100 ">
                   {userData.favorites &&
                     userData.favorites.map((item, index) => {
                       return (
@@ -271,7 +283,7 @@ function ProfilePage() {
                           <ItemCard
                             type={item.itemType}
                             details={
-                              item.itemType == "product"
+                              item.itemType === "product"
                                 ? item.product
                                 : item.service
                             }
@@ -280,6 +292,175 @@ function ProfilePage() {
                       );
                     })}
                 </Row>
+              </Tab.Pane>
+
+              <Tab.Pane eventKey="rented-items">
+                <Tab.Container defaultActiveKey="rented-products">
+                  <Nav
+                    variant="pills"
+                    className="justify-content-center gap-3 mt-3"
+                  >
+                    <Nav.Item className="w-25 text-center">
+                      <Nav.Link
+                        eventKey="rented-products"
+                        className="rounded-pill"
+                      >
+                        منتجات
+                      </Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item className="w-25 text-center">
+                      <Nav.Link
+                        eventKey="rented-services"
+                        className="rounded-pill"
+                      >
+                        خدمات
+                      </Nav.Link>
+                    </Nav.Item>
+                  </Nav>
+                  <Tab.Content className="mt-3">
+                    <Tab.Pane eventKey="rented-products">
+                      <Row className="g-4 mt-2">
+                        {loadingUserData && <p>Loading user data...</p>}
+                        {error && <p>{error}</p>}
+                        {userData.products &&
+                          userData.products.map((product, index) => (
+                            <Col key={index} xs={12}>
+                              <RentedItemsCard
+                                type={"product"}
+                                details={product}
+                              />
+                            </Col>
+                          ))}
+                        {/* {loadingUserData && <p>Loading user data...</p>}
+                        {error && <p>{error}</p>}
+                        {userData.rentedItems.products &&
+                          userData.rentedItems.products.map(
+                            (rentedProduct, index) => (
+                              <Col key={index} xs={12} md={6} xxl={4}>
+                                <ItemCard
+                                  type={"product"}
+                                  details={rentedProduct.product}
+                                />
+                              </Col>
+                            )
+                          )} */}
+                      </Row>
+                    </Tab.Pane>
+                    <Tab.Pane eventKey="rented-services">
+                      <Row className="g-4 mt-2">
+                        {loadingUserData && <p>جارِ التحميل...</p>}
+                        {error && <p>{error}</p>}
+                        {userData.services &&
+                          userData.services.map((service, index) => (
+                            <Col key={index} xs={12}>
+                              <RentedItemsCard
+                                type={"service"}
+                                details={service}
+                              />
+                            </Col>
+                          ))}
+                        {/* {loadingUserData && <p>Loading user data...</p>}
+                        {error && <p>{error}</p>}
+                        {userData.rentedItems.services &&
+                          userData.rentedItems.services.map(
+                            (rentedService, index) => (
+                              <Col key={index} xs={12} md={6} xxl={4}>
+                                <ItemCard
+                                  type={"service"}
+                                  details={rentedService.service}
+                                />
+                              </Col>
+                            )
+                          )} */}
+                      </Row>
+                    </Tab.Pane>
+                  </Tab.Content>
+                </Tab.Container>
+              </Tab.Pane>
+
+              <Tab.Pane eventKey="rented-out-items">
+                <Tab.Container defaultActiveKey="rented-out-products">
+                  <Nav
+                    variant="pills"
+                    className="justify-content-center gap-3 mt-3"
+                  >
+                    <Nav.Item className="w-25 text-center">
+                      <Nav.Link
+                        eventKey="rented-out-products"
+                        className="rounded-pill"
+                      >
+                        منتجات
+                      </Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item className="w-25 text-center">
+                      <Nav.Link
+                        eventKey="rented-out-services"
+                        className="rounded-pill"
+                      >
+                        خدمات
+                      </Nav.Link>
+                    </Nav.Item>
+                  </Nav>
+
+                  <Tab.Content className="mt-3">
+                    <Tab.Pane eventKey="rented-out-products">
+                      <Row className="g-4 mt-2">
+                        {loadingUserData && <p>جارِ التحميل...</p>}
+                        {error && <p>{error}</p>}
+                        {userData.products &&
+                          userData.products.map((product, index) => (
+                            <Col key={index} xs={12}>
+                              <RentedItemsCard
+                                type={"product"}
+                                details={product}
+                              />
+                            </Col>
+                          ))}
+                        {/* {loadingUserData && <p>Loading user data...</p>}
+                      {error && <p>{error}</p>}
+                      {userData.rentedOutItems.products &&
+                        userData.rentedOutItems.products.map(
+                          (rentedOutProduct, index) => (
+                            <Col key={index} xs={12} md={6} xxl={4}>
+                              <ItemCard
+                                type={"product"}
+                                details={rentedOutProduct.product}
+                              />
+                            </Col>
+                          )
+                        )} */}
+                      </Row>
+                    </Tab.Pane>
+                    <Tab.Pane eventKey="rented-out-services">
+                      <Row className="g-4 mt-2">
+                        {loadingUserData && <p>جارِ التحميل...</p>}
+                        {error && <p>{error}</p>}
+                        {userData.services &&
+                          userData.services.map((service, index) => (
+                            <Col key={index} xs={12}>
+                              <RentedItemsCard
+                                type={"service"}
+                                details={service}
+                              />
+                            </Col>
+                          ))}
+                        {/* {loadingUserData && <p>Loading user data...</p>}
+                      {error && <p>{error}</p>}
+                      {userData.rentedOutItems.services &&
+                        userData.rentedOutItems.services.map(
+                          (rentedOutService, index) => (
+                            <Col key={index} xs={12} md={6} xxl={4}>
+                              <ItemCard
+                                type={"service"}
+                                details={rentedOutService.service}
+                              />
+                            </Col>
+                          )
+                        )} */}
+                      </Row>
+                    </Tab.Pane>
+                  </Tab.Content>
+                </Tab.Container>
               </Tab.Pane>
             </Tab.Content>
           </Col>

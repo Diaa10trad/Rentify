@@ -6,7 +6,7 @@ import ErrorBoundary from "@/components/chat/ErrorBoundary";
 import { Container, Spinner } from "react-bootstrap";
 import { createConnection } from "@/services/SignalRService";
 import { startChat, sendMessage, formatMessages } from "@/services/ChatService";
-import { getToken, getReceiverId, getSenderId } from "@/utils/AuthUtils";
+import { getToken, getSenderId } from "@/utils/AuthUtils";
 import { useLocation } from "react-router-dom";
 const ChatPage = () => {
   const [messages, setMessages] = useState([]);
@@ -16,7 +16,7 @@ const ChatPage = () => {
   const [error, setError] = useState(null);
   const location = useLocation();
   const data = location.state;
-  console.log(data);
+
   const token = getToken();
   const receiverId = data.receiverId;
   const senderId = getSenderId(token);
@@ -46,6 +46,7 @@ const ChatPage = () => {
                 isSender: user === senderId,
                 sentAt: new Date().toLocaleTimeString(),
               };
+
               setMessages((prevMessages) => [...prevMessages, newMessage]);
             });
           } catch (err) {
@@ -65,12 +66,7 @@ const ChatPage = () => {
     if (connection && chat?.chatId) {
       try {
         await sendMessage(connection, chat.chatId, text);
-        const newMessage = {
-          text,
-          sender: senderId,
-          isSender: true,
-          sentAt: new Date().toLocaleTimeString(),
-        };
+
         //setMessages((prevMessages) => [...prevMessages, newMessage]);
       } catch (err) {
         setError("فشل الإرسال. الرجاء المحاولة مرة أخرى.");
@@ -95,9 +91,17 @@ const ChatPage = () => {
 
   return (
     <Container className="d-flex flex-column" style={{ height: "100vh" }}>
-      <ChatHeader chat={chat} receiverId={receiverId} />
+      <ChatHeader
+        chat={chat}
+        receiverId={receiverId}
+        bookingDetails={data.bookingDetails}
+      />
+
       <ChatWindow messages={messages} />
-      <MessageInput onSend={handleSend} />
+
+      <div className="mt-auto">
+        <MessageInput onSend={handleSend} />
+      </div>
     </Container>
   );
 };

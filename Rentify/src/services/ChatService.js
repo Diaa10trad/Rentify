@@ -9,8 +9,8 @@ export const sendMessage = async (connection, chatId, text) => {
 export const formatMessages = (messages, senderId) => {
   return messages.map((msg) => ({
     text: msg.message,
-    sender: msg.senderId,
-    isSender: msg.senderId === senderId,
+    sender: msg.sender.userId,
+    isSender: msg.sender.userId === senderId,
     sentAt: new Date(msg.sentAt).toLocaleTimeString([], {
       hour: "2-digit",
       minute: "2-digit",

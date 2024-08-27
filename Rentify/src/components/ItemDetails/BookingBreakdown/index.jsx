@@ -1,10 +1,12 @@
 import calculateDuration from "@/utils/calculateDuration";
 import InfoRow from "@/components/ItemDetails/InfoRow";
+import { useEffect } from "react";
 function BookingBreakdown({
   selectedDates,
   priceDaily,
   priceWeekly,
   priceMonthly,
+  onFinalPriceChange,
 }) {
   const duration = calculateDuration(
     selectedDates.fromDate,
@@ -33,6 +35,10 @@ function BookingBreakdown({
     duration.days * priceDaily;
 
   const serviceFee = Number((subTotal * 0.05).toFixed(2));
+
+  useEffect(() => {
+    onFinalPriceChange(subTotal);
+  }, [subTotal]);
   return (
     <div className="mt-4">
       <h6>تفاصيل الطلب</h6>

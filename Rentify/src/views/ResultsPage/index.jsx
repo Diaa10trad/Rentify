@@ -10,11 +10,12 @@ import Pager from "@/components/Pager";
 import axios from "axios";
 import getOneFromUrl from "@/utils/getOneFromUrl.js";
 import { useEffect, useState } from "react";
+import NoContentBox from "@/components/NoContentBox";
 export default function ResultsPage() {
   const type = getOneFromUrl("type");
   const [items, setItems] = useState(null);
   const [error, setError] = useState(null);
-
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     // Replace with your actual API endpoint
     const apiUrl = `http://localhost:5079/api/${type}`;
@@ -31,6 +32,7 @@ export default function ResultsPage() {
       })
       .then((response) => {
         setItems(response.data);
+        setLoading(false);
         console.log(response.data);
       })
       .catch((error) => {
@@ -40,6 +42,16 @@ export default function ResultsPage() {
 
   if (error) {
     return <div>Error: {error.message}</div>;
+  }
+  if (loading) {
+    return (
+      <Container
+        className="d-flex justify-content-center align-items-center"
+        style={{ height: "100vh" }}
+      >
+        <Spinner animation="border" />
+      </Container>
+    );
   }
   return (
     <Container fluid>
@@ -54,8 +66,8 @@ export default function ResultsPage() {
         <Col xs={12} lg={4} xxl={3} className="p-0">
           <FilterSidebar />
         </Col>
-        {items ? (
-          <Col xs={12} lg={8} xxl={9} className="">
+        {items && items.length > 0 ? (
+          <Col xs={12} lg={8} xxl={9}>
             <Row className="g-4">
               {items.map((item, index) => (
                 <Col key={index} xs={12} sm={6} xxl={4}>
@@ -63,17 +75,17 @@ export default function ResultsPage() {
                 </Col>
               ))}
             </Row>
-            <Row className="justify-content-center my-4 align-items-center">
+            <Row className="justify-content-center my-4  align-items-center">
               <Pager />
             </Row>
           </Col>
         ) : (
-          <Container
-            className="d-flex justify-content-center align-items-center"
-            style={{ height: "100vh" }}
-          >
-            <Spinner animation="border" />
-          </Container>
+          <Col xs={12} lg={8} xxl={9}>
+            <NoContentBox
+              title={"لا توجد محتويات بعد"}
+              text={"لا يوجد أي شيء لعرضه في الوقت الحالي. يرجى العودة لاحقًا!"}
+            />
+          </Col>
         )}
       </Row>
     </Container>

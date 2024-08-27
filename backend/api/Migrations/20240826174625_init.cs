@@ -546,7 +546,11 @@ namespace api.Migrations
                     { 23, "معدات الصيد", "product" },
                     { 24, "مستلزمات التخييم", "product" },
                     { 25, "مستلزمات الخياطة", "product" },
-                    { 26, "سباك", "service" }
+                    { 26, "خدمات تنظيف", "service" },
+                    { 27, "مواسرجي", "service" },
+                    { 28, "عامل بناء", "service" },
+                    { 29, "فني كهرباء", "service" },
+                    { 30, "معلم", "service" }
                 });
 
             migrationBuilder.CreateIndex(

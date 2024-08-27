@@ -12,6 +12,6 @@ namespace api.Dtos.Chat
         public int ChatId { get; set; }
         public AppUserDto UserOne { get; set; }
         public AppUserDto UserTwo { get; set; }
-        public List<ChatMessage> Messages { get; set; } = new List<ChatMessage>();
+        public List<MessageChatDto> Messages { get; set; } = new List<MessageChatDto>();
     }
 }

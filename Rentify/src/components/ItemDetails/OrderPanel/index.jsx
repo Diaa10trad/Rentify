@@ -12,6 +12,7 @@ function OrderPanel({
   title,
   createdAt,
   ownerId,
+  cancellationPolicy,
 }) {
   const location = useLocation();
   const pathname = location.pathname;
@@ -50,10 +51,16 @@ function OrderPanel({
                 priceWeekly={priceWeekly}
                 priceMonthly={priceMonthly}
                 ownerId={ownerId}
+                cancellationPolicy={cancellationPolicy}
               />
             )}
 
-            {!isProductPage && <BookingForm ownerId={ownerId} />}
+            {!isProductPage && (
+              <BookingForm
+                ownerId={ownerId}
+                cancellationPolicy={cancellationPolicy}
+              />
+            )}
           </Col>
         ) : (
           ""

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api.Dtos.Chat;
 using api.Dtos.Favorite;
 using api.Dtos.Product;
 using api.Dtos.Service;
@@ -18,5 +19,6 @@ namespace api.Dtos.AppUser
         public ICollection<ProductDTO>? Products { get; set; }
         public ICollection<ServiceDto>? Services { get; set; }
         public ICollection<FavoriteDto>? Favorites { get; set; }
+
     }
 }

@@ -28,12 +28,14 @@ namespace api.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ITokenService _tokenService;
         private readonly ICloudinaryImageService _cloudinaryImageService;
-        public AccountController(UserManager<AppUser> userManager, ITokenService tokenService, SignInManager<AppUser> signInManager, ICloudinaryImageService cloudinaryImageService)
+        private readonly ChatService _chatService;
+        public AccountController(UserManager<AppUser> userManager, ITokenService tokenService, SignInManager<AppUser> signInManager, ICloudinaryImageService cloudinaryImageService, ChatService chatService)
         {
             _userManager = userManager;
             _tokenService = tokenService;
             _signInManager = signInManager;
             _cloudinaryImageService = cloudinaryImageService;
+            _chatService = chatService;
         }
 
         [HttpPost("login")]
@@ -258,11 +260,19 @@ namespace api.Controllers
                                      .ThenInclude(f => f.Service)
                                      .ThenInclude(s => s.Reviews)
 
-
                                      .FirstOrDefaultAsync(u => u.Id == userId);
 
+
+            var userChats = await _chatService.GetUserChatsAsync(userId);
+            var userChatsDtos = userChats.Select(c => c.ToChatDtoFromChat()).ToList();
             var userDtos = user?.ToAppUserSpecificDtoFromAppUser();
-            return Ok(userDtos);
+            var response = new
+            {
+                UserData = userDtos,
+                UserChats = userChatsDtos
+
+            };
+            return Ok(response);
         }
     }
 }

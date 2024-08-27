@@ -74,15 +74,17 @@ namespace api.Data
                         .HasForeignKey(r => r.ServiceId)
                         .OnDelete(DeleteBehavior.NoAction);
 
+
             modelBuilder.Entity<Chat>()
-                       .HasOne(c => c.UserOne)
-                       .WithMany()  // Assuming a one-to-many relationship; adjust as needed
-                       .HasForeignKey(c => c.UserOneId)
-                       .OnDelete(DeleteBehavior.Restrict); // Or DeleteBehavior.NoAction
+                .HasOne(c => c.UserOne)
+                .WithMany()
+                .HasForeignKey(c => c.UserOneId)
+                .OnDelete(DeleteBehavior.Restrict);
+
 
             modelBuilder.Entity<Chat>()
                 .HasOne(c => c.UserTwo)
-                .WithMany()  // Assuming a one-to-many relationship; adjust as needed
+                .WithMany()
                 .HasForeignKey(c => c.UserTwoId)
                 .OnDelete(DeleteBehavior.Restrict);
 

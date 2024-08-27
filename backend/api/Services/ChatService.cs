@@ -28,16 +28,32 @@ namespace api.Services
                                              .FirstOrDefaultAsync(c => (c.UserOneId == UserOneId && c.UserTwoId == UserTwoId) || (c.UserOneId == UserTwoId && c.UserTwoId == UserOneId));
             if (chat == null)
             {
-                chat = new Chat
+
+                await _dbContext.Chats.AddAsync(new Chat
                 {
                     UserOneId = UserOneId,
                     UserTwoId = UserTwoId,
 
-                };
-                await _dbContext.Chats.AddAsync(chat);
+                });
                 await _dbContext.SaveChangesAsync();
+
+                chat = await _dbContext.Chats.Include(c => c.Messages)
+                                             .Include(c => c.UserOne)
+                                             .Include(c => c.UserTwo)
+                                             .FirstOrDefaultAsync(c => (c.UserOneId == UserOneId && c.UserTwoId == UserTwoId) || (c.UserOneId == UserTwoId && c.UserTwoId == UserOneId));
+
             }
             return chat;
+        }
+
+        public async Task<List<Chat>> GetUserChatsAsync(string CurrentUserId)
+        {
+            return await _dbContext.Chats.Include(c => c.Messages)
+                                            .ThenInclude(m => m.Sender)
+                                          .Include(c => c.UserOne)
+                                          .Include(c => c.UserTwo)
+                                          .Where(c => c.UserOneId == CurrentUserId || c.UserTwoId == CurrentUserId).ToListAsync();
+
         }
 
         public async Task AddMessageToChatAsync(int chatId, string senderId, string message)

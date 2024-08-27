@@ -12,7 +12,7 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20240822165012_init")]
+    [Migration("20240826174625_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -500,7 +500,31 @@ namespace api.Migrations
                         new
                         {
                             Id = 26,
-                            CategoryName = "سباك",
+                            CategoryName = "خدمات تنظيف",
+                            CategoryType = "service"
+                        },
+                        new
+                        {
+                            Id = 27,
+                            CategoryName = "مواسرجي",
+                            CategoryType = "service"
+                        },
+                        new
+                        {
+                            Id = 28,
+                            CategoryName = "عامل بناء",
+                            CategoryType = "service"
+                        },
+                        new
+                        {
+                            Id = 29,
+                            CategoryName = "فني كهرباء",
+                            CategoryType = "service"
+                        },
+                        new
+                        {
+                            Id = 30,
+                            CategoryName = "معلم",
                             CategoryType = "service"
                         });
                 });
@@ -984,7 +1008,7 @@ namespace api.Migrations
                         .IsRequired();
 
                     b.HasOne("api.Models.AppUser", "Owner")
-                        .WithMany()
+                        .WithMany("Products")
                         .HasForeignKey("OwnerId");
 
                     b.Navigation("CancellationPolicy");
@@ -1055,7 +1079,7 @@ namespace api.Migrations
                         .IsRequired();
 
                     b.HasOne("api.Models.AppUser", "Owner")
-                        .WithMany()
+                        .WithMany("Services")
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1081,6 +1105,10 @@ namespace api.Migrations
             modelBuilder.Entity("api.Models.AppUser", b =>
                 {
                     b.Navigation("Favorites");
+
+                    b.Navigation("Products");
+
+                    b.Navigation("Services");
                 });
 
             modelBuilder.Entity("api.Models.Chat", b =>

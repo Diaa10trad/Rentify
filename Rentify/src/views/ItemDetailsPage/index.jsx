@@ -3,7 +3,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Spinner from "react-bootstrap/Spinner";
 import InfoRowList from "@/components/ItemDetails/InfoRowList";
-import ItemDescription from "@/components/ItemDetails/ItemDescription";
+import TextSection from "@/components/ItemDetails/TextSection";
 import HeadingSection from "@/components/HeadingSection";
 import ImagesCarousel from "@/components/ItemDetails/ImagesCarousel";
 import OrderPanel from "@/components/ItemDetails/OrderPanel";
@@ -39,7 +39,7 @@ function ItemDetailsPage() {
         setCancellationPolicy([
           {
             label: "نسبة المبلغ المسترجع",
-            value: response.data.cancellationPolicy.refund,
+            value: response.data.cancellationPolicy.refund + "%",
           },
           {
             label: "فترة الإلغاء المسموحة",
@@ -91,15 +91,27 @@ function ItemDetailsPage() {
                   priceMonthly={details.priceMonthly}
                   title={details.title}
                   createdAt={details.createdAt}
+                  ownerId={details.ownerId}
+                  cancellationPolicy={details.cancellationPolicy}
                 />
               </div>
               <div className="d-none mt-4 d-md-block">
-                <ItemDescription text={details.description} />
+                <TextSection title={"الوصف"} text={details.description} />
+              </div>
+              <div className="d-none mt-4 d-md-block">
+                <TextSection
+                  title={"معلومات إضافية"}
+                  text={details.additionalInfo}
+                />
               </div>
             </Col>
             <Col xs={12} md={5} className="">
               <div className="d-block mb-4 d-md-none">
-                <ItemDescription text={details.description} />
+                <TextSection title={"الوصف"} text={details.description} />
+                <TextSection
+                  title={"معلومات إضافية"}
+                  text={details.additionalInfo}
+                />
               </div>
               <div className="d-none mb-4 d-md-block">
                 <OrderPanel
@@ -109,6 +121,7 @@ function ItemDetailsPage() {
                   title={details.title}
                   createdAt={details.createdAt}
                   ownerId={details.ownerId}
+                  cancellationPolicy={details.cancellationPolicy}
                 />
               </div>
               <InfoRowList infoData={detailsInfo} />

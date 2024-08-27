@@ -2,7 +2,7 @@ import { Row, Col, Card, Image } from "react-bootstrap";
 
 function ChatMessage({ message }) {
   const { text, sender, isSender, sentAt } = message;
-
+  console.log(text + " " + isSender);
   return (
     <Row
       className={`my-3 ${

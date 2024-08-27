@@ -2,41 +2,78 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import DateFormGroup from "@/components/ItemDetails/DateFormGroup";
 import BookingBreakdown from "@/components/ItemDetails/BookingBreakdown";
-import { useCallback, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-
-function BookingForm({ priceDaily, priceWeekly, priceMonthly, ownerId }) {
+import { getToken, getSenderId } from "@/utils/AuthUtils";
+function BookingForm({
+  priceDaily,
+  priceWeekly,
+  priceMonthly,
+  ownerId,
+  cancellationPolicy,
+}) {
   const location = useLocation();
   const pathname = location.pathname;
-  const { itemId } = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();
-
-  const goToChat = () => {
-    const data = {
-      itemId: itemId,
-      receiverId: ownerId,
-    };
-    navigate("/chatpage", { state: data });
-  };
-
+  const token = getToken();
+  const currentUserId = getSenderId(token);
   const isProductPage = pathname.includes("/product");
 
-  const [selectedDates, setSelectedDates] = useState({
+  const [bookingDetails, setBookingDetails] = useState({
+    ownerId: ownerId,
+    renterId: currentUserId,
+    itemId: id,
     fromDate: "",
     toDate: "",
+    finalPrice: "",
+    additionalInfo: "",
+    refund: cancellationPolicy.refund,
+    permittedDuration: cancellationPolicy.permittedDuration,
+    itemType: isProductPage ? "product" : "service",
   });
   const handleDateChange = useCallback((fromDate, toDate) => {
-    setSelectedDates({ fromDate, toDate });
+    setBookingDetails((prevDetails) => ({
+      ...prevDetails,
+      fromDate: fromDate,
+      toDate: toDate,
+    }));
   }, []);
+
+  const handleFinalPriceChange = useCallback((finalPrice) => {
+    setBookingDetails((prevDetails) => ({
+      ...prevDetails,
+      finalPrice: finalPrice,
+    }));
+  }, []);
+
+  const goToChat = () => {
+    if (token) {
+      const data = {
+        bookingDetails: bookingDetails,
+        receiverId: ownerId,
+      };
+      navigate("/chatpage", { state: data });
+    } else {
+      navigate("/Login");
+    }
+  };
+  useEffect(() => {
+    console.log(bookingDetails);
+  }, [bookingDetails]);
   return (
     <Form className="" onSubmit={goToChat}>
       {isProductPage && <DateFormGroup onDateChange={handleDateChange} />}
-      {selectedDates.fromDate && selectedDates.toDate && (
+      {bookingDetails.fromDate && bookingDetails.toDate && (
         <BookingBreakdown
-          selectedDates={selectedDates}
+          selectedDates={{
+            fromDate: bookingDetails.fromDate,
+            toDate: bookingDetails.toDate,
+          }}
           priceDaily={priceDaily}
           priceWeekly={priceWeekly}
           priceMonthly={priceMonthly}
+          onFinalPriceChange={handleFinalPriceChange}
         />
       )}
       <div className="d-grid gap-2">

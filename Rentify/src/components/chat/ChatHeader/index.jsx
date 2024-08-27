@@ -1,11 +1,15 @@
 import { Card, Col, Stack, Image, Button } from "react-bootstrap";
 import ChatBookingForm from "@/components/chat/ChatBookingForm";
 
-const ChatHeader = ({ chat, receiverId }) => {
+const ChatHeader = ({ chat, receiverId, bookingDetails }) => {
   const receiver =
     chat.userOne.userId === receiverId ? chat.userOne : chat.userTwo;
   return (
-    <Card as={Col} className="shadow border border-0">
+    <Card
+      as={Col}
+      style={{ maxHeight: "100px" }}
+      className="shadow border border-0"
+    >
       <Card.Body className="d-flex justify-content-between">
         <Stack
           direction="horizontal"
@@ -20,13 +24,15 @@ const ChatHeader = ({ chat, receiverId }) => {
             className="me-3 object-fit-cover"
           />
           <span>
-            <Card.Title className="m-0 fs-6">
+            <Card.Title className="m-0 fs-5">
               {receiver.firstName} {receiver.lastName}
             </Card.Title>
           </span>
         </Stack>
 
-        {<ChatBookingForm />}
+        {bookingDetails
+          ? bookingDetails.ownerId != receiverId && <ChatBookingForm />
+          : ""}
       </Card.Body>
     </Card>
   );

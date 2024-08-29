@@ -17,9 +17,7 @@ export default function HeadingSection({ title }) {
           <Stack className="align-items-center my-5">
             <h1 className="text-white text-center display-6">{title}</h1>
             <SectionLine backgroundColor="bg-light" />
-            <p className=" text-white text-opacity-75">
-              لوريم ايبسوم دولور سيت اميت
-            </p>
+            {/* <p className=" text-white text-opacity-75">املأ معلومات الإعلان</p> */}
           </Stack>
         </Row>
       </Container>

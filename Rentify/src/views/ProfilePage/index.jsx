@@ -294,7 +294,7 @@ function ProfilePage() {
                 </Row>
               </Tab.Pane>
 
-              <Tab.Pane eventKey="rented-items">
+              <Tab.Pane eventKey="rented-items" className="mb-5">
                 <Tab.Container defaultActiveKey="rented-products">
                   <Nav
                     variant="pills"
@@ -378,7 +378,7 @@ function ProfilePage() {
                 </Tab.Container>
               </Tab.Pane>
 
-              <Tab.Pane eventKey="rented-out-items">
+              <Tab.Pane eventKey="rented-out-items" className="mb-5">
                 <Tab.Container defaultActiveKey="rented-out-products">
                   <Nav
                     variant="pills"

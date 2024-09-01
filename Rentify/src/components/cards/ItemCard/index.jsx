@@ -1,18 +1,17 @@
 import Stack from "react-bootstrap/Stack";
 import Card from "react-bootstrap/Card";
 import Badge from "react-bootstrap/Badge";
-import Camera from "@/assets/images/products/Camera.jpg";
 import FavoriteButton from "@/components/FavoriteButton";
 import Button from "react-bootstrap/Button";
 import { LinkContainer } from "react-router-bootstrap";
 import "./style.css";
 export default function ItemCard({ type, details }) {
   function truncateText(text, wordLimit) {
-    const words = text.split(" "); // Split the text into an array of words
+    const words = text.split(" ");
     if (words.length > wordLimit) {
-      return words.slice(0, wordLimit).join(" ") + "..."; // Join the first 100 words and add '...'
+      return words.slice(0, wordLimit).join(" ") + "...";
     }
-    return text; // If the text is less than or equal to 100 words, return it as is
+    return text;
   }
 
   return (

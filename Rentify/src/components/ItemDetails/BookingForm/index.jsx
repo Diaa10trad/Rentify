@@ -21,13 +21,15 @@ function BookingForm({
   const isProductPage = pathname.includes("/product");
 
   const [bookingDetails, setBookingDetails] = useState({
+    bookingId: null,
     ownerId: ownerId,
     renterId: currentUserId,
-    itemId: id,
-    fromDate: "",
-    toDate: "",
-    finalPrice: "",
+    itemId: parseInt(id),
+    startDate: "",
+    endDate: "",
+    finalPrice: 0,
     additionalInfo: "",
+    status: "pending",
     refund: cancellationPolicy.refund,
     permittedDuration: cancellationPolicy.permittedDuration,
     itemType: isProductPage ? "product" : "service",
@@ -35,15 +37,15 @@ function BookingForm({
   const handleDateChange = useCallback((fromDate, toDate) => {
     setBookingDetails((prevDetails) => ({
       ...prevDetails,
-      fromDate: fromDate,
-      toDate: toDate,
+      startDate: fromDate,
+      endDate: toDate,
     }));
   }, []);
 
   const handleFinalPriceChange = useCallback((finalPrice) => {
     setBookingDetails((prevDetails) => ({
       ...prevDetails,
-      finalPrice: finalPrice,
+      finalPrice: Number(finalPrice),
     }));
   }, []);
 
@@ -64,11 +66,11 @@ function BookingForm({
   return (
     <Form className="" onSubmit={goToChat}>
       {isProductPage && <DateFormGroup onDateChange={handleDateChange} />}
-      {bookingDetails.fromDate && bookingDetails.toDate && (
+      {bookingDetails.startDate && bookingDetails.endDate && (
         <BookingBreakdown
           selectedDates={{
-            fromDate: bookingDetails.fromDate,
-            toDate: bookingDetails.toDate,
+            fromDate: bookingDetails.startDate,
+            toDate: bookingDetails.endDate,
           }}
           priceDaily={priceDaily}
           priceWeekly={priceWeekly}

@@ -1,9 +1,13 @@
 import { Card, Col, Stack, Image, Button } from "react-bootstrap";
 import ChatBookingForm from "@/components/chat/ChatBookingForm";
+import { getToken, getSenderId } from "@/utils/AuthUtils";
+function ChatHeader({ chat, bookingDetails, setBookingDetails, onSend }) {
+  const token = getToken();
+  const senderId = getSenderId(token);
 
-const ChatHeader = ({ chat, receiverId, bookingDetails }) => {
   const receiver =
-    chat.userOne.userId === receiverId ? chat.userOne : chat.userTwo;
+    chat.userOne.userId !== senderId ? chat.userOne : chat.userTwo;
+
   return (
     <Card
       as={Col}
@@ -31,11 +35,18 @@ const ChatHeader = ({ chat, receiverId, bookingDetails }) => {
         </Stack>
 
         {bookingDetails
-          ? bookingDetails.ownerId != receiverId && <ChatBookingForm />
+          ? bookingDetails.ownerId === senderId &&
+            bookingDetails.status == "pending" && (
+              <ChatBookingForm
+                bookingDetails={bookingDetails}
+                setBookingDetails={setBookingDetails}
+                onSend={onSend}
+              />
+            )
           : ""}
       </Card.Body>
     </Card>
   );
-};
+}
 
 export default ChatHeader;

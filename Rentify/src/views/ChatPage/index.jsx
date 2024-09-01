@@ -5,7 +5,12 @@ import ChatHeader from "@/components/chat/ChatHeader";
 import ErrorBoundary from "@/components/chat/ErrorBoundary";
 import { Container, Spinner } from "react-bootstrap";
 import { createConnection } from "@/services/SignalRService";
-import { startChat, sendMessage, formatMessages } from "@/services/ChatService";
+import {
+  startChat,
+  sendMessage,
+  formatMessages,
+  sendBookingMessage,
+} from "@/services/ChatService";
 import { getToken, getSenderId } from "@/utils/AuthUtils";
 import { useLocation } from "react-router-dom";
 const ChatPage = () => {
@@ -17,6 +22,7 @@ const ChatPage = () => {
   const location = useLocation();
   const data = location.state;
 
+  const [bookingDetails, setBookingDetails] = useState(data.bookingDetails);
   const token = getToken();
   const receiverId = data.receiverId;
   const senderId = getSenderId(token);
@@ -37,19 +43,72 @@ const ChatPage = () => {
             setChat(chat);
 
             const formattedMessages = formatMessages(chat.messages, senderId);
+
+            var isSameBooking = false;
+            for (const fmsg of formattedMessages) {
+              if (fmsg.message.type === "booking") {
+                var startDateMatches;
+                var endDateMatches;
+                if (bookingDetails) {
+                  console.log(fmsg.message);
+                  startDateMatches =
+                    fmsg.message.data.startDate === bookingDetails.startDate;
+                  endDateMatches =
+                    fmsg.message.data.endDate === bookingDetails.endDate;
+                } else {
+                  isSameBooking = true;
+                  setBookingDetails(fmsg.message.data);
+                }
+
+                if (startDateMatches && endDateMatches) {
+                  isSameBooking = true;
+
+                  setBookingDetails(fmsg.message.data);
+                }
+              }
+            }
+
+            if (!isSameBooking) {
+              var messageData = JSON.stringify({
+                data: bookingDetails,
+                type: "booking",
+              });
+
+              await sendMessage(connection, chat.chatId, messageData);
+              var newMessage = {
+                message: JSON.parse(messageData),
+                sender: senderId,
+                isSender: true,
+                sentAt: new Date().toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                }),
+              };
+              formattedMessages.push(newMessage);
+            }
+
             setMessages(formattedMessages);
+            console.log(formattedMessages);
 
             connection.on("ReceiveMessage", (user, receivedMessage) => {
               const newMessage = {
-                text: receivedMessage,
+                message: JSON.parse(receivedMessage),
                 sender: user,
                 isSender: user === senderId,
-                sentAt: new Date().toLocaleTimeString(),
+                sentAt: new Date().toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                }),
               };
-
               setMessages((prevMessages) => [...prevMessages, newMessage]);
+              if (newMessage.message.type == "booking")
+                setBookingDetails({
+                  ...prevMessages,
+                  bookingId: newMessage.message.data.bookingId,
+                });
             });
           } catch (err) {
+            console.log(err);
             setError("فشل بدء المحادثة. حاول مرة أخرى");
           } finally {
             setLoading(false);
@@ -62,13 +121,19 @@ const ChatPage = () => {
     }
   }, [connection, receiverId, senderId]);
 
-  const handleSend = async (text) => {
+  const handleSend = async (message, type) => {
+    var messageData = JSON.stringify({ data: message, type: type });
+
     if (connection && chat?.chatId) {
       try {
-        await sendMessage(connection, chat.chatId, text);
-
+        if (type == "text") {
+          await sendMessage(connection, chat.chatId, messageData);
+        } else {
+          await sendBookingMessage(connection, chat.chatId, messageData);
+        }
         //setMessages((prevMessages) => [...prevMessages, newMessage]);
       } catch (err) {
+        console.log(err);
         setError("فشل الإرسال. الرجاء المحاولة مرة أخرى.");
       }
     }
@@ -93,8 +158,9 @@ const ChatPage = () => {
     <Container className="d-flex flex-column" style={{ height: "100vh" }}>
       <ChatHeader
         chat={chat}
-        receiverId={receiverId}
-        bookingDetails={data.bookingDetails}
+        bookingDetails={bookingDetails}
+        setBookingDetails={setBookingDetails}
+        onSend={handleSend}
       />
 
       <ChatWindow messages={messages} />

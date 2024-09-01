@@ -29,6 +29,7 @@ namespace api.Repositories
 
             await _dbContext.Bookings.AddAsync(bookingModel);
             await _dbContext.SaveChangesAsync();
+
             return bookingModel;
 
         }

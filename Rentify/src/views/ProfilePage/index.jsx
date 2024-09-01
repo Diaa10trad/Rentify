@@ -360,51 +360,64 @@ function ProfilePage() {
                 {error && <p>{error}</p>}
                 {userChats && userChats.length > 0 ? (
                   <ListGroup>
-                    {userChats.map((chat, index) => (
-                      <ListGroup.Item
-                        key={index}
-                        action
-                        onClick={() => navigateToChat(chat)}
-                        className="d-flex p-3 shadow border-0 align-items-center"
-                      >
-                        <Image
-                          roundedCircle
-                          src={
-                            chat.userOne.userId != currentUserId
-                              ? chat.userOne.avatar
-                              : chat.userTwo.avatar
-                          }
-                          alt={
-                            chat.userOne.userId != currentUserId
-                              ? `${chat.userOne.firstName} ${chat.userOne.lastName}`
-                              : `${chat.userTwo.firstName} ${chat.userTwo.lastName}`
-                          }
-                          width={50}
-                          height={50}
-                          className="me-3"
-                        />
-                        <div>
-                          <h5>
-                            {chat.userOne.userId != currentUserId
-                              ? `${chat.userOne.firstName} ${chat.userOne.lastName}`
-                              : `${chat.userTwo.firstName} ${chat.userTwo.lastName}`}
-                          </h5>
-                          <p className="mb-0 text-truncate">
-                            {chat["messages"].at(-1).sender.userId ==
-                            currentUserId
-                              ? "أنت: "
-                              : ""}
-                            {chat["messages"].at(-1).message}{" "}
-                            {new Date(
-                              chat["messages"].at(-1).sentAt
-                            ).toLocaleTimeString([], {
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            })}
-                          </p>
-                        </div>
-                      </ListGroup.Item>
-                    ))}
+                    {userChats.map((chat, index) => {
+                      // Parse the last message in the chat
+                      const lastMessage = JSON.parse(
+                        chat["messages"].at(-1).message
+                      );
+
+                      return (
+                        <ListGroup.Item
+                          key={index}
+                          action
+                          onClick={() => navigateToChat(chat)}
+                          className="d-flex p-3 shadow border-0 align-items-center"
+                        >
+                          <Image
+                            roundedCircle
+                            src={
+                              chat.userOne.userId != currentUserId
+                                ? chat.userOne.avatar
+                                : chat.userTwo.avatar
+                            }
+                            alt={
+                              chat.userOne.userId != currentUserId
+                                ? `${chat.userOne.firstName} ${chat.userOne.lastName}`
+                                : `${chat.userTwo.firstName} ${chat.userTwo.lastName}`
+                            }
+                            width={50}
+                            height={50}
+                            className="me-3"
+                          />
+                          <div>
+                            <h5>
+                              {chat.userOne.userId != currentUserId
+                                ? `${chat.userOne.firstName} ${chat.userOne.lastName}`
+                                : `${chat.userTwo.firstName} ${chat.userTwo.lastName}`}
+                            </h5>
+                            <p className="mb-0 text-truncate">
+                              {chat["messages"].at(-1).sender.userId ==
+                              currentUserId
+                                ? "أنت: "
+                                : ""}
+                              {lastMessage.type === "text"
+                                ? lastMessage.data
+                                : lastMessage.data.bookingId == null
+                                ? lastMessage.data.itemType == "product"
+                                  ? "أريد هذا المنتج"
+                                  : "أريد هذه الخدمة"
+                                : "عرض تفاصيل الحجز"}{" "}
+                              {new Date(
+                                chat["messages"].at(-1).sentAt
+                              ).toLocaleTimeString([], {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              })}
+                            </p>
+                          </div>
+                        </ListGroup.Item>
+                      );
+                    })}
                   </ListGroup>
                 ) : (
                   <Col xs={12}>

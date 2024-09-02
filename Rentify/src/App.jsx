@@ -9,6 +9,7 @@ import ResultsPage from "@/views/ResultsPage";
 import ItemDetailsPage from "@/views/ItemDetailsPage";
 import UserPage from "@/views/UserPage";
 import AddItemPage from "@/views/AddItemPage";
+import UpdateItemPage from "@/views/UpdateItemPage";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import ProfilePage from "@/views/ProfilePage";
@@ -35,6 +36,7 @@ function App() {
                 <Route path="/ProfilePage" element={<ProfilePage />} />
                 <Route path="/ChatPage" element={<ChatPage />} />
                 <Route path="/AddItem" element={<AddItemPage />} />
+                <Route path="/UpdateItem/:id" element={<UpdateItemPage />} />
                 <Route path="/Login" element={<LoginPage />} />
                 <Route path="/SignUp" element={<SignupPage />} />
               </Routes>

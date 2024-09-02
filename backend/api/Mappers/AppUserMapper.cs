@@ -25,6 +25,7 @@ namespace api.Mappers
             return new AppUserSpecificDto
             {
                 UserId = appUser.Id,
+                Email = appUser.Email,
                 FirstName = appUser.FirstName,
                 LastName = appUser.LastName,
                 Avatar = appUser.Avatar,

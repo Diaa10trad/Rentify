@@ -1,9 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Col, Form, Button, Stack, Image, CloseButton } from "react-bootstrap";
 import SectionLine from "@/components/SectionLine";
 
-export default function AddItemImageForm({ setImages }) {
-  const [images, setLocalImages] = useState([]);
+export default function UpdateItemImageForm({ images, setImages }) {
+  const [localImages, setLocalImages] = useState([]);
+
+  useEffect(() => {
+    if (images && images.length > 0) {
+      setLocalImages(images);
+    }
+  }, [images]);
 
   const handleChange = (e) => {
     const files = Array.from(e.target.files);
@@ -12,7 +18,7 @@ export default function AddItemImageForm({ setImages }) {
   };
 
   const handleDelete = (index) => {
-    const updatedLocalImages = [...images];
+    const updatedLocalImages = [...localImages];
     updatedLocalImages.splice(index, 1);
     setLocalImages(updatedLocalImages);
     setImages(updatedLocalImages);
@@ -44,38 +50,43 @@ export default function AddItemImageForm({ setImages }) {
             gap={2}
             className="flex-wrap justify-content-start"
           >
-            {images.map((image, index) => (
-              <div
-                key={index}
-                className="border border-2 p-1 position-relative"
-                style={{
-                  width: "100px",
-                  height: "100px",
-                }}
-              >
-                <Image
-                  src={URL.createObjectURL(image)}
-                  alt="Uploaded preview"
-                  fluid
+            {localImages.map((image, index) => {
+              // Use the imageUrl directly if it exists, otherwise create an object URL
+              const src = image.imageUrl || URL.createObjectURL(image);
+
+              return (
+                <div
+                  key={index}
+                  className="border border-2 p-1 position-relative"
                   style={{
-                    objectFit: "cover",
-                    width: "100%",
-                    height: "100%",
+                    width: "100px",
+                    height: "100px",
                   }}
-                />
-                <CloseButton
-                  onClick={() => handleDelete(index)}
-                  className="position-absolute top-0 end-0 m-1"
-                  style={{
-                    backgroundColor: "white",
-                    borderRadius: "50%",
-                  }}
-                />
-              </div>
-            ))}
+                >
+                  <Image
+                    src={src}
+                    alt="Uploaded preview"
+                    fluid
+                    style={{
+                      objectFit: "cover",
+                      width: "100%",
+                      height: "100%",
+                    }}
+                  />
+                  <CloseButton
+                    onClick={() => handleDelete(index)}
+                    className="position-absolute top-0 end-0 m-1"
+                    style={{
+                      backgroundColor: "white",
+                      borderRadius: "50%",
+                    }}
+                  />
+                </div>
+              );
+            })}
             {/* Empty squares */}
-            {images.length < 6 &&
-              [...Array(6 - images.length)].map((_, index) => (
+            {localImages.length < 6 &&
+              [...Array(6 - localImages.length)].map((_, index) => (
                 <div
                   key={`empty-${index}`}
                   className="border border-2 p-1 rounded fw-normal d-flex align-items-center justify-content-center"

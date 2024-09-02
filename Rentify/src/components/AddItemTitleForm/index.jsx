@@ -4,19 +4,31 @@ import SectionLine from "@/components/SectionLine";
 import axios from "axios";
 
 export default function AddItemTitleForm({
+  title,
   setTitle,
+  description,
+  setDescription,
+  categoryId,
   setCategoryId,
   categoryType,
   setCategoryType,
-  setDescription,
-  setAdditionalInfo,
+  refund,
   setRefund,
+  permittedDuration,
   setPermittedDuration,
+  productCondition,
   setProductCondition,
+  quantity,
   setQuantity,
+  priceMonthly,
   setPriceMonthly,
+  priceWeekly,
   setPriceWeekly,
+  priceDaily,
   setPriceDaily,
+  additionalInfo,
+  setAdditionalInfo,
+  errors,
 }) {
   const [categories, setCategories] = useState([]);
 
@@ -52,6 +64,7 @@ export default function AddItemTitleForm({
         <Form.Group className="mb-3" controlId="title">
           <Form.Label>عنوان الإعلان</Form.Label>
           <Form.Control
+            value={title}
             placeholder="العنوان"
             className="border border-0 p-2"
             style={{ backgroundColor: "#f4f9f9" }}
@@ -59,7 +72,11 @@ export default function AddItemTitleForm({
             required
             maxLength={100}
             minLength={5}
+            isInvalid={!!errors.title}
           />
+          <Form.Control.Feedback type="invalid">
+            {errors.title}
+          </Form.Control.Feedback>
         </Form.Group>
 
         {/* Type */}
@@ -81,10 +98,12 @@ export default function AddItemTitleForm({
           <Form.Group className="mb-3" controlId="category">
             <Form.Label>الفئة</Form.Label>
             <Form.Select
+              value={categoryId}
               className="border border-0 p-2"
               style={{ backgroundColor: "#f4f9f9" }}
               onChange={(e) => setCategoryId(e.target.value)} // Pass categoryId to parent
               required
+              isInvalid={!!errors.categoryId}
             >
               <option value="">اختر فئة...</option>
               {categories.map((category) => (
@@ -93,12 +112,16 @@ export default function AddItemTitleForm({
                 </option>
               ))}
             </Form.Select>
+            <Form.Control.Feedback type="invalid">
+              {errors.categoryId}
+            </Form.Control.Feedback>
           </Form.Group>
         )}
         {/* Description */}
         <Form.Group className="mb-3" controlId="description">
           <Form.Label>الوصف</Form.Label>
           <Form.Control
+            value={description}
             as="textarea"
             placeholder="تفاصيل المنتج.."
             className="border border-0 p-2"
@@ -108,13 +131,18 @@ export default function AddItemTitleForm({
             required
             maxLength={1000}
             minLength={20}
+            isInvalid={!!errors.description}
           />
+          <Form.Control.Feedback type="invalid">
+            {errors.description}
+          </Form.Control.Feedback>
         </Form.Group>
 
         {/* Additional Information */}
         <Form.Group className="mb-3" controlId="additionalInfo">
           <Form.Label>معلومات إضافية</Form.Label>
           <Form.Control
+            value={additionalInfo}
             as="textarea"
             placeholder="معلومات إضافية..."
             className="border border-0 p-2"
@@ -134,6 +162,7 @@ export default function AddItemTitleForm({
           >
             <Form.Label>فترة الإلغاء المسموحة</Form.Label>
             <Form.Control
+              value={permittedDuration}
               type="number"
               placeholder="بالساعات"
               className="border border-0 p-2"
@@ -147,6 +176,7 @@ export default function AddItemTitleForm({
           <Form.Group as={Col} xs={5} className="mb-3" controlId="refund">
             <Form.Label>نسبة المبلغ المسترجع</Form.Label>
             <Form.Control
+              value={refund}
               type="number"
               placeholder="0 - 100"
               className="border border-0 p-2"
@@ -165,19 +195,24 @@ export default function AddItemTitleForm({
             <Form.Group className="mb-3" controlId="productCondition">
               <Form.Label>حالة المنتج</Form.Label>
               <Form.Control
+                value={productCondition}
                 placeholder="حالة المنتج..."
                 className="border border-0 p-2"
                 style={{ backgroundColor: "#f4f9f9" }}
                 onChange={(e) => setProductCondition(e.target.value)}
                 required
-                maxLength={50}
+                isInvalid={!!errors.productCondition}
               />
+              <Form.Control.Feedback type="invalid">
+                {errors.productCondition}
+              </Form.Control.Feedback>
             </Form.Group>
 
             {/* Quantity */}
             <Form.Group className="mb-3" controlId="quantity">
               <Form.Label>الكمية</Form.Label>
               <Form.Control
+                value={quantity}
                 type="number"
                 placeholder="الكمية"
                 className="border border-0 p-2"
@@ -185,7 +220,11 @@ export default function AddItemTitleForm({
                 onChange={(e) => setQuantity(e.target.value)}
                 required
                 min={1}
+                isInvalid={!!errors.quantity}
               />
+              <Form.Control.Feedback type="invalid">
+                {errors.quantity}
+              </Form.Control.Feedback>
             </Form.Group>
             <Stack className="flex-row justify-content-between">
               {/* Prices */}
@@ -198,6 +237,7 @@ export default function AddItemTitleForm({
               >
                 <Form.Label>السعر اليومي</Form.Label>
                 <Form.Control
+                  value={priceDaily}
                   type="number"
                   placeholder="بالدينار"
                   className="border border-0 p-2"
@@ -215,6 +255,7 @@ export default function AddItemTitleForm({
               >
                 <Form.Label>السعر الأسبوعي</Form.Label>
                 <Form.Control
+                  value={priceWeekly}
                   type="number"
                   placeholder="بالدينار"
                   className="border border-0 p-2"
@@ -232,6 +273,7 @@ export default function AddItemTitleForm({
               >
                 <Form.Label>السعر الشهري</Form.Label>
                 <Form.Control
+                  value={priceMonthly}
                   type="number"
                   placeholder="بالدينار"
                   className="border border-0 p-2"

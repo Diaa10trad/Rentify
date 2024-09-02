@@ -20,14 +20,49 @@ export default function AddItemPage() {
   const [priceDaily, setPriceDaily] = useState(0);
   const [additionalInfo, setAdditionalInfo] = useState("");
   const [categoryType, setCategoryType] = useState("product");
-  const [images, setImages] = useState([]); // const [longitude, setLongitude] = useState("34.44"); // const [latitude, setLatitude] = useState("54.33");
+  const [images, setImages] = useState([]);
   const [location, setLocation] = useState({ lat: null, lng: null });
+  const [errors, setErrors] = useState({});
+
+  const validateForm = () => {
+    let formErrors = {};
+
+    if (!title || title.length < 5) {
+      formErrors.title = "العنوان يجب أن يكون 5 أحرف على الأقل.";
+    }
+
+    if (!description || description.length < 20) {
+      formErrors.description = "الوصف يجب أن يكون 20 حرفًا على الأقل.";
+    }
+
+    if (!categoryId) {
+      formErrors.categoryId = "يرجى اختيار فئة.";
+    }
+
+    if (categoryType === "product") {
+      if (!productCondition) {
+        formErrors.productCondition = "يجب ملء حالة المنتج.";
+      }
+
+      if (quantity < 1) {
+        formErrors.quantity = "الكمية يجب أن تكون 1 على الأقل.";
+      }
+    }
+
+    return formErrors;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const formErrors = validateForm();
+    if (Object.keys(formErrors).length > 0) {
+      setErrors(formErrors);
+      return;
+    }
+
     let formData = new FormData();
     if (categoryType === "product") {
-      console.log(location.lat);
       formData.append("Title", title);
       formData.append("Description", description);
       formData.append("CategoryId", categoryId);
@@ -96,6 +131,7 @@ export default function AddItemPage() {
           setAdditionalInfo={setAdditionalInfo}
           categoryType={categoryType}
           setCategoryType={setCategoryType}
+          errors={errors}
         />
         <AddItemImageForm setImages={setImages} />
         <AddItemLocationForm setLocation={setLocation} />

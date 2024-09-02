@@ -1,14 +1,40 @@
 import React from "react";
+import { useState, useEffect } from "react";
 import { Nav, Navbar, Button, Image, Container } from "react-bootstrap";
 import LogoImage from "@/assets/images/RentifyLogo.png";
 import profileImagePlaceholder from "@/assets/images/Profile-Image-Placeholder.jpg";
 import "./styles.css";
+import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 
 export default function NavigationBar() {
   const { auth, logout } = useAuth();
   const navigate = useNavigate();
+  const [avatar, setAvatar] = useState(profileImagePlaceholder);
+
+  useEffect(() => {
+    if (auth.isAuthenticated) {
+      fetchUserAvatar();
+    }
+  }, [auth.isAuthenticated]);
+
+  const fetchUserAvatar = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:5079/api/account/data",
+        {
+          headers: {
+            Authorization: `Bearer ${auth.token}`,
+          },
+        }
+      );
+
+      setAvatar(response.data.avatar);
+    } catch (error) {
+      console.error("Failed to fetch avatar:", error);
+    }
+  };
 
   const handleLogout = () => {
     logout();
@@ -60,7 +86,7 @@ export default function NavigationBar() {
                   تسجيل الخروج
                 </Button>
                 <Image
-                  src={/*auth.user.profilePic ||*/ profileImagePlaceholder}
+                  src={avatar}
                   alt="Profile"
                   roundedCircle
                   style={{ width: "40px", height: "40px", cursor: "pointer" }}

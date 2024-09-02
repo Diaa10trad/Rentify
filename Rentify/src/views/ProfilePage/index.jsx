@@ -6,7 +6,6 @@ import {
   Col,
   Tab,
   Nav,
-  ListGroup,
   Form,
   Button,
   Card,
@@ -21,20 +20,6 @@ import { useAuth } from "@/context/AuthContext"; // Custom hook for auth context
 
 function ProfilePage() {
   const { auth } = useAuth(); // Get the auth token from the context
-  const [user, setUser] = useState({
-    fullName: "John Doe",
-    avatar: Person,
-    rating: 4.5,
-    raterCount: 100,
-    email: "john.doe@example.com",
-    phoneNumber: "123-456-7890",
-    idVerification: "",
-    paymentMethods: [
-      { type: "Visa", details: "**** **** **** 1234" },
-      { type: "PayPal", details: "john.doe@example.com" },
-    ],
-  });
-
   const [loadingUserData, setloadingUserData] = useState(false);
   const [error, setError] = useState("");
   const [userData, setUserData] = useState([]);
@@ -81,10 +66,7 @@ function ProfilePage() {
       Great product, highly recommended!
       Great product, highly recommended!
       Great product, highly recomm
-      
-      
-      
-      
+
       ended!`,
     },
     {
@@ -146,11 +128,11 @@ function ProfilePage() {
                   الإعدادات
                 </Nav.Link>
               </Nav.Item>
-              <Nav.Item>
+              {/* <Nav.Item>
                 <Nav.Link eventKey="payment-methods" className="p-3">
                   طرق الدفع
                 </Nav.Link>
-              </Nav.Item>
+              </Nav.Item> */}
               <Nav.Item>
                 <Nav.Link eventKey="favorites" className="p-3 ">
                   المفضلة
@@ -256,10 +238,10 @@ function ProfilePage() {
               </Tab.Pane>
 
               <Tab.Pane eventKey="settings" className="">
-                <SettingsForm user={user} setUser={setUser} />
+                <SettingsForm user={userData} setUser={setUserData} />
               </Tab.Pane>
 
-              <Tab.Pane eventKey="payment-methods">
+              {/* <Tab.Pane eventKey="payment-methods">
                 {user.paymentMethods.map((method, index) => (
                   <div key={index} className="mb-3">
                     <Form.Group>
@@ -270,7 +252,7 @@ function ProfilePage() {
                   </div>
                 ))}
                 <Button variant="success">Add Payment Method</Button>
-              </Tab.Pane>
+              </Tab.Pane> */}
 
               <Tab.Pane eventKey="favorites">
                 {loadingUserData && <p>Loading user data...</p>}
@@ -320,7 +302,7 @@ function ProfilePage() {
                   <Tab.Content className="mt-3">
                     <Tab.Pane eventKey="rented-products">
                       <Row className="g-4 mt-2">
-                        {loadingUserData && <p>Loading user data...</p>}
+                        {loadingUserData && <p>جارِ التحميل...</p>}
                         {error && <p>{error}</p>}
                         {userData.products &&
                           userData.products.map((product, index) => (

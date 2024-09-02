@@ -91,6 +91,7 @@ function ItemDetailsPage() {
                   priceMonthly={details.priceMonthly}
                   title={details.title}
                   createdAt={details.createdAt}
+                  ownerId={details.ownerId}
                 />
               </div>
               <div className="d-none mt-4 d-md-block">
@@ -118,7 +119,7 @@ function ItemDetailsPage() {
               />
               <Link
                 className="text-decoration-none"
-                to={`/user/${details.owner.id}`}
+                to={`/user/${details.ownerId}`}
               >
                 <OwnerCard person={details.owner} />
               </Link>

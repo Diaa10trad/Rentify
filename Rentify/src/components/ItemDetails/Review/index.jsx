@@ -1,5 +1,7 @@
 import { Card, Image } from "react-bootstrap";
 function Review({ review }) {
+  const fullStars = Math.floor(review.rating);
+  const emptyStars = 5 - fullStars;
   return (
     <Card className="mb-3">
       <Card.Body className="p-0">
@@ -8,24 +10,34 @@ function Review({ review }) {
             height={50}
             width={50}
             roundedCircle
-            src={review.image}
-            alt={`${review.reviewerName}`}
+            src={review.reviewer.avatar}
+            alt={`${review.reviewer.firstName} ${review.reviewer.lastName}`}
             className="me-3 object-fit-cover"
           />
           <div>
-            <Card.Title>{review.reviewerName}</Card.Title>
+            <Card.Title>
+              {review.reviewer.firstName} {review.reviewer.lastName}
+            </Card.Title>
             <Card.Subtitle className="text-white-50">
-              {review.reviewDate}
+              {new Date(review.createdAt).toLocaleDateString()}
             </Card.Subtitle>
           </div>
         </div>
 
         <Card.Text className="d-flex align-items-center gap-1 px-3 mb-0">
-          <span className="fa fa-star text-primary"></span>
-          <span className="fa fa-star text-primary"></span>
-          <span className="fa fa-star text-primary"></span>
-          <span className="fa fa-star text-primary"></span>
-          <span className="fa fa-star"></span>
+          {Array(fullStars)
+            .fill()
+            .map((_, index) => (
+              <span
+                key={`full-${index}`}
+                className="fa fa-star text-primary"
+              ></span>
+            ))}
+          {Array(emptyStars)
+            .fill()
+            .map((_, index) => (
+              <span key={`empty-${index}`} className="fa fa-star"></span>
+            ))}
         </Card.Text>
 
         <Card.Text className="p-3">{review.comment}</Card.Text>

@@ -27,7 +27,7 @@ function BookingForm({
     itemId: parseInt(id),
     startDate: "",
     endDate: "",
-    finalPrice: 0,
+    finalPrice: Number(0.0),
     additionalInfo: "",
     status: "pending",
     refund: cancellationPolicy.refund,
@@ -60,9 +60,7 @@ function BookingForm({
       navigate("/Login");
     }
   };
-  useEffect(() => {
-    console.log(bookingDetails);
-  }, [bookingDetails]);
+
   return (
     <Form className="" onSubmit={goToChat}>
       {isProductPage && <DateFormGroup onDateChange={handleDateChange} />}

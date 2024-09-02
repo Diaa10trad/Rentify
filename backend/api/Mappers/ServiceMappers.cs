@@ -35,7 +35,9 @@ namespace api.Mappers
                 CreatedAt = serviceModel.CreatedAt,
                 CancellationPolicy = serviceModel.CancellationPolicy,
                 serviceImages = serviceModel.Images.Select(image => image.ToServiceImageDtoFromServiceImage()).ToList(),
-                Reviews = serviceModel.Reviews.Select(r => r.ToReviewDtoFromReview()).ToList()
+                Reviews = serviceModel.Reviews.Select(r => r.ToReviewDtoFromReview()).ToList(),
+                TotalReviews = serviceModel.Reviews.Count(),
+                AverageRating = serviceModel.Reviews.Any() ? serviceModel.Reviews.Average(review => review.Rating) : 0,
             };
         }
         public static Service ToServiceFromServiceCreateDto(this ServiceCreateDto serviceCreateDto)

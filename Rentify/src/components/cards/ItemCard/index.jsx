@@ -2,6 +2,7 @@ import Stack from "react-bootstrap/Stack";
 import Card from "react-bootstrap/Card";
 import Badge from "react-bootstrap/Badge";
 import FavoriteButton from "@/components/FavoriteButton";
+import StarRating from "@/components/StarRating";
 import Button from "react-bootstrap/Button";
 import { LinkContainer } from "react-router-bootstrap";
 import "./style.css";
@@ -37,16 +38,11 @@ export default function ItemCard({ type, details }) {
         </Card.ImgOverlay>
       </Card>
       <Card.Body>
-        <Card.Text className="d-flex align-items-center gap-1">
-          <span className="fa fa-star text-primary"></span>
-          <span className="fa fa-star text-primary"></span>
-          <span className="fa fa-star text-primary"></span>
-          <span className="fa fa-star text-primary"></span>
-          <span className="fa fa-star"></span>
-          <span>4 ({details.reviews.length})</span>
-        </Card.Text>
+        <StarRating
+          totalReviews={details.totalReviews}
+          averageRating={details.averageRating}
+        />
         <Card.Title>{details.title}</Card.Title>
-
         <Card.Text>
           {truncateText(details.description, 20)}
           <div className="d-grid gap-2">

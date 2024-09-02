@@ -16,6 +16,7 @@ namespace api.Mappers
                 UserId = appUser.Id,
                 FirstName = appUser.FirstName,
                 LastName = appUser.LastName,
+                Avatar = appUser.Avatar,
 
             };
         }

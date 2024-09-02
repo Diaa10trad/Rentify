@@ -1,5 +1,6 @@
 import { Row, Col, Card, Button } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
+import ChatShowBookingDetails from "@/components/chat/ChatShowBookingDetails";
 function ChatMessage({ message }) {
   return (
     <Row
@@ -50,7 +51,9 @@ function ChatMessage({ message }) {
                       </LinkContainer>
                     )
                   ) : (
-                    "شاهد"
+                    <ChatShowBookingDetails
+                      bookingDetails={message.message.data}
+                    />
                   )}
                 </Card.Text>
               </Col>

@@ -44,7 +44,7 @@ function LoginPage() {
     <Container>
       <Row
         className="justify-content-center align-items-center"
-        style={{ height: "80vh" }}
+        style={{ minHeight: "100vh" }}
       >
         <Col xs={11} md={8} className="shadow-lg p-4 rounded-5 ">
           <Stack className="align-items-center mb-2">

@@ -22,10 +22,6 @@ namespace api.Models
         public int? ServiceId { get; set; }
         public Service? Service { get; set; }
 
-        // [ForeignKey("Product")]
-        // public int? ProductId { get; set; }
-        // public Product Product { get; set; } = null!;
-
         [Range(1, 5)]
         public int Rating { get; set; }
 

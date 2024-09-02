@@ -40,7 +40,8 @@ namespace api.Repositories
             var serviceModel = await _dbContext.Services.Include(S => S.CancellationPolicy)
                                                         .Include(S => S.Location)
                                                         .Include(S => S.Images)
-                                                        .Include(s => s.Reviews).FirstOrDefaultAsync(S => S.ServiceId == id);
+                                                        .Include(s => s.Reviews)
+                                                        .FirstOrDefaultAsync(S => S.ServiceId == id);
             if (serviceModel == null)
 
             {
@@ -80,6 +81,7 @@ namespace api.Repositories
                                            .Include(S => S.Category)
                                            .Include(S => S.Reviews)
                                            .ThenInclude(r => r.Reviewer)
+
                                            .ToListAsync();
 
         }
@@ -93,6 +95,7 @@ namespace api.Repositories
                                             .Include(S => S.Images)
                                             .Include(S => S.Reviews)
                                             .ThenInclude(r => r.Reviewer)
+
                                             .FirstOrDefaultAsync(service => service.ServiceId == id);
 
         }

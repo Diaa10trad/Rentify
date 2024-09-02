@@ -26,7 +26,8 @@ namespace api.Dtos.Service
 
                 public ICollection<ReviewDto> Reviews { get; set; }
 
-
+                public int TotalReviews { get; set; }
+                public double AverageRating { get; set; }
                 public List<ServiceImageDto> serviceImages { get; set; }
 
         }

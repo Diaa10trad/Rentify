@@ -141,6 +141,7 @@ namespace api.Hubs
                 if (bookingModel != null)
                 {
                     bookingData.bookingId = bookingModel.BookingId;
+
                     var updatedMessage = JsonSerializer.Serialize(bookingMessage);
 
                     await _chatService.AddMessageToChatAsync(chatId, userId, updatedMessage);

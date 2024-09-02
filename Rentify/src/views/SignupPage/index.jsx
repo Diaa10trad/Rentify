@@ -67,8 +67,8 @@ function SignupPage() {
   return (
     <Container>
       <Row
-        className="justify-content-center align-items-center"
-        // style={{ height: "100vh" }}
+        className="justify-content-center align-items-center my-4"
+        style={{ minHeight: "100vh" }}
       >
         <Col xs={11} md={8} className="shadow-lg p-4 rounded-5 ">
           <Stack className="align-items-center mb-2">

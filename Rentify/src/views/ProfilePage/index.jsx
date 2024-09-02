@@ -55,6 +55,14 @@ function ProfilePage() {
     };
     navigate("/chatpage", { state: data });
   };
+  const defaultActiveKey = window.location.hash
+    ? window.location.hash.substring(1)
+    : "view-info";
+
+  const handleSelect = (eventKey) => {
+    window.location.hash = eventKey;
+  };
+
   useEffect(() => {
     const fetchUserData = async () => {
       if (!auth.isAuthenticated) return; // Ensure the user is authenticated
@@ -146,9 +154,14 @@ function ProfilePage() {
       comment: "Absolutely love it! Best purchase ever.",
     },
   ];
+  console.log(userData);
   return (
     <Container fluid>
-      <Tab.Container defaultActiveKey="view-info">
+      <Tab.Container
+        defaultActiveKey="view-info"
+        activeKey={defaultActiveKey}
+        onSelect={handleSelect}
+      >
         <Row>
           <Col sm={3}>
             <Nav variant="pills" className="flex-column">
@@ -295,9 +308,10 @@ function ProfilePage() {
                             style={{ maxHeight: "100vh" }}
                             className="overflow-y-auto pe-3 my-2"
                           >
-                            {fakeReviews.map((review, index) => (
-                              <Review review={review} key={index} />
-                            ))}
+                            {/* {userData.products.reviews.length > 0 &&
+                              userData.products.reviews.map((review, index) => (
+                                <Review review={review} key={index} />
+                              ))} */}
                           </div>
                         </Tab.Pane>
                       </Tab.Content>
@@ -324,10 +338,10 @@ function ProfilePage() {
                 ))}
                 <Button variant="success">Add Payment Method</Button>
               </Tab.Pane>
-              <Tab.Pane style={{ height: "100vh" }} eventKey="favorites">
+              <Tab.Pane style={{ minHeight: "100vh" }} eventKey="favorites">
                 {loadingUserData && <p>Loading user data...</p>}
                 {error && <p>{error}</p>}
-                <Row className="g-4 mt-2">
+                <Row className="g-4">
                   {userData.favorites && userData.favorites.length > 0 ? (
                     userData.favorites.map((item, index) => {
                       return (

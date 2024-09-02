@@ -10,5 +10,6 @@ namespace api.Dtos.AppUser
         public string UserId { get; set; } = string.Empty;
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
+        public string Avatar { get; set; }
     }
 }

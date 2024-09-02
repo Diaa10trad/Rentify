@@ -1,0 +1,4 @@
+.flip-horizontal {
+  display: inline-block;
+  transform: scaleX(-1);
+}

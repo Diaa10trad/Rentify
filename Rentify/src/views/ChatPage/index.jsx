@@ -42,9 +42,24 @@ const ChatPage = () => {
             const chat = await startChat(connection, senderId, receiverId);
             setChat(chat);
 
-            const formattedMessages = formatMessages(chat.messages, senderId);
-
-            var isSameBooking = false;
+            var formattedMessages = formatMessages(chat.messages, senderId);
+            formattedMessages = formattedMessages.map((fmsg) => {
+              if (fmsg.message.type === "booking") {
+                return {
+                  ...fmsg,
+                  message: {
+                    ...fmsg.message,
+                    data: {
+                      ...fmsg.message.data,
+                      startDate: fmsg.message.data.startDate.split("T")[0],
+                      endDate: fmsg.message.data.endDate.split("T")[0],
+                    },
+                  },
+                };
+              }
+              return fmsg;
+            });
+            var sameBookingExistsOrNoBooking = false;
             for (const fmsg of formattedMessages) {
               if (fmsg.message.type === "booking") {
                 var startDateMatches;
@@ -56,19 +71,20 @@ const ChatPage = () => {
                   endDateMatches =
                     fmsg.message.data.endDate === bookingDetails.endDate;
                 } else {
-                  isSameBooking = true;
+                  sameBookingExistsOrNoBooking = true;
                   setBookingDetails(fmsg.message.data);
                 }
 
                 if (startDateMatches && endDateMatches) {
-                  isSameBooking = true;
+                  sameBookingExistsOrNoBooking = true;
 
                   setBookingDetails(fmsg.message.data);
                 }
               }
             }
 
-            if (!isSameBooking) {
+            if (!sameBookingExistsOrNoBooking) {
+              //then send the initial booking details that came from the item details page
               var messageData = JSON.stringify({
                 data: bookingDetails,
                 type: "booking",
@@ -91,8 +107,16 @@ const ChatPage = () => {
             console.log(formattedMessages);
 
             connection.on("ReceiveMessage", (user, receivedMessage) => {
+              const parsedMessage = JSON.parse(receivedMessage);
+
+              if (parsedMessage.type === "booking") {
+                parsedMessage.data.startDate =
+                  parsedMessage.data.startDate.split("T")[0];
+                parsedMessage.data.endDate =
+                  parsedMessage.data.endDate.split("T")[0];
+              }
               const newMessage = {
-                message: JSON.parse(receivedMessage),
+                message: parsedMessage,
                 sender: user,
                 isSender: user === senderId,
                 sentAt: new Date().toLocaleTimeString([], {
@@ -101,11 +125,9 @@ const ChatPage = () => {
                 }),
               };
               setMessages((prevMessages) => [...prevMessages, newMessage]);
+
               if (newMessage.message.type == "booking")
-                setBookingDetails({
-                  ...prevMessages,
-                  bookingId: newMessage.message.data.bookingId,
-                });
+                setBookingDetails(newMessage.message.data);
             });
           } catch (err) {
             console.log(err);

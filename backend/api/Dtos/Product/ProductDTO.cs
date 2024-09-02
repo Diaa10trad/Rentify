@@ -28,6 +28,8 @@ namespace api.Dtos.Product
         public decimal PriceWeekly { get; set; }
         public decimal PriceDaily { get; set; }
         public ICollection<ReviewDto> Reviews { get; set; }
+        public int TotalReviews { get; set; }
+        public double AverageRating { get; set; }
 
         public List<ProductImageDto> productImages { get; set; }
 

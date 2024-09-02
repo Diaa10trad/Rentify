@@ -60,6 +60,7 @@ function ItemDetailsPage() {
         console.log(response.data);
       })
       .catch((error) => {
+        console.log(error);
         setError(error);
       });
   }, []); // Empty dependency array means this effect runs once on mount
@@ -139,7 +140,11 @@ function ItemDetailsPage() {
 
           <Row className="p-3">
             <Col xs={12}>
-              <ReviewList />
+              <ReviewList
+                reviews={details.reviews}
+                totalReviews={details.totalReviews}
+                averageRating={details.averageRating}
+              />
             </Col>
           </Row>
         </Container>

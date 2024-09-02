@@ -3,10 +3,7 @@ import { Container, Row, Col, Alert } from "react-bootstrap";
 
 const NoContentBox = ({ title, text }) => {
   return (
-    <Container
-      className="d-flex justify-content-center align-items-center"
-      style={{ height: "100vh" }}
-    >
+    <Container className="d-flex justify-content-center align-items-center">
       <Row>
         <Col>
           <Alert

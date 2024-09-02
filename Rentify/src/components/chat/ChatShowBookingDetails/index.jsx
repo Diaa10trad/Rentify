@@ -1,34 +1,37 @@
 import React, { useState } from "react";
 import { Button, Modal, Form } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import { getToken, getSenderId } from "@/utils/AuthUtils";
-function ChatBookingForm({ bookingDetails, setBookingDetails, onSend }) {
+function ChatShowBookingDetails({ bookingDetails }) {
   const token = getToken();
   const senderId = getSenderId(token);
+  const navigate = useNavigate();
 
   const [show, setShow] = useState(false);
 
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
 
-  const handleChange = (e) => {
-    setBookingDetails({
-      ...bookingDetails,
-      [e.target.name]: e.target.value,
-    });
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    onSend(bookingDetails, "booking");
+    const path = `/CompleteBookingPage/${bookingDetails.itemType}/${bookingDetails.bookingId}`;
+
+    navigate(path);
 
     handleClose();
   };
 
   return (
     <>
-      <Button variant="primary" className="text-white" onClick={handleShow}>
-        إنشاء الحجز
+      <Button
+        className={
+          bookingDetails.renterId == senderId ? "text-black" : "text-white"
+        }
+        variant="link"
+        onClick={handleShow}
+      >
+        عرض تفاصيل الحجز
       </Button>
 
       <Modal show={show} onHide={handleClose}>
@@ -42,8 +45,8 @@ function ChatBookingForm({ bookingDetails, setBookingDetails, onSend }) {
               <Form.Control
                 type="date"
                 name="startDate"
+                disabled
                 value={bookingDetails.startDate}
-                onChange={handleChange}
                 required
               />
             </Form.Group>
@@ -52,8 +55,8 @@ function ChatBookingForm({ bookingDetails, setBookingDetails, onSend }) {
               <Form.Control
                 type="date"
                 name="endDate"
+                disabled
                 value={bookingDetails.endDate}
-                onChange={handleChange}
                 required
               />
             </Form.Group>
@@ -62,8 +65,8 @@ function ChatBookingForm({ bookingDetails, setBookingDetails, onSend }) {
               <Form.Control
                 type="number"
                 name="finalPrice"
+                disabled
                 value={bookingDetails.finalPrice}
-                onChange={handleChange}
                 required
                 min="0"
                 step="0.05"
@@ -74,8 +77,8 @@ function ChatBookingForm({ bookingDetails, setBookingDetails, onSend }) {
               <Form.Control
                 as="textarea"
                 name="additionalInfo"
+                disabled
                 value={bookingDetails.additionalInfo}
-                onChange={handleChange}
               />
             </Form.Group>
             <Form.Group controlId="refund">
@@ -83,8 +86,8 @@ function ChatBookingForm({ bookingDetails, setBookingDetails, onSend }) {
               <Form.Control
                 type="number"
                 name="refund"
+                disabled
                 value={bookingDetails.refund}
-                onChange={handleChange}
                 required
                 min="0"
                 max="100"
@@ -95,16 +98,22 @@ function ChatBookingForm({ bookingDetails, setBookingDetails, onSend }) {
               <Form.Control
                 type="number"
                 name="permittedDuration"
+                disabled
                 value={bookingDetails.permittedDuration}
-                onChange={handleChange}
                 required
                 min="0"
               />
             </Form.Group>
 
-            <Button variant="primary" type="submit" className="mt-3 text-white">
-              حفظ وإرسال الحجز
-            </Button>
+            {bookingDetails.renterId === senderId && (
+              <Button
+                variant="primary"
+                type="submit"
+                className="mt-3 text-white"
+              >
+                الموافقة على الحجز
+              </Button>
+            )}
           </Form>
         </Modal.Body>
       </Modal>
@@ -112,4 +121,4 @@ function ChatBookingForm({ bookingDetails, setBookingDetails, onSend }) {
   );
 }
 
-export default ChatBookingForm;
+export default ChatShowBookingDetails;

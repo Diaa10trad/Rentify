@@ -39,7 +39,8 @@ namespace api.Mappers
                 PriceWeekly = product.PriceWeekly,
                 PriceDaily = product.PriceDaily,
                 Reviews = product.Reviews.Select(review => review.ToReviewDtoFromReview()).ToList(),
-
+                TotalReviews = product.Reviews.Count(),
+                AverageRating = product.Reviews.Any() ? product.Reviews.Average(review => review.Rating) : 0,
                 productImages = product.Images.Select(image => image.ToProductImageDtoFromProductImage()).ToList(),
 
             };

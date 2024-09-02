@@ -16,6 +16,7 @@ import ChatPage from "@/views/ChatPage";
 import LoginPage from "@/views/LoginPage";
 import SignupPage from "@/views/SignupPage";
 import { AuthProvider } from "@/context/AuthContext";
+import CompleteBookingPage from "@/views/CompleteBookingPage";
 function App() {
   return (
     <>
@@ -34,6 +35,10 @@ function App() {
                 <Route path="/User/:id" element={<UserPage />} />
                 <Route path="/ProfilePage" element={<ProfilePage />} />
                 <Route path="/ChatPage" element={<ChatPage />} />
+                <Route
+                  path="/CompleteBookingPage/:itemType/:bookingId"
+                  element={<CompleteBookingPage />}
+                />
                 <Route path="/AddItem" element={<AddItemPage />} />
                 <Route path="/Login" element={<LoginPage />} />
                 <Route path="/SignUp" element={<SignupPage />} />

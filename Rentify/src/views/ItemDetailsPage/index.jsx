@@ -13,6 +13,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getToken } from "@/utils/AuthUtils";
 import axios from "axios";
+
 function ItemDetailsPage() {
   const location = useLocation();
   const pathname = location.pathname;
@@ -22,12 +23,9 @@ function ItemDetailsPage() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Replace with your actual API endpoint
     const apiUrl = `http://localhost:5079/api${pathname}`;
-
-    // Replace with your actual JWT token
     const token = getToken();
-    // Make the GET request with the Authorization header
+
     axios
       .get(apiUrl, {
         headers: {
@@ -36,6 +34,7 @@ function ItemDetailsPage() {
       })
       .then((response) => {
         setDetails(response.data);
+
         setCancellationPolicy([
           {
             label: "نسبة المبلغ المسترجع",
@@ -46,6 +45,7 @@ function ItemDetailsPage() {
             value: `الإلغاء مسموح به قبل ${response.data.cancellationPolicy.permittedDuration} ساعة من موعد البدء.`,
           },
         ]);
+
         response.data.category.categoryType == "product"
           ? setDetailsInfo([
               { label: "الفئة", value: response.data.category.categoryName },
@@ -69,19 +69,19 @@ function ItemDetailsPage() {
     return <div>Error: {error.message}</div>;
   }
 
+  const generateEmbedMapUrl = (lat, lng) => {
+    return `https://www.google.com/maps/embed/v1/place?key=AIzaSyB9viUWIB-aGvtEaM_rb2jGh7rm_2AtPQg&q=${lat},${lng}`;
+  };
+
   return (
-    <Container fluid>
+    <Container fluid className="mb-5">
       {details ? (
-        <Container
-          className=""
-          // style={{ backgroundColor: "#f0f0f0" }}
-          fluid
-        >
+        <Container fluid>
           <Row className="mb-3">
             <HeadingSection title={"تفاصيل الإعلان"} />
           </Row>
           <Row className="p-3">
-            <Col xs={12} md={7} className="">
+            <Col xs={12} md={7}>
               <ImagesCarousel
                 images={details[`${details.category.categoryType}Images`]}
               />
@@ -106,7 +106,7 @@ function ItemDetailsPage() {
                 />
               </div>
             </Col>
-            <Col xs={12} md={5} className="">
+            <Col xs={12} md={5}>
               <div className="d-block mb-4 d-md-none">
                 <TextSection title={"الوصف"} text={details.description} />
                 <TextSection
@@ -126,18 +126,20 @@ function ItemDetailsPage() {
                 />
               </div>
               <InfoRowList infoData={detailsInfo} />
-
               <InfoRowList
                 infoData={cancellationPolicy}
                 title={"سياسة الإلغاء"}
               />
-
-              <Link className="text-decoration-none" to={"/user/1"}>
+              <Link
+                className="text-decoration-none"
+                to={`/user/${details.ownerId}`}
+              >
                 <OwnerCard person={details.owner} />
               </Link>
             </Col>
           </Row>
 
+          {/* Embedded Map */}
           <Row className="p-3">
             <Col xs={12}>
               <ReviewList
@@ -146,6 +148,24 @@ function ItemDetailsPage() {
                 averageRating={details.averageRating}
               />
             </Col>
+            {details.location.latitude && details.location.longitude && (
+              <Col xs={12} md={12} lg={6} xl={4}>
+                <h5>الموقع:</h5>
+                <iframe
+                  width="600"
+                  height="450"
+                  frameBorder="0"
+                  style={{ border: 0 }}
+                  src={generateEmbedMapUrl(
+                    details.location.latitude,
+                    details.location.longitude
+                  )}
+                  allowFullScreen=""
+                  aria-hidden="false"
+                  tabIndex="0"
+                ></iframe>
+              </Col>
+            )}
           </Row>
         </Container>
       ) : (

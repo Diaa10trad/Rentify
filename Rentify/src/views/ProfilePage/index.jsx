@@ -6,7 +6,6 @@ import {
   Col,
   Tab,
   Nav,
-  ListGroup,
   Form,
   Button,
   Card,
@@ -15,6 +14,7 @@ import {
 } from "react-bootstrap";
 import Person from "@/assets/images/Person.jpg";
 import ItemCard from "@/components/cards/ItemCard";
+import RentedItemsCard from "@/components/cards/RentedItemsCard";
 import Review from "@/components/ItemDetails/Review";
 import SettingsForm from "@/components/Profile/SettingsForm";
 import { useAuth } from "@/context/AuthContext"; // Custom hook for auth context
@@ -24,20 +24,6 @@ import NoContentBox from "@/components/NoContentBox";
 function ProfilePage() {
   const navigate = useNavigate();
   const { auth } = useAuth(); // Get the auth token from the context
-  const [user, setUser] = useState({
-    fullName: "John Doe",
-    avatar: Person,
-    rating: 4.5,
-    raterCount: 100,
-    email: "john.doe@example.com",
-    phoneNumber: "123-456-7890",
-    idVerification: "",
-    paymentMethods: [
-      { type: "Visa", details: "**** **** **** 1234" },
-      { type: "PayPal", details: "john.doe@example.com" },
-    ],
-  });
-
   const [loadingUserData, setloadingUserData] = useState(false);
   const [error, setError] = useState("");
   const [userData, setUserData] = useState([]);
@@ -105,10 +91,7 @@ function ProfilePage() {
       Great product, highly recommended!
       Great product, highly recommended!
       Great product, highly recomm
-      
-      
-      
-      
+
       ended!`,
     },
     {
@@ -164,7 +147,7 @@ function ProfilePage() {
       >
         <Row>
           <Col sm={3}>
-            <Nav variant="pills" className="flex-column">
+            <Nav variant="pills" className="flex-column gap-2 mt-3 mb-5">
               <Nav.Item>
                 <Nav.Link eventKey="view-info" className="p-3">
                   عرض الملف الشخصي
@@ -175,19 +158,29 @@ function ProfilePage() {
                   الإعدادات
                 </Nav.Link>
               </Nav.Item>
-              <Nav.Item>
+              {/* <Nav.Item>
                 <Nav.Link eventKey="payment-methods" className="p-3">
                   طرق الدفع
                 </Nav.Link>
-              </Nav.Item>
+              </Nav.Item> */}
               <Nav.Item>
-                <Nav.Link eventKey="favorites" className="p-3">
+                <Nav.Link eventKey="favorites" className="p-3 ">
                   المفضلة
                 </Nav.Link>
               </Nav.Item>
               <Nav.Item>
                 <Nav.Link eventKey="chats" className="p-3">
                   الدردشات
+                </Nav.Link>
+              </Nav.Item>
+              <Nav.Item>
+                <Nav.Link eventKey="rented-items" className="p-3">
+                  السلع والخدمات المستأجرة
+                </Nav.Link>
+              </Nav.Item>
+              <Nav.Item>
+                <Nav.Link eventKey="rented-out-items" className="p-3">
+                  السلع والخدمات المؤجّرة
                 </Nav.Link>
               </Nav.Item>
             </Nav>
@@ -275,8 +268,7 @@ function ProfilePage() {
                           eventKey="products"
                         >
                           <Row className="g-4 mt-2">
-                            {loadingUserData && <p>Loading user data...</p>}
-
+                            {loadingUserData && <p>جارِ التحميل...</p>}
                             {error && <p>{error}</p>}
                             {userData.products &&
                             userData.products.length > 0 ? (
@@ -326,7 +318,8 @@ function ProfilePage() {
               >
                 <SettingsForm user={user} setUser={setUser} />
               </Tab.Pane>
-              <Tab.Pane eventKey="payment-methods">
+
+              {/* <Tab.Pane eventKey="payment-methods">
                 {user.paymentMethods.map((method, index) => (
                   <div key={index} className="mb-3">
                     <Form.Group>
@@ -337,7 +330,8 @@ function ProfilePage() {
                   </div>
                 ))}
                 <Button variant="success">Add Payment Method</Button>
-              </Tab.Pane>
+              </Tab.Pane> */}
+
               <Tab.Pane style={{ minHeight: "100vh" }} eventKey="favorites">
                 {loadingUserData && <p>Loading user data...</p>}
                 {error && <p>{error}</p>}
@@ -441,6 +435,175 @@ function ProfilePage() {
                     />
                   </Col>
                 )}
+              </Tab.Pane>
+
+              <Tab.Pane eventKey="rented-items" className="mb-5">
+                <Tab.Container defaultActiveKey="rented-products">
+                  <Nav
+                    variant="pills"
+                    className="justify-content-center gap-3 mt-3"
+                  >
+                    <Nav.Item className="w-25 text-center">
+                      <Nav.Link
+                        eventKey="rented-products"
+                        className="rounded-pill"
+                      >
+                        منتجات
+                      </Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item className="w-25 text-center">
+                      <Nav.Link
+                        eventKey="rented-services"
+                        className="rounded-pill"
+                      >
+                        خدمات
+                      </Nav.Link>
+                    </Nav.Item>
+                  </Nav>
+                  <Tab.Content className="mt-3">
+                    <Tab.Pane eventKey="rented-products">
+                      <Row className="g-4 mt-2">
+                        {loadingUserData && <p>جارِ التحميل...</p>}
+                        {error && <p>{error}</p>}
+                        {userData.products &&
+                          userData.products.map((product, index) => (
+                            <Col key={index} xs={12}>
+                              <RentedItemsCard
+                                type={"product"}
+                                details={product}
+                              />
+                            </Col>
+                          ))}
+                        {/* {loadingUserData && <p>Loading user data...</p>}
+                        {error && <p>{error}</p>}
+                        {userData.rentedItems.products &&
+                          userData.rentedItems.products.map(
+                            (rentedProduct, index) => (
+                              <Col key={index} xs={12} md={6} xxl={4}>
+                                <ItemCard
+                                  type={"product"}
+                                  details={rentedProduct.product}
+                                />
+                              </Col>
+                            )
+                          )} */}
+                      </Row>
+                    </Tab.Pane>
+                    <Tab.Pane eventKey="rented-services">
+                      <Row className="g-4 mt-2">
+                        {loadingUserData && <p>جارِ التحميل...</p>}
+                        {error && <p>{error}</p>}
+                        {userData.services &&
+                          userData.services.map((service, index) => (
+                            <Col key={index} xs={12}>
+                              <RentedItemsCard
+                                type={"service"}
+                                details={service}
+                              />
+                            </Col>
+                          ))}
+                        {/* {loadingUserData && <p>Loading user data...</p>}
+                        {error && <p>{error}</p>}
+                        {userData.rentedItems.services &&
+                          userData.rentedItems.services.map(
+                            (rentedService, index) => (
+                              <Col key={index} xs={12} md={6} xxl={4}>
+                                <ItemCard
+                                  type={"service"}
+                                  details={rentedService.service}
+                                />
+                              </Col>
+                            )
+                          )} */}
+                      </Row>
+                    </Tab.Pane>
+                  </Tab.Content>
+                </Tab.Container>
+              </Tab.Pane>
+
+              <Tab.Pane eventKey="rented-out-items" className="mb-5">
+                <Tab.Container defaultActiveKey="rented-out-products">
+                  <Nav
+                    variant="pills"
+                    className="justify-content-center gap-3 mt-3"
+                  >
+                    <Nav.Item className="w-25 text-center">
+                      <Nav.Link
+                        eventKey="rented-out-products"
+                        className="rounded-pill"
+                      >
+                        منتجات
+                      </Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item className="w-25 text-center">
+                      <Nav.Link
+                        eventKey="rented-out-services"
+                        className="rounded-pill"
+                      >
+                        خدمات
+                      </Nav.Link>
+                    </Nav.Item>
+                  </Nav>
+
+                  <Tab.Content className="mt-3">
+                    <Tab.Pane eventKey="rented-out-products">
+                      <Row className="g-4 mt-2">
+                        {loadingUserData && <p>جارِ التحميل...</p>}
+                        {error && <p>{error}</p>}
+                        {userData.products &&
+                          userData.products.map((product, index) => (
+                            <Col key={index} xs={12}>
+                              <RentedItemsCard
+                                type={"product"}
+                                details={product}
+                              />
+                            </Col>
+                          ))}
+                        {/* {loadingUserData && <p>Loading user data...</p>}
+                      {error && <p>{error}</p>}
+                      {userData.rentedOutItems.products &&
+                        userData.rentedOutItems.products.map(
+                          (rentedOutProduct, index) => (
+                            <Col key={index} xs={12} md={6} xxl={4}>
+                              <ItemCard
+                                type={"product"}
+                                details={rentedOutProduct.product}
+                              />
+                            </Col>
+                          )
+                        )} */}
+                      </Row>
+                    </Tab.Pane>
+                    <Tab.Pane eventKey="rented-out-services">
+                      <Row className="g-4 mt-2">
+                        {loadingUserData && <p>جارِ التحميل...</p>}
+                        {error && <p>{error}</p>}
+                        {userData.services &&
+                          userData.services.map((service, index) => (
+                            <Col key={index} xs={12}>
+                              <RentedItemsCard
+                                type={"service"}
+                                details={service}
+                              />
+                            </Col>
+                          ))}
+                        {/* {loadingUserData && <p>Loading user data...</p>}
+                      {error && <p>{error}</p>}
+                      {userData.rentedOutItems.services &&
+                        userData.rentedOutItems.services.map(
+                          (rentedOutService, index) => (
+                            <Col key={index} xs={12} md={6} xxl={4}>
+                              <ItemCard
+                                type={"service"}
+                                details={rentedOutService.service}
+                              />
+                            </Col>
+                          )
+                        )} */}
+                      </Row>
+                    </Tab.Pane>
+                  </Tab.Content>
+                </Tab.Container>
               </Tab.Pane>
             </Tab.Content>
           </Col>

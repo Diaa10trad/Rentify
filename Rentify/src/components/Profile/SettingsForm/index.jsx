@@ -1,5 +1,7 @@
 import { Form, Button } from "react-bootstrap";
 import ChangeImage from "@/components/Profile/ChangeImage";
+import axios from "axios";
+import { getToken } from "@/utils/AuthUtils";
 function SettingsForm({ user, setUser }) {
   const handleAvatarChange = (newAvatar) => {
     setUser((prevUser) => ({
@@ -7,8 +9,41 @@ function SettingsForm({ user, setUser }) {
       avatar: newAvatar,
     }));
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const token = getToken();
+    try {
+      const formData = new FormData();
+
+      formData.append("email", user.email);
+      formData.append("phoneNumber", user.phoneNumber);
+      formData.append("oldPassword", user.oldPassword);
+      formData.append("newPassword", user.newPassword);
+      formData.append("avatar", user.avatar);
+
+      const response = await axios.put(
+        "http://localhost:5079/api/account/update",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include the auth token
+            "Content-Type": "multipart/form-data", // Since we are uploading an image
+          },
+        }
+      );
+
+      setUser(response.data);
+      alert("تم تحديث الإعدادات.");
+    } catch (error) {
+      // console.error("تم", error);
+      // alert("فشل تحديث الإعدادات، جرب مرة أخرى");
+    }
+  };
+
   return (
-    <Form>
+    <Form onSubmit={handleSubmit}>
       <ChangeImage
         userAvatar={user.avatar}
         setUserAvatar={handleAvatarChange}
@@ -19,7 +54,9 @@ function SettingsForm({ user, setUser }) {
           type="email"
           name="email"
           value={user.email}
-          onChange={(e) => setUser({ ...prev, email: e.target.value })}
+          onChange={(e) =>
+            setUser((prev) => ({ ...prev, email: e.target.value }))
+          }
         />
       </Form.Group>
       <Form.Group className="m-4">
@@ -28,16 +65,31 @@ function SettingsForm({ user, setUser }) {
           type="text"
           name="phoneNumber"
           value={user.phoneNumber}
-          onChange={(e) => setUser({ ...prev, phoneNumber: e.target.value })}
+          onChange={(e) =>
+            setUser((prev) => ({ ...prev, phoneNumber: e.target.value }))
+          }
         />
       </Form.Group>
       <Form.Group className="m-4">
-        <Form.Label>كلمة السر</Form.Label>
+        <Form.Label>كلمة السر الحالية</Form.Label>
         <Form.Control
           type="password"
-          name="password"
-          value={user.password}
-          onChange={(e) => setUser({ ...prev, password: e.target.value })}
+          name="oldPassword"
+          value={user.oldPassword}
+          onChange={(e) =>
+            setUser((prev) => ({ ...prev, oldPassword: e.target.value }))
+          }
+        />
+      </Form.Group>
+      <Form.Group className="m-4">
+        <Form.Label>كلمة السر الجديدة</Form.Label>
+        <Form.Control
+          type="password"
+          name="newPassword"
+          value={user.newPassword}
+          onChange={(e) =>
+            setUser((prev) => ({ ...prev, newPassword: e.target.value }))
+          }
         />
       </Form.Group>
       <Form.Group className="d-flex flex-column m-4">

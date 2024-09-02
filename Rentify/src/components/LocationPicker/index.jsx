@@ -7,39 +7,45 @@ const mapContainerStyle = {
   width: "100%",
   height: "400px",
 };
-const center = {
-  lat: 31.981568,
-  lng: 35.9235584,
-};
 
-export default function LocationPicker() {
+export default function LocationPicker({ setLocation }) {
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: "AIzaSyD164boEAkDOWxKojpHFaPRyRyK5sQoPpY",
     libraries,
   });
 
-  const [markers, setMarkers] = useState([]);
-  const [location, setLocation] = useState({
-    address: "",
-    lat: "",
-    lng: "",
+  // Use state for dynamic center
+  const [center, setCenter] = useState({
+    lat: 32.534603,
+    lng: 35.9235584,
   });
+
+  const [markers, setMarkers] = useState([]);
   const mapRef = useRef();
-  const onMapClick = useCallback((event) => {
-    setMarkers([
-      {
-        lat: event.latLng.lat(),
-        lng: event.latLng.lng(),
-        time: new Date(),
-      },
-    ]);
-    setLocation({
-      address: "",
-      lat: event.latLng.lat(),
-      lng: event.latLng.lng(),
-    });
-    // You might want to call a geocode API here to get the address from lat/lng
-  }, []);
+
+  const onMapClick = useCallback(
+    (event) => {
+      const lat = event.latLng.lat();
+      const lng = event.latLng.lng();
+
+      setMarkers([
+        {
+          lat,
+          lng,
+          time: new Date(),
+        },
+      ]);
+
+      setLocation({
+        lat,
+        lng,
+      });
+
+      // Re-center the map to the clicked position
+      mapRef.current.panTo({ lat, lng });
+    },
+    [setLocation]
+  );
 
   const onMapLoad = useCallback((map) => {
     mapRef.current = map;
@@ -47,25 +53,36 @@ export default function LocationPicker() {
 
   const handleLocationDetect = () => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const pos = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-          time: new Date(),
-        };
-        setMarkers([pos]);
-        setLocation({
-          address: "",
-          lat: pos.lat,
-          lng: pos.lng,
-        });
-        mapRef.current.panTo(pos);
-      });
+      const options = {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0,
+      };
+
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          const pos = { lat, lng, time: new Date() };
+
+          setMarkers([pos]);
+          setLocation({ lat, lng });
+
+          setCenter({ lat, lng });
+
+          mapRef.current.panTo(pos);
+        },
+        (error) => {
+          console.error("Error detecting location", error);
+        },
+        options
+      );
     }
   };
 
   if (loadError) return "Error loading maps";
   if (!isLoaded) return "Loading Maps";
+
   return (
     <div>
       <GoogleMap
@@ -84,7 +101,7 @@ export default function LocationPicker() {
         ))}
       </GoogleMap>
       <Button onClick={handleLocationDetect} className="text-white mt-3">
-        تحديد الموقع
+        تحديد الموقع تلقائيًّا
       </Button>
     </div>
   );

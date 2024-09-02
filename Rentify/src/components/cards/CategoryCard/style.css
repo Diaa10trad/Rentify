@@ -1,0 +1,7 @@
+.zoom-in-effect {
+  transition: transform 0.4s ease;
+}
+
+.category-card:hover .zoom-in-effect {
+  transform: scale(1.06);
+}

@@ -27,7 +27,7 @@ function SignupPage() {
     e.preventDefault();
 
     const passwordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_])[A-Za-z\d@$!%*?&_]{8,}$/;
 
     if (!passwordRegex.test(password)) {
       setError("كلمة السر يجب أن تحتوي على أحرف كبيرة وصغيرة، أرقام، ورموز.");

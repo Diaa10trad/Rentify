@@ -1,7 +1,6 @@
 import { Row, Col, Stack, Card, Badge, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import Camera from "@/assets/images/products/Camera.jpg"; // Default image placeholder
-import FavoriteButton from "@/components/FavoriteButton";
+
 import "./style.css";
 
 // Reusable text truncation function
@@ -13,13 +12,9 @@ function truncateText(text, wordLimit) {
     : text;
 }
 
-export default function RentedItemsCard({ type, details }) {
-  // Ensure there's at least one image or use a placeholder image
-  const imageUrl =
-    details[`${type}Images`] && details[`${type}Images`].length > 0
-      ? details[`${type}Images`][0].imageUrl
-      : Camera;
-
+export default function RentedItemsCard({ type, details, oppositeRole }) {
+  const imageUrl = details[type][`${type}Image`].imageUrl;
+  const userRole = oppositeRole == "renter" ? "owner" : "renter";
   return (
     <Card
       className="shadow border-0 overflow-hidden renteditem-card"
@@ -28,79 +23,53 @@ export default function RentedItemsCard({ type, details }) {
       <Row className="align-items-center">
         <Col xs={10}>
           <Link
-            to=""
+            to={`/booking-management/${type}/${userRole}/${details.bookingId}`}
             className="d-flex text-decoration-none text-dark zoom-in-effect"
           >
             <Card.Img
               className="object-fit-cover"
               src={imageUrl}
-              alt={details.title || "Image"}
+              alt={details[type].title || "Image"}
               style={{ height: "100px", width: "90px" }}
             />
 
             <Stack className="justify-content-center m-3">
               <Card.Title style={{ fontSize: "1.2rem" }}>
-                {details.title || "No Title Available"}
+                {truncateText(details[type].title, 10) || "No Title Available"}
               </Card.Title>
               <Card.Text style={{ fontSize: "0.8rem" }}>
                 حالة الاستئجار: {""}
-                <span style={{ color: "green" }}>قيد الاستعمال </span>
+                {details.status == "booked" && (
+                  <span className="text-primary">تم الحجز</span>
+                )}
+                {details.status == "in-use" && (
+                  <span className="text-warning">قيد الاستئجار</span>
+                )}
+                {details.status == "cancelled" && (
+                  <span className="text-danger">ألغي الحجز</span>
+                )}
+                {details.status == "completed" && (
+                  <span className="text-success">مكتمل</span>
+                )}
               </Card.Text>
             </Stack>
           </Link>
         </Col>
         <Col xs={2}>
-          <Link to="" className="text-decoration-none">
-            <Card.Text style={{ fontSize: "0.9rem" }}>
-              {details.renterType || " المستأجر"}:{" "}
-              {details.renterName || "غير متوفر"}
-            </Card.Text>
-          </Link>
+          <Card.Text style={{ fontSize: "0.9rem" }}>
+            {oppositeRole == "renter" &&
+              "المستأجر: " +
+                details.renter.firstName +
+                " " +
+                details.renter.lastName}
+            {oppositeRole == "owner" &&
+              "المالك: " +
+                details.owner.firstName +
+                " " +
+                details.owner.lastName}
+          </Card.Text>
         </Col>
       </Row>
     </Card>
   );
 }
-
-// import Stack from "react-bootstrap/Stack";
-
-// import Card from "react-bootstrap/Card";
-// import Col from "react-bootstrap/Col";
-// import Badge from "react-bootstrap/Badge";
-// import Camera from "@/assets/images/products/Camera.jpg";
-// import FavoriteButton from "@/components/FavoriteButton";
-// import Button from "react-bootstrap/Button";
-// import { LinkContainer } from "react-router-bootstrap";
-// export default function RentedItemsCard({ type, details }) {
-//   function truncateText(text, wordLimit) {
-//     const words = text.split(" "); // Split the text into an array of words
-//     if (words.length > wordLimit) {
-//       return words.slice(0, wordLimit).join(" ") + "..."; // Join the first 100 words and add '...'
-//     }
-//     return text; // If the text is less than or equal to 100 words, return it as is
-//   }
-
-//   return (
-//     <Card className="shadow border border-0 overflow-hidden flex-row">
-//       <Card.Img
-//         className="object-fit-cover"
-//         variant="top"
-//         style={{ height: "100px", width: "90px" }}
-//         src={details[`${type}Images`][0].imageUrl}
-//       />
-//       <Stack className="flex-row justify-content-between">
-//         <Card.Text className="d-flex align-items-center flex-column p-2">
-//           <Card.Title>{details.title}</Card.Title>
-//           <p className="fw-normal" style={{ fontSize: "15px" }}>
-//             حالة الاستئجار:{" "}
-//             <span style={{ color: "green" }}>قيد الاستعمال</span>
-//           </p>
-//         </Card.Text>
-
-//         <Card.Text className="d-flex align-items-center flex-column p-4">
-//           اسم المؤجر: ضياء الدين
-//         </Card.Text>
-//       </Stack>
-//     </Card>
-//   );
-// }

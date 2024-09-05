@@ -11,9 +11,11 @@ function ChatBookingForm({ bookingDetails, setBookingDetails, onSend }) {
   const handleClose = () => setShow(false);
 
   const handleChange = (e) => {
+    var value =
+      e.target.type == "number" ? Number(e.target.value) : e.target.value;
     setBookingDetails({
       ...bookingDetails,
-      [e.target.name]: e.target.value,
+      [e.target.name]: value,
     });
   };
 

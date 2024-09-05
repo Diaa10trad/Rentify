@@ -43,10 +43,9 @@ export default function CTASection() {
         >
           <h4>استأجر ما تحتاج..</h4>
           <p className="fs-6">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia
-            suscipit placeat quisquam, officiis deleniti expedita alias quas
-            autem excepturi quos praesentium, velit eius numquam laborum?
-            Molestiae enim error saepe inventore!
+            حياتك أسهل وأكثر متعة مع Rentify! استأجر ما تحتاج متى تحتاج، دون
+            الحاجة للشراء أو التخزين. من الأدوات المنزلية إلى الخدمات المتخصصة،
+            كل ما تحتاجه في متناول يدك.
           </p>
           <LinkContainer to="/List-Item">
             <Button className="text-white" variant="primary">

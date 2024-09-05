@@ -23,6 +23,13 @@ namespace api.Mappers
 
         public static AppUserSpecificDto ToAppUserSpecificDtoFromAppUser(this AppUser appUser)
         {
+
+            var allReviews = appUser.Services
+                .SelectMany(s => s.Reviews)
+                .Concat(appUser.Products.SelectMany(p => p.Reviews))
+                .OrderByDescending(review => review.CreatedAt)
+                .ToList();
+
             return new AppUserSpecificDto
             {
                 UserId = appUser.Id,
@@ -33,13 +40,16 @@ namespace api.Mappers
                 Products = appUser.Products.Select(p => p.ToProductDtoFromProduct()).ToList(),
                 Services = appUser.Services.Select(s => s.ToServiceDtoFromService()).ToList(),
                 Favorites = appUser.Favorites.Select(f => f.ToFavoriteDtoFromFavorite()).ToList(),
-
-
+                Reviews = allReviews.Select(r => r.ToReviewDtoFromReview()).ToList(),
+                TotalReviews = allReviews.Count(),
+                AverageRating = allReviews.Any() ? allReviews.Average(review => review.Rating) : 0,
             };
         }
 
+
         public static UserBookingDto ToUserBookingDtoFromAppUser(this AppUser appUser)
         {
+
             return new UserBookingDto
             {
                 UserId = appUser.Id,
@@ -51,12 +61,21 @@ namespace api.Mappers
 
         public static AppUserDto ToAppUserDtoFromAppUser(this AppUser appUser)
         {
+            var allReviews = appUser.Services
+                .SelectMany(s => s.Reviews)
+                .Concat(appUser.Products.SelectMany(p => p.Reviews))
+                .OrderByDescending(review => review.CreatedAt)
+                .ToList();
+
             return new AppUserDto
             {
                 UserId = appUser.Id,
                 FirstName = appUser.FirstName,
                 LastName = appUser.LastName,
                 Avatar = appUser.Avatar,
+                TotalReviews = allReviews.Count(),
+                AverageRating = allReviews.Any() ? allReviews.Average(review => review.Rating) : 0,
+
             };
         }
     }

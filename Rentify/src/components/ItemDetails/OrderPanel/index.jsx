@@ -33,9 +33,9 @@ function OrderPanel({
               className="text-primary justify-content-between"
               direction="horizontal"
             >
-              <h5>باليوم: {priceDaily}</h5>
-              <h5>بالأسبوع: {priceWeekly}</h5>
-              <h5>بالشهر: {priceMonthly}</h5>
+              <h5>باليوم: {priceDaily} د.أ</h5>
+              <h5>بالأسبوع: {priceWeekly} د.أ</h5>
+              <h5>بالشهر: {priceMonthly} د.أ</h5>
             </Stack>
           )}
 

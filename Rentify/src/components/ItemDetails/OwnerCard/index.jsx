@@ -1,5 +1,7 @@
 import { Card, Image, Stack } from "react-bootstrap";
+import StarRating from "@/components/StarRating";
 function OwnerCard({ person }) {
+  console.log(person);
   return (
     <Card className="shadow border border-0 mt-3">
       <Card.Body className="">
@@ -21,12 +23,10 @@ function OwnerCard({ person }) {
             </Card.Title>
           </span>
           <Card.Text className="d-flex align-items-center gap-1 px-3 mb-0">
-            <span className="fa fa-star text-primary"></span>
-            <span className="fa fa-star text-primary"></span>
-            <span className="fa fa-star text-primary"></span>
-            <span className="fa fa-star text-primary"></span>
-            <span className="fa fa-star"></span>
-            <span>4.7 (245)</span>
+            <StarRating
+              totalReviews={person.totalReviews}
+              averageRating={person.averageRating}
+            />
           </Card.Text>
         </Stack>
       </Card.Body>

@@ -82,5 +82,18 @@ namespace api.Mappers
                 PriceDaily = productUpdateDto.PriceDaily
             };
         }
+
+        public static ProductBookingDto ToProductBookingDtoFromProduct(this Product product)
+        {
+            return new ProductBookingDto
+            {
+                ProductId = product.ProductId,
+                Title = product.Title,
+                Location = product.Location,
+                productImage = product.Images.FirstOrDefault().ToProductImageDtoFromProductImage(),
+
+            };
+        }
+
     }
 }

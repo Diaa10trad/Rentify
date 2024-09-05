@@ -115,7 +115,7 @@ namespace api.Controllers
                     return BadRequest(new { Message = "Update failed or booking not found." });
                 }
 
-                return Ok(updatedBooking.FromBookingToBookingServiceForOwnerDto());
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -128,54 +128,54 @@ namespace api.Controllers
         [Authorize]
         public async Task<IActionResult> ConfirmPickUpBookingForOwner([FromRoute] int bookingId, [FromBody] int pickupCode)
         {
-            try
+            // try
+            //{
+            var RequesterId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var updateModel = new Booking
             {
-                var RequesterId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                var updateModel = new Booking
-                {
-                    PickUpCode = pickupCode
-                };
+                PickUpCode = pickupCode
+            };
 
-                var updatedBooking = await _bookingRepository.UpdateAsync("owner", bookingId, updateModel, RequesterId);
+            var updatedBooking = await _bookingRepository.UpdateAsync("owner", bookingId, updateModel, RequesterId);
 
-                if (updatedBooking == null)
-                {
-                    return NotFound();
-                }
-
-                return Ok(updatedBooking.FromBookingToBookingServiceForOwnerDto());
-            }
-            catch (Exception ex)
+            if (updatedBooking == null)
             {
-                return BadRequest(new { message = ex.Message });
+                return NotFound();
             }
+
+            return Ok();
+            //}
+            //catch (Exception ex)
+            //{
+            //return BadRequest(new { message = ex.Message });
+            //}
         }
 
         [HttpPut("{bookingId}/confirm-return")]
         [Authorize]
         public async Task<IActionResult> CompleteBookingForRenter([FromRoute] int bookingId, [FromBody] int returnCode)
         {
-            try
+            //try
+            //{
+            var RequesterId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var updateModel = new Booking
             {
-                var RequesterId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                var updateModel = new Booking
-                {
-                    ReturnCode = returnCode
-                };
+                ReturnCode = returnCode
+            };
 
-                var updatedBooking = await _bookingRepository.UpdateAsync("renter", bookingId, updateModel, RequesterId);
+            var updatedBooking = await _bookingRepository.UpdateAsync("renter", bookingId, updateModel, RequesterId);
 
-                if (updatedBooking == null)
-                {
-                    return NotFound();
-                }
-
-                return Ok(updatedBooking.FromBookingToBookingServiceForRenterDto());
-            }
-            catch (Exception ex)
+            if (updatedBooking == null)
             {
-                return BadRequest(new { message = ex.Message });
+                return NotFound();
             }
+
+            return Ok();
+            //}
+            //catch (Exception ex)
+            //{
+            //  return BadRequest(new { message = ex.Message });
+            //}
 
         }
 
@@ -198,7 +198,7 @@ namespace api.Controllers
                     return NotFound();
                 }
 
-                return Ok(updatedBooking.FromBookingToBookingServiceForRenterDto());
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -227,7 +227,7 @@ namespace api.Controllers
                     return NotFound();
                 }
 
-                return Ok(updatedBooking.FromBookingToBookingServiceForRenterDto());
+                return Ok();
             }
             catch (Exception ex)
             {

@@ -24,7 +24,6 @@ export default function HeroSection() {
             <div>استأجر أي شيء،</div>
             <div> من أي شخص، </div>
             <div> في أي وقت. </div>
-            <p className="lead pt-4">لوريم ايبسوم الخ...</p>
           </Stack>
         </Col>
         <Col md={6} xl={5} className="d-none d-md-block">

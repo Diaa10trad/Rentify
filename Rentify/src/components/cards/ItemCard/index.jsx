@@ -28,7 +28,7 @@ export default function ItemCard({ type, details }) {
         <Card.ImgOverlay className="p-2">
           <Stack className="h-100 justify-content-between">
             <h5>
-              <Badge bg="primary">New</Badge>
+              <Badge bg="primary">جديد</Badge>
             </h5>
             <Stack direction="horizontal" className="justify-content-between">
               {/* <div className="text-white">1.0 دينار</div> */}

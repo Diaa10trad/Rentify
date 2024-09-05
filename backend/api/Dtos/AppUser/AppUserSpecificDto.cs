@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using api.Dtos.Chat;
 using api.Dtos.Favorite;
 using api.Dtos.Product;
+using api.Dtos.Review;
 using api.Dtos.Service;
 
 namespace api.Dtos.AppUser
@@ -21,5 +22,9 @@ namespace api.Dtos.AppUser
         public ICollection<ServiceDto>? Services { get; set; }
         public ICollection<FavoriteDto>? Favorites { get; set; }
 
+        public ICollection<ReviewDto>? Reviews { get; set; }
+
+        public int TotalReviews { get; set; }
+        public double AverageRating { get; set; }
     }
 }

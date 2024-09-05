@@ -2,7 +2,6 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Nav, Navbar, Button, Image, Container } from "react-bootstrap";
 import LogoImage from "@/assets/images/RentifyLogo.png";
-import profileImagePlaceholder from "@/assets/images/Profile-Image-Placeholder.jpg";
 import "./styles.css";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
@@ -11,7 +10,7 @@ import { useAuth } from "@/context/AuthContext";
 export default function NavigationBar() {
   const { auth, logout } = useAuth();
   const navigate = useNavigate();
-  const [avatar, setAvatar] = useState(profileImagePlaceholder);
+  const [avatar, setAvatar] = useState(null);
 
   useEffect(() => {
     if (auth.isAuthenticated) {
@@ -30,7 +29,9 @@ export default function NavigationBar() {
         }
       );
 
-      setAvatar(response.data.avatar);
+      console.log();
+
+      setAvatar(response.data.userData.avatar);
     } catch (error) {
       console.error("Failed to fetch avatar:", error);
     }

@@ -10,13 +10,15 @@ namespace api.Mappers
 {
     public static class BookingServiceMappers
     {
-        public static BookingServiceForOwnerDto FromBookingToBookingServiceForOwnerDto(this Booking bookingModel) {
-            return new BookingServiceForOwnerDto {
+        public static BookingServiceForOwnerDto FromBookingToBookingServiceForOwnerDto(this Booking bookingModel)
+        {
+            return new BookingServiceForOwnerDto
+            {
 
                 BookingId = bookingModel.BookingId,
                 Owner = bookingModel.Owner.ToUserBookingDtoFromAppUser(),
                 Renter = bookingModel.Renter.ToUserBookingDtoFromAppUser(),
-                Service = bookingModel.Service?.ToServiceDtoFromService(),
+                Service = bookingModel.Service?.ToServiceBookingDtoFromService(),
                 StartDate = bookingModel.StartDate,
                 EndDate = bookingModel.EndDate,
                 FinalPrice = bookingModel.FinalPrice,
@@ -30,13 +32,15 @@ namespace api.Mappers
             };
         }
 
-        public static BookingServiceForRenterDto FromBookingToBookingServiceForRenterDto(this Booking bookingModel) {
-            return new BookingServiceForRenterDto {
+        public static BookingServiceForRenterDto FromBookingToBookingServiceForRenterDto(this Booking bookingModel)
+        {
+            return new BookingServiceForRenterDto
+            {
 
                 BookingId = bookingModel.BookingId,
                 Owner = bookingModel.Owner.ToUserBookingDtoFromAppUser(),
                 Renter = bookingModel.Renter.ToUserBookingDtoFromAppUser(),
-                Service = bookingModel.Service?.ToServiceDtoFromService(),
+                Service = bookingModel.Service?.ToServiceBookingDtoFromService(),
                 StartDate = bookingModel.StartDate,
                 EndDate = bookingModel.EndDate,
                 FinalPrice = bookingModel.FinalPrice,
@@ -49,8 +53,9 @@ namespace api.Mappers
                 CancellationPolicy = bookingModel.CancellationPolicy,
             };
         }
-        public static Booking ToBookingFromBookingServiceCreateDto(this BookingServiceCreateDto createDto) {
-            return new Booking 
+        public static Booking ToBookingFromBookingServiceCreateDto(this BookingServiceCreateDto createDto)
+        {
+            return new Booking
             {
                 OwnerId = createDto.OwnerId,
                 RenterId = createDto.RenterId,
@@ -59,18 +64,19 @@ namespace api.Mappers
                 EndDate = createDto.EndDate,
                 FinalPrice = createDto.FinalPrice,
                 AdditionalInfo = createDto.AdditionalInfo,
-                CancellationPolicy = new CancellationPolicy {Refund = createDto.Refund, PermittedDuration = createDto.PermittedDuration},
+                CancellationPolicy = new CancellationPolicy { Refund = createDto.Refund, PermittedDuration = createDto.PermittedDuration },
             };
         }
 
-        public static Booking ToBookingFromBookingServiceOwnerUpdateDto(this BookingServiceOwnerUpdateDto updateDto) {
-            return new Booking 
+        public static Booking ToBookingFromBookingServiceOwnerUpdateDto(this BookingServiceOwnerUpdateDto updateDto)
+        {
+            return new Booking
             {
                 StartDate = updateDto.StartDate,
                 EndDate = updateDto.EndDate,
                 FinalPrice = updateDto.FinalPrice,
                 AdditionalInfo = updateDto.AdditionalInfo,
-                CancellationPolicy = new CancellationPolicy {Refund = updateDto.Refund, PermittedDuration = updateDto.PermittedDuration},
+                CancellationPolicy = new CancellationPolicy { Refund = updateDto.Refund, PermittedDuration = updateDto.PermittedDuration },
             };
         }
     }

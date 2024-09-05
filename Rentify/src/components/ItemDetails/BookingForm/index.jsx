@@ -27,7 +27,7 @@ function BookingForm({
     itemId: parseInt(id),
     startDate: "",
     endDate: "",
-    finalPrice: Number(0.0),
+    finalPrice: parseFloat(0.0),
     additionalInfo: "",
     status: "pending",
     refund: cancellationPolicy.refund,
@@ -45,7 +45,7 @@ function BookingForm({
   const handleFinalPriceChange = useCallback((finalPrice) => {
     setBookingDetails((prevDetails) => ({
       ...prevDetails,
-      finalPrice: Number(finalPrice),
+      finalPrice: parseFloat(finalPrice),
     }));
   }, []);
 

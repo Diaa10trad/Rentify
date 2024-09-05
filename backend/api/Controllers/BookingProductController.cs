@@ -115,7 +115,7 @@ namespace api.Controllers
                     return BadRequest(new { Message = "Update failed or booking not found." });
                 }
 
-                return Ok(updatedBooking.FromBookingToBookingProductForOwnerDto());
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -143,7 +143,7 @@ namespace api.Controllers
                     return NotFound();
                 }
 
-                return Ok(updatedBooking.FromBookingToBookingProductForOwnerDto());
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -170,7 +170,7 @@ namespace api.Controllers
                     return NotFound();
                 }
 
-                return Ok(updatedBooking.FromBookingToBookingProductForRenterDto());
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -198,7 +198,7 @@ namespace api.Controllers
                     return NotFound();
                 }
 
-                return Ok(updatedBooking.FromBookingToBookingProductForRenterDto());
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -227,7 +227,7 @@ namespace api.Controllers
                     return NotFound();
                 }
 
-                return Ok(updatedBooking.FromBookingToBookingProductForRenterDto());
+                return Ok();
             }
             catch (Exception ex)
             {

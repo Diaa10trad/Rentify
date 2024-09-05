@@ -15,7 +15,7 @@ namespace api.Dtos.Booking.BookingService
         public UserBookingDto? Owner { get; set; }
         public UserBookingDto? Renter { get; set; }
 
-        public ServiceDto? Service { get; set; }
+        public ServiceBookingDto? Service { get; set; }
 
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }

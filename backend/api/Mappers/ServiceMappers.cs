@@ -65,5 +65,17 @@ namespace api.Mappers
                 CancellationPolicy = new CancellationPolicy { Refund = serviceUpdateDto.Refund, PermittedDuration = serviceUpdateDto.PermittedDuration },
             };
         }
+
+        public static ServiceBookingDto ToServiceBookingDtoFromService(this Service service)
+        {
+            return new ServiceBookingDto
+            {
+                ServiceId = service.ServiceId,
+                Title = service.Title,
+                Location = service.Location,
+                serviceImage = service.Images.FirstOrDefault().ToServiceImageDtoFromServiceImage(),
+
+            };
+        }
     }
 }

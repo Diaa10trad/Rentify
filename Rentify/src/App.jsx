@@ -16,6 +16,7 @@ import ProfilePage from "@/views/ProfilePage";
 import ChatPage from "@/views/ChatPage";
 import LoginPage from "@/views/LoginPage";
 import SignupPage from "@/views/SignupPage";
+import BookingManagementPage from "@/views/BookingManagementPage";
 import { AuthProvider } from "@/context/AuthContext";
 import CompleteBookingPage from "@/views/CompleteBookingPage";
 function App() {
@@ -33,7 +34,11 @@ function App() {
                 <Route path="/Results" element={<ResultsPage />} />
                 <Route path="/product/:id" element={<ItemDetailsPage />} />
                 <Route path="/service/:id" element={<ItemDetailsPage />} />
-                <Route path="/User/:id" element={<UserPage />} />
+                {/* <Route path="/user/:id" element={<UserPage />} /> */}
+                <Route
+                  path="/booking-management/:itemType/:userRole/:bookingId"
+                  element={<BookingManagementPage />}
+                />
                 <Route path="/ProfilePage" element={<ProfilePage />} />
                 <Route path="/ChatPage" element={<ChatPage />} />
                 <Route

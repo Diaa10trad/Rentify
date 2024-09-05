@@ -1,13 +1,16 @@
 import { useState } from "react";
-import { Container, Row, Col, Button, Form } from "react-bootstrap";
+import { Container, Row, Col, Button, Form, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import HeadingSection from "@/components/HeadingSection";
 import AddItemTitleForm from "@/components/AddItemTitleForm";
 import AddItemImageForm from "@/components/AddItemImageForm";
 import AddItemLocationForm from "@/components/AddItemLocationForm";
+import { getToken } from "@/utils/AuthUtils";
+import ErrorPage from "@/views/ErrorPage";
 export default function AddItemPage() {
   const navigate = useNavigate();
+  const currentUserToken = getToken();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [categoryId, setCategoryId] = useState("");
@@ -23,7 +26,7 @@ export default function AddItemPage() {
   const [images, setImages] = useState([]);
   const [location, setLocation] = useState({ lat: null, lng: null });
   const [errors, setErrors] = useState({});
-
+  const [loading, setLoading] = useState(false);
   const validateForm = () => {
     let formErrors = {};
 
@@ -99,16 +102,37 @@ export default function AddItemPage() {
       const response = await axios.post(apiEndpoint, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${currentUserToken}`,
         },
       });
       console.log("Item added successfully", response.data);
+      setLoading(true);
       navigate(`/${categoryType}/${response.data[idKey]}`);
     } catch (error) {
+      setLoading(false);
       console.error("Error adding item", error);
     }
   };
+  if (!currentUserToken) {
+    return (
+      <ErrorPage
+        message={
+          "ليس لديك صلاحية الوصول إلى هذه الصفحة. قم بتسجيل الدخول أولا."
+        }
+      />
+    );
+  }
 
+  if (loading) {
+    return (
+      <Container
+        className="d-flex justify-content-center align-items-center"
+        style={{ height: "100vh" }}
+      >
+        <Spinner animation="border" />
+      </Container>
+    );
+  }
   return (
     <Container fluid className="mb-5" style={{ width: "98%" }}>
       <Row

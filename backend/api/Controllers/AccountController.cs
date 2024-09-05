@@ -29,13 +29,17 @@ namespace api.Controllers
         private readonly ITokenService _tokenService;
         private readonly ICloudinaryImageService _cloudinaryImageService;
         private readonly ChatService _chatService;
-        public AccountController(UserManager<AppUser> userManager, ITokenService tokenService, SignInManager<AppUser> signInManager, ICloudinaryImageService cloudinaryImageService, ChatService chatService)
+        private readonly IBookingProductRepository _bookingProductRepository;
+        private readonly IBookingServiceRepository _bookingServiceRepository;
+        public AccountController(UserManager<AppUser> userManager, ITokenService tokenService, SignInManager<AppUser> signInManager, ICloudinaryImageService cloudinaryImageService, ChatService chatService, IBookingProductRepository bookingProductRepository, IBookingServiceRepository bookingServiceRepository)
         {
             _userManager = userManager;
             _tokenService = tokenService;
             _signInManager = signInManager;
             _cloudinaryImageService = cloudinaryImageService;
             _chatService = chatService;
+            _bookingProductRepository = bookingProductRepository;
+            _bookingServiceRepository = bookingServiceRepository;
         }
 
         [HttpPost("login")]
@@ -264,15 +268,30 @@ namespace api.Controllers
 
 
             var userChats = await _chatService.GetUserChatsAsync(userId);
+            var productBookingsAsOwner = await _bookingProductRepository.GetAllAsync("owner", userId);
+            var serviceBookingsAsOwner = await _bookingServiceRepository.GetAllAsync("owner", userId);
+            var productBookingsAsRenter = await _bookingProductRepository.GetAllAsync("renter", userId);
+            var serviceBookingsAsRenter = await _bookingServiceRepository.GetAllAsync("renter", userId);
             var userChatsDtos = userChats.Select(c => c.ToChatDtoFromChat()).ToList();
             var userDtos = user?.ToAppUserSpecificDtoFromAppUser();
+
+
+            var productBookingsAsOwnerDtos = productBookingsAsOwner?.Select(pb => pb.FromBookingToBookingProductForOwnerDto()).ToList();
+            var serviceBookingsAsOwnerDtos = serviceBookingsAsOwner?.Select(sb => sb.FromBookingToBookingServiceForOwnerDto()).ToList();
+            var productBookingsAsRenterDtos = productBookingsAsRenter?.Select(pb => pb.FromBookingToBookingProductForRenterDto()).ToList();
+            var serviceBookingsAsRenterDtos = serviceBookingsAsRenter?.Select(sb => sb.FromBookingToBookingServiceForRenterDto()).ToList();
             var response = new
             {
                 UserData = userDtos,
-                UserChats = userChatsDtos
-
+                UserChats = userChatsDtos,
+                ProductBookingsAsOwner = productBookingsAsOwnerDtos,
+                ServiceBookingsAsOwner = serviceBookingsAsOwnerDtos,
+                ProductBookingsAsRenter = productBookingsAsRenterDtos,
+                ServiceBookingsAsRenter = serviceBookingsAsRenterDtos,
             };
             return Ok(response);
         }
+
+
     }
 }

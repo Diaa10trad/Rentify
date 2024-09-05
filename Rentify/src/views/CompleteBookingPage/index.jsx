@@ -23,6 +23,7 @@ function CompleteBookingPage() {
   const [booking, setBooking] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [unauthorized, setUnauthorized] = useState(false);
 
   // Fetch booking details from API
@@ -100,7 +101,13 @@ function CompleteBookingPage() {
       </Container>
     );
   }
-
+  if (success) {
+    return (
+      <Container className="mt-5">
+        <Alert variant="success">{success}</Alert>
+      </Container>
+    );
+  }
   return (
     <Container className="my-5">
       <Row className="justify-content-center">
@@ -123,9 +130,16 @@ function CompleteBookingPage() {
                   <strong>اسم المالك:</strong> {booking.owner.firstName}{" "}
                   {booking.owner.lastName}
                 </ListGroupItem>
-                <ListGroupItem>
-                  <strong>المنتج:</strong> {booking.product.title}
-                </ListGroupItem>
+                {booking.product && (
+                  <ListGroupItem>
+                    <strong>المنتج:</strong> {booking.product.title}
+                  </ListGroupItem>
+                )}
+                {booking.service && (
+                  <ListGroupItem>
+                    <strong>الخدمة:</strong> {booking.service.title}
+                  </ListGroupItem>
+                )}
                 <ListGroupItem>
                   <Row>
                     <Col>
@@ -148,12 +162,16 @@ function CompleteBookingPage() {
                     المجموع الفرعي: {booking.finalPrice} دينار أردني
                   </ListGroupItem>
                   <ListGroupItem>
-                    رسوم الخدمة (5%): {booking.finalPrice * 0.05} دينار أردني
+                    رسوم الخدمة (5%): {(booking.finalPrice * 0.05).toFixed(2)}{" "}
+                    دينار أردني
                   </ListGroupItem>
 
                   <ListGroupItem>
-                    <strong>المجموع الكلي:</strong>
-                    {booking.finalPrice + booking.finalPrice * 0.05} دينار أردني
+                    <strong>المجموع الكلي: </strong>
+                    {(booking.finalPrice + booking.finalPrice * 0.05).toFixed(
+                      2
+                    )}{" "}
+                    دينار أردني
                   </ListGroupItem>
                 </ListGroup>
               </Card>

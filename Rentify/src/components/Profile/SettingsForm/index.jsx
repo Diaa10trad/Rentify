@@ -9,18 +9,15 @@ function SettingsForm({ user, setUser }) {
       avatar: newAvatar,
     }));
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const token = getToken();
     try {
       const formData = new FormData();
-
-      formData.append("email", user.email);
-      formData.append("phoneNumber", user.phoneNumber);
-      formData.append("oldPassword", user.oldPassword);
-      formData.append("newPassword", user.newPassword);
+      if (user.email) formData.append("email", user.email);
+      if (user.oldPassword) formData.append("oldPassword", user.oldPassword);
+      if (user.newPassword) formData.append("newPassword", user.newPassword);
       formData.append("avatar", user.avatar);
 
       const response = await axios.put(
@@ -35,10 +32,10 @@ function SettingsForm({ user, setUser }) {
       );
 
       setUser(response.data);
-      alert("تم تحديث الإعدادات.");
+      alert("تم تحديث الإعدادات. قم بتحديث الصفحة.");
     } catch (error) {
-      // console.error("تم", error);
-      // alert("فشل تحديث الإعدادات، جرب مرة أخرى");
+      if (error.response.data == "Incorrect old password")
+        alert("فشل تحديث الإعدادات: كلمة السر القديمة غير صحيحة");
     }
   };
 
@@ -59,17 +56,7 @@ function SettingsForm({ user, setUser }) {
           }
         />
       </Form.Group>
-      <Form.Group className="m-4">
-        <Form.Label>رقم الهاتف</Form.Label>
-        <Form.Control
-          type="text"
-          name="phoneNumber"
-          value={user.phoneNumber}
-          onChange={(e) =>
-            setUser((prev) => ({ ...prev, phoneNumber: e.target.value }))
-          }
-        />
-      </Form.Group>
+
       <Form.Group className="m-4">
         <Form.Label>كلمة السر الحالية</Form.Label>
         <Form.Control
@@ -91,24 +78,6 @@ function SettingsForm({ user, setUser }) {
             setUser((prev) => ({ ...prev, newPassword: e.target.value }))
           }
         />
-      </Form.Group>
-      <Form.Group className="d-flex flex-column m-4">
-        <Form.Label>
-          <p>
-            التحقق من الهوية
-            <span className="fs-6 text-danger"> (غير محقق)</span>
-          </p>
-        </Form.Label>
-        <Button
-          variant="none"
-          size="sm"
-          style={{ width: "fit-content" }}
-          className="text-primary border"
-          onClick={() => document.getElementById("IDInput").click()}
-        >
-          اضف وثيقة
-        </Button>
-        <Form.Control type="file" id="IDInput" style={{ display: "none" }} />
       </Form.Group>
       <Button className="m-4 text-white" variant="primary" type="submit">
         حفظ التغييرات

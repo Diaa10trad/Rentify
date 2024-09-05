@@ -65,7 +65,6 @@ const ChatPage = () => {
                 var startDateMatches;
                 var endDateMatches;
                 if (bookingDetails) {
-                  console.log(fmsg.message);
                   startDateMatches =
                     fmsg.message.data.startDate === bookingDetails.startDate;
                   endDateMatches =
@@ -104,7 +103,6 @@ const ChatPage = () => {
             }
 
             setMessages(formattedMessages);
-            console.log(formattedMessages);
 
             connection.on("ReceiveMessage", (user, receivedMessage) => {
               const parsedMessage = JSON.parse(receivedMessage);
@@ -160,7 +158,7 @@ const ChatPage = () => {
       }
     }
   };
-
+  console.log(bookingDetails);
   if (loading) {
     return (
       <Container

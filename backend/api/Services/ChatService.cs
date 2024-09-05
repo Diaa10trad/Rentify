@@ -66,7 +66,7 @@ namespace api.Services
                 {
                     SenderId = senderId,
                     Message = message,
-                    SentAt = DateTime.UtcNow
+                    SentAt = DateTime.Now
                 });
 
                 await _dbContext.SaveChangesAsync();

@@ -122,7 +122,7 @@ function UserPage() {
               <Row className="g-4 mt-2">
                 {Array.from({ length: 12 }, (_, index) => (
                   <Col key={index} xs={12} sm={6} lg={4}>
-                    <ItemCard type={"Service"} />
+                    <ItemCard type={"service"} />
                   </Col>
                 ))}
               </Row>
@@ -131,7 +131,7 @@ function UserPage() {
               <Row className="g-4 mt-2">
                 {Array.from({ length: 2 }, (_, index) => (
                   <Col key={index} xs={12} sm={6} lg={4}>
-                    <ItemCard type={"Product"} />
+                    <ItemCard type={"product"} />
                   </Col>
                 ))}
               </Row>

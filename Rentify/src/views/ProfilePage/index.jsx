@@ -6,8 +6,7 @@ import {
   Col,
   Tab,
   Nav,
-  Form,
-  Button,
+  ListGroup,
   Card,
   Image,
   Spinner,
@@ -15,12 +14,14 @@ import {
 import Person from "@/assets/images/Person.jpg";
 import ItemCard from "@/components/cards/ItemCard";
 import RentedItemsCard from "@/components/cards/RentedItemsCard";
+import StarRating from "@/components/StarRating";
 import Review from "@/components/ItemDetails/Review";
 import SettingsForm from "@/components/Profile/SettingsForm";
 import { useAuth } from "@/context/AuthContext"; // Custom hook for auth context
 import { getToken, getSenderId } from "@/utils/AuthUtils";
 import { useNavigate } from "react-router-dom";
 import NoContentBox from "@/components/NoContentBox";
+import ErrorPage from "../ErrorPage";
 function ProfilePage() {
   const navigate = useNavigate();
   const { auth } = useAuth(); // Get the auth token from the context
@@ -28,6 +29,16 @@ function ProfilePage() {
   const [error, setError] = useState("");
   const [userData, setUserData] = useState([]);
   const [userChats, setUserChats] = useState([]);
+  const [userProductBookingsAsOwner, setUserProductBookingsAsOwner] = useState(
+    []
+  );
+  const [userProductBookingsAsRenter, setUserProductBookingsAsRenter] =
+    useState([]);
+  const [userServiceBookingsAsOwner, setUserServiceBookingsAsOwner] = useState(
+    []
+  );
+  const [userServiceBookingsAsRenter, setUserServiceBookingsAsRenter] =
+    useState([]);
   const currentUserToken = getToken();
   const currentUserId = getSenderId(currentUserToken);
 
@@ -64,6 +75,10 @@ function ProfilePage() {
         );
         setUserData(response.data.userData);
         setUserChats(response.data.userChats);
+        setUserProductBookingsAsOwner(response.data.productBookingsAsOwner);
+        setUserServiceBookingsAsOwner(response.data.serviceBookingsAsOwner);
+        setUserProductBookingsAsRenter(response.data.productBookingsAsRenter);
+        setUserServiceBookingsAsRenter(response.data.serviceBookingsAsRenter);
       } catch (error) {
         console.error("Failed to fetch user data:", error);
         setError("Failed to load user data.");
@@ -75,69 +90,23 @@ function ProfilePage() {
     fetchUserData();
   }, [auth]);
 
-  const fakeReviews = [
-    {
-      reviewerName: "John Doe",
-      rating: 4,
-      image: Person,
-      reviewDate: "2024-07-11",
-      comment: `Great product, highly recommended!
-      Great product, highly recommended!
-      Great product, highly recommended!
-      Great product, highly recommended!
-      Great product, highly recommended!
-      Great product, highly recommended!
-      Great product, highly recommended!
-      Great product, highly recommended!
-      Great product, highly recommended!
-      Great product, highly recomm
+  if (!auth.token) {
+    return (
+      <ErrorPage message="ليس لديك صلاحية الوصول إلى هذه الصفحة. الرجاء تسجيل الدخول أولا." />
+    );
+  }
 
-      ended!`,
-    },
-    {
-      reviewerName: "Jane Smith",
-      image: Person,
-      rating: 5,
-      reviewDate: "2024-07-10",
-      comment: "Excellent service and fast delivery.",
-    },
-    {
-      reviewerName: "Michael Johnson",
-      image: Person,
-      rating: 3,
-      reviewDate: "2024-07-09",
-      comment: "Product was okay, could be better.",
-    },
-    {
-      reviewerName: "Emily Brown",
-      image: Person,
-      rating: 5,
-      reviewDate: "2024-07-08",
-      comment: "Absolutely love it! Best purchase ever.",
-    },
-    {
-      reviewerName: "Emily Brown",
-      image: Person,
-      rating: 5,
-      reviewDate: "2024-07-08",
-      comment: "Absolutely love it! Best purchase ever.",
-    },
-    {
-      reviewerName: "Emily Brown",
-      image: Person,
-      rating: 5,
-      reviewDate: "2024-07-08",
-      comment: "Absolutely love it! Best purchase ever.",
-    },
-    {
-      reviewerName: "Emily Brown",
-      image: Person,
-      rating: 5,
-      reviewDate: "2024-07-08",
-      comment: "Absolutely love it! Best purchase ever.",
-    },
-  ];
-  console.log(userData);
+  if (loadingUserData) {
+    return (
+      <Container
+        className="d-flex justify-content-center align-items-center"
+        style={{ height: "100vh" }}
+      >
+        <Spinner animation="border" />
+      </Container>
+    );
+  }
+
   return (
     <Container fluid>
       <Tab.Container
@@ -158,11 +127,6 @@ function ProfilePage() {
                   الإعدادات
                 </Nav.Link>
               </Nav.Item>
-              {/* <Nav.Item>
-                <Nav.Link eventKey="payment-methods" className="p-3">
-                  طرق الدفع
-                </Nav.Link>
-              </Nav.Item> */}
               <Nav.Item>
                 <Nav.Link eventKey="favorites" className="p-3 ">
                   المفضلة
@@ -187,7 +151,7 @@ function ProfilePage() {
           </Col>
           <Col sm={9}>
             <Tab.Content>
-              <Tab.Pane eventKey="view-info">
+              <Tab.Pane style={{ minHeight: "100vh" }} eventKey="view-info">
                 <Card>
                   <Card.Body>
                     <div className="text-center">
@@ -204,12 +168,12 @@ function ProfilePage() {
                       </h4>
                       <p>
                         <Card.Text className="d-flex justify-content-center align-items-center gap-1 mb-0">
-                          <span className="fa fa-star text-primary"></span>
-                          <span className="fa fa-star text-primary"></span>
-                          <span className="fa fa-star text-primary"></span>
-                          <span className="fa fa-star text-primary"></span>
-                          <span className="fa fa-star"></span>
-                          <span>4.7 (245)</span>
+                          {userData && userData.totalReviews > 0 && (
+                            <StarRating
+                              totalReviews={userData.totalReviews}
+                              averageRating={userData.averageRating}
+                            />
+                          )}
                         </Card.Text>
                       </p>
                     </div>
@@ -231,15 +195,6 @@ function ProfilePage() {
                           eventKey="services"
                         >
                           <Row className="g-4 mt-2">
-                            {loadingUserData && (
-                              <Container
-                                className="d-flex justify-content-center align-items-center"
-                                style={{ height: "100vh" }}
-                              >
-                                <Spinner animation="border" />
-                              </Container>
-                            )}
-
                             {error && <p>{error}</p>}
                             {userData.services &&
                             userData.services.length > 0 ? (
@@ -300,10 +255,18 @@ function ProfilePage() {
                             style={{ maxHeight: "100vh" }}
                             className="overflow-y-auto pe-3 my-2"
                           >
-                            {/* {userData.products.reviews.length > 0 &&
-                              userData.products.reviews.map((review, index) => (
+                            {userData &&
+                            userData.reviews &&
+                            userData.reviews.length > 0 ? (
+                              userData.reviews.map((review, index) => (
                                 <Review review={review} key={index} />
-                              ))} */}
+                              ))
+                            ) : (
+                              <NoContentBox
+                                title={"لا تقييمات لعرضها."}
+                                text={"لم يقم أحد بالتقييم بعد."}
+                              />
+                            )}
                           </div>
                         </Tab.Pane>
                       </Tab.Content>
@@ -316,21 +279,8 @@ function ProfilePage() {
                 eventKey="settings"
                 className=""
               >
-                <SettingsForm user={user} setUser={setUser} />
+                <SettingsForm user={userData} setUser={setUserData} />
               </Tab.Pane>
-
-              {/* <Tab.Pane eventKey="payment-methods">
-                {user.paymentMethods.map((method, index) => (
-                  <div key={index} className="mb-3">
-                    <Form.Group>
-                      <Form.Label>{method.type}</Form.Label>
-                      <Form.Control type="text" value={method.details} />
-                    </Form.Group>
-                    <Button variant="danger">Remove</Button>
-                  </div>
-                ))}
-                <Button variant="success">Add Payment Method</Button>
-              </Tab.Pane> */}
 
               <Tab.Pane style={{ minHeight: "100vh" }} eventKey="favorites">
                 {loadingUserData && <p>Loading user data...</p>}
@@ -437,7 +387,11 @@ function ProfilePage() {
                 )}
               </Tab.Pane>
 
-              <Tab.Pane eventKey="rented-items" className="mb-5">
+              <Tab.Pane
+                style={{ minHeight: "100vh" }}
+                eventKey="rented-items"
+                className="mb-5"
+              >
                 <Tab.Container defaultActiveKey="rented-products">
                   <Nav
                     variant="pills"
@@ -461,67 +415,71 @@ function ProfilePage() {
                     </Nav.Item>
                   </Nav>
                   <Tab.Content className="mt-3">
-                    <Tab.Pane eventKey="rented-products">
+                    <Tab.Pane
+                      style={{ minHeight: "100vh" }}
+                      eventKey="rented-products"
+                    >
                       <Row className="g-4 mt-2">
                         {loadingUserData && <p>جارِ التحميل...</p>}
                         {error && <p>{error}</p>}
-                        {userData.products &&
-                          userData.products.map((product, index) => (
-                            <Col key={index} xs={12}>
-                              <RentedItemsCard
-                                type={"product"}
-                                details={product}
-                              />
-                            </Col>
-                          ))}
-                        {/* {loadingUserData && <p>Loading user data...</p>}
-                        {error && <p>{error}</p>}
-                        {userData.rentedItems.products &&
-                          userData.rentedItems.products.map(
-                            (rentedProduct, index) => (
-                              <Col key={index} xs={12} md={6} xxl={4}>
-                                <ItemCard
+                        {userProductBookingsAsRenter &&
+                        userProductBookingsAsRenter.length > 0 ? (
+                          userProductBookingsAsRenter
+                            .filter(
+                              (productBooking) =>
+                                productBooking.status !== "pending"
+                            )
+                            .map((productBooking, index) => (
+                              <Col key={index} xs={12}>
+                                <RentedItemsCard
                                   type={"product"}
-                                  details={rentedProduct.product}
+                                  details={productBooking}
+                                  oppositeRole={"owner"}
                                 />
                               </Col>
-                            )
-                          )} */}
+                            ))
+                        ) : (
+                          <NoContentBox title={"لا حجوزات لعرضها"} />
+                        )}
                       </Row>
                     </Tab.Pane>
-                    <Tab.Pane eventKey="rented-services">
+                    <Tab.Pane
+                      style={{ minHeight: "100vh" }}
+                      eventKey="rented-services"
+                    >
                       <Row className="g-4 mt-2">
                         {loadingUserData && <p>جارِ التحميل...</p>}
                         {error && <p>{error}</p>}
-                        {userData.services &&
-                          userData.services.map((service, index) => (
-                            <Col key={index} xs={12}>
-                              <RentedItemsCard
-                                type={"service"}
-                                details={service}
-                              />
-                            </Col>
-                          ))}
-                        {/* {loadingUserData && <p>Loading user data...</p>}
-                        {error && <p>{error}</p>}
-                        {userData.rentedItems.services &&
-                          userData.rentedItems.services.map(
-                            (rentedService, index) => (
-                              <Col key={index} xs={12} md={6} xxl={4}>
-                                <ItemCard
+                        {userServiceBookingsAsRenter &&
+                        userServiceBookingsAsRenter.length > 0 ? (
+                          userServiceBookingsAsRenter
+                            .filter(
+                              (serviceBooking) =>
+                                serviceBooking.status !== "pending"
+                            )
+                            .map((serviceBooking, index) => (
+                              <Col key={index} xs={12}>
+                                <RentedItemsCard
                                   type={"service"}
-                                  details={rentedService.service}
+                                  details={serviceBooking}
+                                  oppositeRole={"owner"}
                                 />
                               </Col>
-                            )
-                          )} */}
+                            ))
+                        ) : (
+                          <NoContentBox title="لا حجوزات لعرضها" />
+                        )}
                       </Row>
                     </Tab.Pane>
                   </Tab.Content>
                 </Tab.Container>
               </Tab.Pane>
 
-              <Tab.Pane eventKey="rented-out-items" className="mb-5">
+              <Tab.Pane
+                style={{ minHeight: "100vh" }}
+                eventKey="rented-out-items"
+                className="mb-5"
+              >
                 <Tab.Container defaultActiveKey="rented-out-products">
                   <Nav
                     variant="pills"
@@ -546,60 +504,60 @@ function ProfilePage() {
                   </Nav>
 
                   <Tab.Content className="mt-3">
-                    <Tab.Pane eventKey="rented-out-products">
+                    <Tab.Pane
+                      style={{ minHeight: "100vh" }}
+                      eventKey="rented-out-products"
+                    >
                       <Row className="g-4 mt-2">
                         {loadingUserData && <p>جارِ التحميل...</p>}
                         {error && <p>{error}</p>}
-                        {userData.products &&
-                          userData.products.map((product, index) => (
-                            <Col key={index} xs={12}>
-                              <RentedItemsCard
-                                type={"product"}
-                                details={product}
-                              />
-                            </Col>
-                          ))}
-                        {/* {loadingUserData && <p>Loading user data...</p>}
-                      {error && <p>{error}</p>}
-                      {userData.rentedOutItems.products &&
-                        userData.rentedOutItems.products.map(
-                          (rentedOutProduct, index) => (
-                            <Col key={index} xs={12} md={6} xxl={4}>
-                              <ItemCard
-                                type={"product"}
-                                details={rentedOutProduct.product}
-                              />
-                            </Col>
-                          )
-                        )} */}
+                        {userProductBookingsAsOwner &&
+                        userProductBookingsAsOwner.length > 0 ? (
+                          userProductBookingsAsOwner
+                            .filter(
+                              (productBooking) =>
+                                productBooking.status !== "pending"
+                            )
+                            .map((productBooking, index) => (
+                              <Col key={index} xs={12}>
+                                <RentedItemsCard
+                                  type={"product"}
+                                  details={productBooking}
+                                  oppositeRole={"renter"}
+                                />
+                              </Col>
+                            ))
+                        ) : (
+                          <NoContentBox title={"لا حجوزات لعرضها"} />
+                        )}
                       </Row>
                     </Tab.Pane>
-                    <Tab.Pane eventKey="rented-out-services">
+                    <Tab.Pane
+                      style={{ minHeight: "100vh" }}
+                      eventKey="rented-out-services"
+                    >
                       <Row className="g-4 mt-2">
                         {loadingUserData && <p>جارِ التحميل...</p>}
                         {error && <p>{error}</p>}
-                        {userData.services &&
-                          userData.services.map((service, index) => (
-                            <Col key={index} xs={12}>
-                              <RentedItemsCard
-                                type={"service"}
-                                details={service}
-                              />
-                            </Col>
-                          ))}
-                        {/* {loadingUserData && <p>Loading user data...</p>}
-                      {error && <p>{error}</p>}
-                      {userData.rentedOutItems.services &&
-                        userData.rentedOutItems.services.map(
-                          (rentedOutService, index) => (
-                            <Col key={index} xs={12} md={6} xxl={4}>
-                              <ItemCard
-                                type={"service"}
-                                details={rentedOutService.service}
-                              />
-                            </Col>
-                          )
-                        )} */}
+                        {userServiceBookingsAsOwner &&
+                        userServiceBookingsAsOwner.length > 0 ? (
+                          userServiceBookingsAsOwner
+                            .filter(
+                              (serviceBooking) =>
+                                serviceBooking.status !== "pending"
+                            )
+                            .map((serviceBooking, index) => (
+                              <Col key={index} xs={12}>
+                                <RentedItemsCard
+                                  type={"service"}
+                                  details={serviceBooking}
+                                  oppositeRole={"renter"}
+                                />
+                              </Col>
+                            ))
+                        ) : (
+                          <NoContentBox title={"لا حجوزات لعرضها"} />
+                        )}
                       </Row>
                     </Tab.Pane>
                   </Tab.Content>

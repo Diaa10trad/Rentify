@@ -9,7 +9,7 @@ import ImagesCarousel from "@/components/ItemDetails/ImagesCarousel";
 import OrderPanel from "@/components/ItemDetails/OrderPanel";
 import ReviewList from "@/components/ItemDetails/ReviewList";
 import OwnerCard from "@/components/ItemDetails/OwnerCard";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getToken } from "@/utils/AuthUtils";
 import axios from "axios";
@@ -130,31 +130,19 @@ function ItemDetailsPage() {
                 infoData={cancellationPolicy}
                 title={"سياسة الإلغاء"}
               />
-              <Link
-                className="text-decoration-none"
-                to={`/user/${details.ownerId}`}
-              >
-                <OwnerCard person={details.owner} />
-              </Link>
+
+              <OwnerCard person={details.owner} />
             </Col>
           </Row>
 
           {/* Embedded Map */}
-          <Row className="p-3">
-            <Col xs={12}>
-              <ReviewList
-                reviews={details.reviews}
-                totalReviews={details.totalReviews}
-                averageRating={details.averageRating}
-              />
-            </Col>
+          <Row className="p-3 gap-3">
             {details.location.latitude && details.location.longitude && (
               <Col xs={12} md={12} lg={6} xl={4}>
-                <h5>الموقع:</h5>
+                <h4>الموقع</h4>
                 <iframe
                   width="600"
                   height="450"
-                  frameBorder="0"
                   style={{ border: 0 }}
                   src={generateEmbedMapUrl(
                     details.location.latitude,
@@ -166,6 +154,13 @@ function ItemDetailsPage() {
                 ></iframe>
               </Col>
             )}
+            <Col xs={12}>
+              <ReviewList
+                reviews={details.reviews}
+                totalReviews={details.totalReviews}
+                averageRating={details.averageRating}
+              />
+            </Col>
           </Row>
         </Container>
       ) : (

@@ -29,6 +29,7 @@ export default function AddItemTitleForm({
   additionalInfo,
   setAdditionalInfo,
   errors,
+  isReadOnly,
 }) {
   const [categories, setCategories] = useState([]);
 
@@ -48,9 +49,13 @@ export default function AddItemTitleForm({
     fetchCategories();
   }, [categoryType]);
 
+  const itemType = categoryType == "product" ? "منتج" : "خدمة";
+
   const handleCategoryTypeChange = (e) => {
-    const type = e.target.value;
-    type == "منتج" ? setCategoryType("product") : setCategoryType("service");
+    if (!isReadOnly) {
+      const type = e.target.value;
+      type == "منتج" ? setCategoryType("product") : setCategoryType("service");
+    }
   };
 
   return (
@@ -86,7 +91,8 @@ export default function AddItemTitleForm({
             onChange={handleCategoryTypeChange}
             className="border border-0 p-2"
             style={{ backgroundColor: "#f4f9f9" }}
-            defaultValue="منتج"
+            value={itemType}
+            disabled={isReadOnly}
           >
             <option>منتج</option>
             <option>خدمة</option>
@@ -105,7 +111,7 @@ export default function AddItemTitleForm({
               required
               isInvalid={!!errors.categoryId}
             >
-              <option value="">اختر فئة...</option>
+              <option>اختر فئة...</option>
               {categories.map((category) => (
                 <option key={category.id} value={category.id}>
                   {category.categoryName}

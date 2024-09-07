@@ -11,12 +11,12 @@ export default function ResultsHeader() {
           }}
           className="m-auto m-lg-0"
         >
-          عدد النتائج الظاهرة <span className="text-primary">03</span> من
-          <span className="text-primary"> 175</span>
+          عدد النتائج الظاهرة <span className="text-primary">01</span> من
+          <span className="text-primary"> 01</span>
         </h5>
       </Col>
       <Col xs={12} lg={3} xxl={2} className=" ">
-        <SortingOptions />
+        {/* <SortingOptions /> */}
       </Col>
     </Row>
   );

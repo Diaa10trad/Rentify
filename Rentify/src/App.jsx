@@ -45,8 +45,13 @@ function App() {
                   path="/CompleteBookingPage/:itemType/:bookingId"
                   element={<CompleteBookingPage />}
                 />
+                <Route
+                  path="/update/:itemType/:id"
+                  element={<UpdateItemPage />}
+                />
+
                 <Route path="/AddItem" element={<AddItemPage />} />
-                <Route path="/UpdateItem/:id" element={<UpdateItemPage />} />
+
                 <Route path="/Login" element={<LoginPage />} />
                 <Route path="/SignUp" element={<SignupPage />} />
               </Routes>

@@ -6,10 +6,13 @@ import HeadingSection from "@/components/HeadingSection";
 import AddItemTitleForm from "@/components/AddItemTitleForm";
 import UpdateItemImageForm from "@/components/UpdateItemImageForm";
 import AddItemLocationForm from "@/components/AddItemLocationForm";
+import { useAuth } from "@/context/AuthContext";
+import ErrorPage from "../ErrorPage";
 
 export default function UpdateItemPage() {
   const navigate = useNavigate();
-  const { id } = useParams(); // Get the item ID from the URL parameters
+  const { auth } = useAuth();
+  const { itemType, id } = useParams();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [categoryId, setCategoryId] = useState("");
@@ -21,53 +24,89 @@ export default function UpdateItemPage() {
   const [priceWeekly, setPriceWeekly] = useState(0);
   const [priceDaily, setPriceDaily] = useState(0);
   const [additionalInfo, setAdditionalInfo] = useState("");
-  const [categoryType, setCategoryType] = useState("product");
+  const [categoryType, setCategoryType] = useState(itemType);
   const [images, setImages] = useState([]);
   const [location, setLocation] = useState({ lat: null, lng: null });
   const [errors, setErrors] = useState({});
+  const [isOwner, setIsOwner] = useState(null);
+  const [localImages, setLocalImages] = useState([]);
+  const [deletedImages, setDeletedImages] = useState([]);
+  if (!auth.token) {
+    return (
+      <ErrorPage message="ليس لديك صلاحية الوصول إلى هذه الصفحة. الرجاء تسجيل الدخول أولا." />
+    );
+  }
 
-  // Load item data on component mount
   useEffect(() => {
     const fetchItemData = async () => {
       try {
         const response = await axios.get(
-          categoryType === "product"
-            ? `http://localhost:5079/api/product/${id}`
-            : `http://localhost:5079/api/service/${id}`,
+          `http://localhost:5079/api/${categoryType}/${id}`,
+
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              Authorization: `Bearer ${auth.token}`,
             },
           }
         );
 
         const data = response.data;
         console.log(data);
+        setIsOwner(data.ownerId === auth.id.replace(/"/g, ""));
+
         // Prepopulate form fields
-        setTitle(data.title);
-        setDescription(data.description);
-        setCategoryId(data.categoryId);
-        setRefund(data.cancellationPolicy.refund);
-        setPermittedDuration(data.cancellationPolicy.permittedDuration);
-        setProductCondition(data.productCondition || "");
-        setQuantity(data.quantity || 1);
-        setPriceMonthly(data.priceMonthly || 0);
-        setPriceWeekly(data.priceWeekly || 0);
-        setPriceDaily(data.priceDaily || 0);
-        setAdditionalInfo(data.additionalInfo || "");
-        setLocation({ lat: data.latitude, lng: data.longitude });
-        const imageUrls =
-          categoryType === "product"
-            ? data.productImages || []
-            : data.serviceImages || [];
-        setImages(imageUrls);
+        if (categoryType == "product") {
+          setTitle(data.title);
+          setDescription(data.description);
+          setCategoryId(data.category.id);
+          setRefund(data.cancellationPolicy.refund);
+          setPermittedDuration(data.cancellationPolicy.permittedDuration);
+          setProductCondition(data.productCondition || "");
+          setQuantity(data.quantity || 1);
+          setPriceMonthly(data.priceMonthly || 0);
+          setPriceWeekly(data.priceWeekly || 0);
+          setPriceDaily(data.priceDaily || 0);
+          setAdditionalInfo(data.additionalInfo || "");
+          setLocation({
+            lat: data.location.latitude,
+            lng: data.location.longitude,
+          });
+          const imageUrls = data.productImages || [];
+
+          setImages(imageUrls);
+        }
+        if (categoryType == "service") {
+          setTitle(data.title);
+          setDescription(data.description);
+          setCategoryId(data.category.id);
+          setRefund(data.cancellationPolicy.refund);
+          setPermittedDuration(data.cancellationPolicy.permittedDuration);
+          setAdditionalInfo(data.additionalInfo || "");
+          setLocation({
+            lat: data.location.latitude,
+            lng: data.location.longitude,
+          });
+          const imageUrls = data.serviceImages || [];
+
+          setImages(imageUrls);
+        }
       } catch (error) {
         console.error("Error fetching item data", error);
       }
     };
 
     fetchItemData();
-  }, [id, categoryType]);
+  }, [id, auth.token, categoryType, auth.id]);
+
+  if (isOwner === false) {
+    return (
+      <ErrorPage message="ليس لديك صلاحية الوصول إلى هذه الصفحة. لا يمكنك تعديل إعلان لا ينتمي إليك" />
+    );
+  }
+
+  const clearError = (field) => {
+    setErrors((prevErrors) => ({ ...prevErrors, [field]: undefined }));
+  };
 
   const validateForm = () => {
     let formErrors = {};
@@ -122,18 +161,17 @@ export default function UpdateItemPage() {
       formData.append("Longitude", location.lng);
       formData.append("Latitude", location.lat);
 
-      // Add only the new images (File objects) to the form data
-      images.forEach((image) => {
-        if (image instanceof File) {
-          formData.append("Images", image);
-        }
-      });
+      // deleted images
+      if (deletedImages.length > 0) {
+        deletedImages.forEach(({ publicId }) =>
+          formData.append("DeletedImages", publicId)
+        );
+      }
 
-      // Optionally add existing image URLs for reference
-      images.forEach((image) => {
-        if (typeof image === "string") {
-          // This is the URL of an existing image
-          formData.append("ExistingImageUrls", image);
+      // new images
+      localImages.forEach((image) => {
+        if (typeof image !== "string") {
+          formData.append("NewImages", image);
         }
       });
     } else if (categoryType === "service") {
@@ -146,23 +184,22 @@ export default function UpdateItemPage() {
       formData.append("Latitude", location.lat);
       formData.append("Longitude", location.lng);
 
-      images.forEach((image) => {
-        if (image instanceof File) {
-          formData.append("Images", image);
-        }
-      });
+      // Handle the deleted images
+      if (deletedImages.length > 0) {
+        deletedImages.forEach(({ publicId }) =>
+          formData.append("DeletedImages", publicId)
+        );
+      }
 
-      images.forEach((image) => {
-        if (typeof image === "string") {
-          formData.append("ExistingImageUrls", image);
+      // Append new images
+      localImages.forEach((image) => {
+        if (typeof image !== "string") {
+          formData.append("Images", image);
         }
       });
     }
 
-    const apiEndpoint =
-      categoryType === "product"
-        ? `http://localhost:5079/api/product/${id}`
-        : `http://localhost:5079/api/service/${id}`;
+    const apiEndpoint = `http://localhost:5079/api/${categoryType}/${id}`;
 
     try {
       const response = await axios.put(apiEndpoint, formData, {
@@ -177,62 +214,6 @@ export default function UpdateItemPage() {
       console.error("Error updating item", error);
     }
   };
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   const formErrors = validateForm();
-  //   if (Object.keys(formErrors).length > 0) {
-  //     setErrors(formErrors);
-  //     return;
-  //   }
-
-  //   let formData = new FormData();
-  //   if (categoryType === "product") {
-  //     formData.append("Title", title);
-  //     formData.append("Description", description);
-  //     formData.append("CategoryId", categoryId);
-  //     formData.append("Refund", refund);
-  //     formData.append("PermittedDuration", permittedDuration);
-  //     formData.append("ProductCondition", productCondition);
-  //     formData.append("Quantity", quantity);
-  //     formData.append("PriceMonthly", priceMonthly);
-  //     formData.append("PriceWeekly", priceWeekly);
-  //     formData.append("PriceDaily", priceDaily);
-  //     formData.append("AdditionalInfo", additionalInfo);
-  //     formData.append("Longitude", location.lng);
-  //     formData.append("Latitude", location.lat);
-  //     images.forEach((image) => formData.append("Images", image));
-  //   } else if (categoryType === "service") {
-  //     formData.append("Title", title);
-  //     formData.append("Description", description);
-  //     formData.append("CategoryId", categoryId);
-  //     formData.append("Refund", refund);
-  //     formData.append("PermittedDuration", permittedDuration);
-  //     formData.append("AdditionalInfo", additionalInfo);
-  //     formData.append("Latitude", location.lat);
-  //     formData.append("Longitude", location.lng);
-  //     images.forEach((image) => formData.append("Images", image));
-  //   }
-
-  //   const apiEndpoint =
-  //     categoryType === "product"
-  //       ? `http://localhost:5079/api/product/${id}`
-  //       : `http://localhost:5079/api/service/${id}`;
-
-  //   try {
-  //     const response = await axios.put(apiEndpoint, formData, {
-  //       headers: {
-  //         "Content-Type": "multipart/form-data",
-  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //       },
-  //     });
-  //     console.log("Item updated successfully", response.data);
-  //     navigate(`/${categoryType}/${response.data.productId}`); // Redirect to the updated item page
-  //   } catch (error) {
-  //     console.error("Error updating item", error);
-  //   }
-  // };
 
   return (
     <Container fluid className="mb-5" style={{ width: "98%" }}>
@@ -255,21 +236,44 @@ export default function UpdateItemPage() {
           priceDaily={priceDaily}
           additionalInfo={additionalInfo}
           categoryType={categoryType}
-          setTitle={setTitle}
-          setDescription={setDescription}
-          setCategoryId={setCategoryId}
+          setTitle={(value) => {
+            setTitle(value);
+            clearError("title");
+          }}
+          setDescription={(value) => {
+            setDescription(value);
+            clearError("description");
+          }}
+          setCategoryId={(value) => {
+            setCategoryId(value);
+            clearError("categoryId");
+          }}
           setRefund={setRefund}
           setPermittedDuration={setPermittedDuration}
-          setProductCondition={setProductCondition}
-          setQuantity={setQuantity}
+          setProductCondition={(value) => {
+            setProductCondition(value);
+            clearError("productCondition");
+          }}
+          setQuantity={(value) => {
+            setQuantity(value);
+            clearError("quantity");
+          }}
           setPriceMonthly={setPriceMonthly}
           setPriceWeekly={setPriceWeekly}
           setPriceDaily={setPriceDaily}
           setAdditionalInfo={setAdditionalInfo}
           setCategoryType={setCategoryType}
           errors={errors}
+          isReadOnly={true}
         />
-        <UpdateItemImageForm setImages={setImages} images={images} />
+        <UpdateItemImageForm
+          setImages={setImages}
+          images={images}
+          setLocalImages={setLocalImages}
+          localImages={localImages}
+          deletedImages={deletedImages}
+          setDeletedImages={setDeletedImages}
+        />
         <AddItemLocationForm setLocation={setLocation} location={location} />
         <Col xs={6} sm={4} md={3}>
           <Button
@@ -284,119 +288,3 @@ export default function UpdateItemPage() {
     </Container>
   );
 }
-
-/*ver1*/
-// import { useState, useEffect } from "react";
-// import { Col, Form, Button, Stack, Image, CloseButton } from "react-bootstrap";
-// import SectionLine from "@/components/SectionLine";
-
-// export default function UpdateItemImageForm({ images, setImages }) {
-//   const [localImages, setLocalImages] = useState([]);
-
-//   useEffect(() => {
-//     if (images && images.length > 0) {
-//       setLocalImages(images);
-//     }
-//   }, [images]);
-
-//   const handleChange = (e) => {
-//     const files = Array.from(e.target.files);
-//     setLocalImages((prevImages) => [...prevImages, ...files]);
-//     setImages((prevImages) => [...prevImages, ...files]);
-//   };
-
-//   const handleDelete = (index) => {
-//     const updatedLocalImages = [...localImages];
-//     updatedLocalImages.splice(index, 1);
-//     setLocalImages(updatedLocalImages);
-//     setImages(updatedLocalImages);
-//   };
-
-//   return (
-//     <>
-//       <Col xs={12} sm={10} md={9} lg={8} xxl={5}>
-//         <Stack className="align-items-center mb-3">
-//           <h4 className="text-center">صور الإعلان</h4>
-//           <SectionLine backgroundColor="bg-primary" />
-//         </Stack>
-//         <Form className="shadow p-4 rounded-5">
-//           <Form.Group className="mb-3">
-//             <Form.Label>الصور</Form.Label>
-//             <Form.Control
-//               type="file"
-//               id="itemImagesInput"
-//               multiple
-//               onChange={handleChange}
-//               className="border border-0 p-2"
-//               style={{ backgroundColor: "#f4f9f9", display: "none" }}
-//             />
-//           </Form.Group>
-
-//           {/* Image preview with delete option */}
-//           <Stack
-//             direction="horizontal"
-//             gap={2}
-//             className="flex-wrap justify-content-start"
-//           >
-//             {localImages.map((image, index) => (
-//               <div
-//                 key={index}
-//                 className="border border-2 p-1 position-relative"
-//                 style={{
-//                   width: "100px",
-//                   height: "100px",
-//                 }}
-//               >
-//                 <Image
-//                   src={
-//                     typeof image === "string"
-//                       ? image
-//                       : URL.createObjectURL(image)
-//                   }
-//                   alt="Uploaded preview"
-//                   fluid
-//                   style={{
-//                     objectFit: "cover",
-//                     width: "100%",
-//                     height: "100%",
-//                   }}
-//                 />
-//                 <CloseButton
-//                   onClick={() => handleDelete(index)}
-//                   className="position-absolute top-0 end-0 m-1"
-//                   style={{
-//                     backgroundColor: "white",
-//                     borderRadius: "50%",
-//                   }}
-//                 />
-//               </div>
-//             ))}
-//             {/* Empty squares */}
-//             {localImages.length < 6 &&
-//               [...Array(6 - localImages.length)].map((_, index) => (
-//                 <div
-//                   key={`empty-${index}`}
-//                   className="border border-2 p-1 rounded fw-normal d-flex align-items-center justify-content-center"
-//                   style={{
-//                     width: "100px",
-//                     height: "100px",
-//                     backgroundColor: "#f4f9f9",
-//                     color: "gray",
-//                   }}
-//                 >
-//                   صورة
-//                 </div>
-//               ))}
-//           </Stack>
-
-//           <Button
-//             className="text-white mt-3"
-//             onClick={() => document.getElementById("itemImagesInput").click()}
-//           >
-//             إضافة صور
-//           </Button>
-//         </Form>
-//       </Col>
-//     </>
-//   );
-// }

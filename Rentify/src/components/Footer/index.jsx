@@ -10,80 +10,17 @@ export default function Footer() {
   return (
     <footer>
       <Container className="text-white bg-secondary " fluid>
-        <Row className="p-4 gap-3 justify-content-evenly">
-          <Col md={2} xs={12} className="">
+        <Row className="p-4 gap-3 justify-content-center">
+          <Col md={2} xs={12} className="mt-2">
             <div>
               <Image
                 className="mb-4"
                 fluid
-                style={{ minWidth: "150px", width: "150px" }}
+                style={{ minWidth: "200px", width: "150px" }}
                 src={LogoImage}
                 alt="Rentify Logo"
               />
-              <p>
-                Lorem ipsum dlor sit amet, consectetur adipisicing elit. Quis,
-                excepturi?
-              </p>
             </div>
-          </Col>
-          <Col md={2} xs={12} className="">
-            <h3 className="mb-4">العنوان</h3>
-            <Stack gap={3}>
-              <div>
-                <span>{"> "}</span>
-                <Link to="/theThing">شيء ما</Link>
-              </div>
-              <div>
-                <span>{"> "}</span>
-                <Link to="/theThing">شيء ما</Link>
-              </div>
-              <div>
-                <span>{"> "}</span>
-                <Link to="/theThing">شيء ما</Link>
-              </div>
-              <div>
-                <span>{"> "}</span>
-                <Link to="/theThing">شيء ما</Link>
-              </div>
-              <div>
-                <span>{"> "}</span>
-                <Link to="/theThing">شيء ما</Link>
-              </div>
-            </Stack>
-          </Col>
-          <Col md={2} xs={12} className="">
-            <h3 className="mb-4">العنوان</h3>
-            <Stack gap={3}>
-              <div>
-                <span>{"> "}</span>
-                <Link to="/theThing">شيء ما</Link>
-              </div>
-              <div>
-                <span>{"> "}</span>
-                <Link to="/theThing">شيء ما</Link>
-              </div>
-              <div>
-                <span>{"> "}</span>
-                <Link to="/theThing">شيء ما</Link>
-              </div>
-            </Stack>
-          </Col>
-          <Col md={2} xs={12} className="">
-            <h3 className="mb-4">العنوان</h3>
-            <Stack gap={3}>
-              <div>
-                <span>{"> "}</span>
-                <Link to="/theThing">شيء ما</Link>
-              </div>
-              <div>
-                <span>{"> "}</span>
-                <Link to="/theThing">شيء ما</Link>
-              </div>
-              <div>
-                <span>{"> "}</span>
-                <Link to="/theThing">شيء ما</Link>
-              </div>
-            </Stack>
           </Col>
         </Row>
         <Row className="bg-primary p-4">

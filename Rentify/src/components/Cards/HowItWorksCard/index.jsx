@@ -13,11 +13,7 @@ export default function HowItWorksCard({ step }) {
           alt="Step"
         />
 
-        <h5 className="text-nowrap  ">{step.title}</h5>
-
-        <p className="fw-normal" style={{ color: "#8a909a" }}>
-          لوريم ايبسوم دولور سيت اميت
-        </p>
+        <h5 className="text-nowrap  mb-4">{step.title}</h5>
       </Stack>
     </Col>
   );

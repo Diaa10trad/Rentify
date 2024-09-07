@@ -21,10 +21,8 @@ export default function CTASection() {
         >
           <h4>ابدأ رحلتك في الاستفادة من بضاعتك الكاسدة..</h4>
           <p className="fs-6">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia
-            suscipit placeat quisquam, officiis deleniti expedita alias quas
-            autem excepturi quos praesentium, velit eius numquam laborum?
-            Molestiae enim error saepe inventore!
+            انشر إعلانك الآن واستفد من كل قطعة لديك! انضم إلى مجتمع Rentify
+            وابدأ بتحقيق دخل إضافي من منتجاتك وخدماتك.
           </p>
           <LinkContainer to="/List-Item">
             <Button className="text-white" variant="primary">

@@ -11,7 +11,7 @@ import ReviewList from "@/components/ItemDetails/ReviewList";
 import OwnerCard from "@/components/ItemDetails/OwnerCard";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getToken } from "@/utils/AuthUtils";
+import { getToken, getSenderId } from "@/utils/AuthUtils";
 import axios from "axios";
 
 function ItemDetailsPage() {
@@ -21,10 +21,10 @@ function ItemDetailsPage() {
   const [detailsInfo, setDetailsInfo] = useState(null);
   const [details, setDetails] = useState(null);
   const [error, setError] = useState(null);
-
+  const token = getToken();
+  const senderId = getSenderId(token);
   useEffect(() => {
     const apiUrl = `http://localhost:5079/api${pathname}`;
-    const token = getToken();
 
     axios
       .get(apiUrl, {
@@ -34,7 +34,7 @@ function ItemDetailsPage() {
       })
       .then((response) => {
         setDetails(response.data);
-
+        console.log(details);
         setCancellationPolicy([
           {
             label: "نسبة المبلغ المسترجع",
@@ -87,6 +87,9 @@ function ItemDetailsPage() {
               />
               <div className="d-block my-4 d-md-none">
                 <OrderPanel
+                  categoryType={details.category.categoryType}
+                  productId={details.productId}
+                  serviceId={details.serviceId}
                   priceDaily={details.priceDaily}
                   priceWeekly={details.priceWeekly}
                   priceMonthly={details.priceMonthly}
@@ -114,8 +117,20 @@ function ItemDetailsPage() {
                   text={details.additionalInfo}
                 />
               </div>
+
               <div className="d-none mb-4 d-md-block">
+                {/* {details.ownerId == senderId && (
+                  <button
+                    onClick={handleUpdateClick}
+                    className="btn btn-primary mt-3"
+                  >
+                    تحديث الإعلان
+                  </button>
+                )} */}
                 <OrderPanel
+                  categoryType={details.category.categoryType}
+                  productId={details.productId}
+                  serviceId={details.serviceId}
                   priceDaily={details.priceDaily}
                   priceWeekly={details.priceWeekly}
                   priceMonthly={details.priceMonthly}

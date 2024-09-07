@@ -1,10 +1,14 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { Col, Form, Button, Stack, Image, CloseButton } from "react-bootstrap";
 import SectionLine from "@/components/SectionLine";
 
-export default function UpdateItemImageForm({ images, setImages }) {
-  const [localImages, setLocalImages] = useState([]);
-
+export default function UpdateItemImageForm({
+  images,
+  setImages,
+  setLocalImages,
+  localImages,
+  setDeletedImages,
+}) {
   useEffect(() => {
     if (images && images.length > 0) {
       setLocalImages(images);
@@ -19,11 +23,25 @@ export default function UpdateItemImageForm({ images, setImages }) {
 
   const handleDelete = (index) => {
     const updatedLocalImages = [...localImages];
-    updatedLocalImages.splice(index, 1);
+    const deletedImage = updatedLocalImages.splice(index, 1)[0];
     setLocalImages(updatedLocalImages);
-    setImages(updatedLocalImages);
-  };
 
+    if (typeof deletedImage === "object" && deletedImage.publicId) {
+      // If the deleted image is an existing one, store its publicId
+      setDeletedImages((prevDeletedImages) => [
+        ...prevDeletedImages,
+        { publicId: deletedImage.publicId },
+      ]);
+      setImages((prevImages) =>
+        prevImages.filter((img) => img.publicId !== deletedImage.publicId)
+      );
+    } else {
+      // Otherwise, it is a new file and can be removed from local state
+      setImages((prevImages) =>
+        prevImages.filter((_, imgIndex) => imgIndex !== index)
+      );
+    }
+  };
   return (
     <>
       <Col xs={12} sm={10} md={9} lg={8} xxl={5}>

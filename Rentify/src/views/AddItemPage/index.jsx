@@ -27,6 +27,11 @@ export default function AddItemPage() {
   const [location, setLocation] = useState({ lat: null, lng: null });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+
+  const clearError = (field) => {
+    setErrors((prevErrors) => ({ ...prevErrors, [field]: undefined }));
+  };
+
   const validateForm = () => {
     let formErrors = {};
 
@@ -142,13 +147,28 @@ export default function AddItemPage() {
       >
         <HeadingSection title={"انشر إعلان جديد"} />
         <AddItemTitleForm
-          setTitle={setTitle}
-          setDescription={setDescription}
-          setCategoryId={setCategoryId}
+          setTitle={(value) => {
+            setTitle(value);
+            clearError("title");
+          }}
+          setDescription={(value) => {
+            setDescription(value);
+            clearError("description");
+          }}
+          setCategoryId={(value) => {
+            setCategoryId(value);
+            clearError("categoryId");
+          }}
           setRefund={setRefund}
           setPermittedDuration={setPermittedDuration}
-          setProductCondition={setProductCondition}
-          setQuantity={setQuantity}
+          setProductCondition={(value) => {
+            setProductCondition(value);
+            clearError("productCondition");
+          }}
+          setQuantity={(value) => {
+            setQuantity(value);
+            clearError("quantity");
+          }}
           setPriceMonthly={setPriceMonthly}
           setPriceWeekly={setPriceWeekly}
           setPriceDaily={setPriceDaily}

@@ -11,20 +11,20 @@ import FAQImage from "@/assets/images/FAQ.jpg";
 import SectionLine from "../SectionLine";
 const faqData = [
   {
-    question: "Question 1",
-    answer: "Answer 1",
+    question: "سؤال 1",
+    answer: "جواب 1",
   },
   {
-    question: "Question 2",
-    answer: "Answer 2",
+    question: "سؤال 2",
+    answer: "جواب 2",
   },
   {
-    question: "Question 3",
-    answer: "Answer 3",
+    question: "سؤال 3",
+    answer: "جواب 3",
   },
   {
-    question: "Question 4",
-    answer: "Answer 4",
+    question: "سؤال 4",
+    answer: "جواب 4",
   },
 ];
 function CustomToggle({ children, eventKey }) {

@@ -9,19 +9,16 @@ export default function WhyChooseUsSection() {
     {
       id: 1,
       title: "أجّر بأمان",
-      description: "لوريم ايبسوم دولور سيت اميت",
       icon: Guarantee,
     },
     {
       id: 2,
       title: "وفّر أموالك",
-      description: "لوريم ايبسوم دولور سيت اميت",
       icon: Money,
     },
     {
       id: 3,
       title: "حافظ على البيئة",
-      description: "لوريم ايبسوم دولور سيت اميت",
       icon: Environment,
     },
   ];
@@ -46,7 +43,7 @@ export default function WhyChooseUsSection() {
           </p>
         </Row>
 
-        <Row className="align-items-center">
+        <Row className="align-items-center m-2 gap-5">
           {WhyUs.map((step) => (
             <Col
               className=" d-flex gy-3 flex-column text-nowrap justify-content-center align-items-center"
@@ -62,10 +59,6 @@ export default function WhyChooseUsSection() {
               />
 
               <h4 className="fw-normal text-white mt-3">{step.title}</h4>
-
-              <p className="text-light fw-normal text-opacity-75">
-                لوريم ايبسوم دولور سيت اميت
-              </p>
             </Col>
           ))}
         </Row>

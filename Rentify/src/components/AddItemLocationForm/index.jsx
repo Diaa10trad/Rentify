@@ -2,7 +2,7 @@ import { Col, Row, Form, Stack } from "react-bootstrap";
 import LocationPicker from "../LocationPicker";
 import SectionLine from "@/components/SectionLine";
 
-export default function AddItemLocationForm({ setLocation }) {
+export default function AddItemLocationForm({ setLocation, location }) {
   return (
     <>
       <Col xs={12} sm={10} md={9} lg={8} xxl={5}>

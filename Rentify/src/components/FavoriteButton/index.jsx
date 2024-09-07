@@ -32,14 +32,11 @@ export default function FavoriteButton({ itemType, itemId }) {
           },
         });
       }
-
-      // Toggle the favorite state immediately after the API call
     } catch (error) {
       console.error("Error toggling favorite status:", error);
     }
   };
 
-  // Check initial favorite status on component mount
   useEffect(() => {
     const checkFavoriteStatus = async () => {
       try {

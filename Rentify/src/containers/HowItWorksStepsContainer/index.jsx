@@ -8,19 +8,19 @@ export default function HowItWorksStepsContainer() {
     {
       id: 1,
       title: "1. ابحث عن منتج أو خدمة",
-      description: "لوريم ايبسوم دولور سيت اميت",
+
       icon: SearchIcon,
     },
     {
       id: 2,
       title: "2. قم بتقديم طلب ",
-      description: "لوريم ايبسوم دولور سيت اميت",
+
       icon: RequestIcon,
     },
     {
       id: 3,
       title: "3. اتفق مع المعلِن",
-      description: "لوريم ايبسوم دولور سيت اميت",
+
       icon: HandshakeIcon,
     },
   ];

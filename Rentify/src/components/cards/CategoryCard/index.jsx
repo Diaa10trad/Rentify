@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "./style.css";
 export default function CategoryCard({ category }) {
   const navigate = useNavigate();
-
+  console.log(category);
   const handleClick = () => {
     navigate(
       `/Results/?type=${category.categoryType}&Category${category.id}=${category.categoryName}&PageNumber=1`

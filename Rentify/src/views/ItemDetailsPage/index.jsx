@@ -22,7 +22,7 @@ function ItemDetailsPage() {
   const [details, setDetails] = useState(null);
   const [error, setError] = useState(null);
   const token = getToken();
-  const senderId = getSenderId(token);
+
   useEffect(() => {
     const apiUrl = `http://localhost:5079/api${pathname}`;
 
@@ -34,7 +34,7 @@ function ItemDetailsPage() {
       })
       .then((response) => {
         setDetails(response.data);
-        console.log(details);
+        console.log(response.data);
         setCancellationPolicy([
           {
             label: "نسبة المبلغ المسترجع",

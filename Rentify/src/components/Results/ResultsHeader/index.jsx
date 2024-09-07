@@ -20,21 +20,11 @@ export default function ResultsHeader({ totalCount, shownRange }) {
           }}
           className="m-auto m-lg-0"
         >
-<<<<<<< Updated upstream
-          عدد النتائج الظاهرة <span className="text-primary">01</span> من
-          <span className="text-primary"> 01</span>
-        </h5>
-      </Col>
-      <Col xs={12} lg={3} xxl={2} className=" ">
-        {/* <SortingOptions /> */}
-      </Col>
-=======
           عدد النتائج الظاهرة <span className="text-primary">{shownRange}</span>{" "}
           من أصل
           <span className="text-primary"> {totalCount}</span>
         </h5>
       </Col>
->>>>>>> Stashed changes
     </Row>
   );
 }

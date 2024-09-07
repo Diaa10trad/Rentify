@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using api.Dtos.Service;
+using api.Helpers;
 using api.Interfaces;
 using api.Mappers;
 using Microsoft.AspNetCore.Authorization;
@@ -22,14 +23,14 @@ namespace api.Controllers
 
         }
         [HttpGet]
-        public async Task<IActionResult> GetAllServices()
+        public async Task<IActionResult> GetAllServices([FromQuery] ServiceQueryParameters queryParameters)
         {
             try
             {
-                var serviceModels = await _serviceRepository.GetAllAsync();
+                var (totalCount, serviceModels) = await _serviceRepository.GetAllAsync(queryParameters);
 
                 var serviceDtos = serviceModels.Select(S => S.ToServiceDtoFromService());
-                return Ok(serviceDtos);
+                return Ok(new { TotalCount = totalCount, services = serviceDtos });
             }
             catch (Exception ex)
             {

@@ -32,7 +32,12 @@ export default function ItemCard({ type, details }) {
             </h5>
             <Stack direction="horizontal" className="justify-content-between">
               {/* <div className="text-white">1.0 دينار</div> */}
-              <FavoriteButton />
+              <FavoriteButton
+                itemType={type}
+                itemId={
+                  type == "product" ? details.productId : details.serviceId
+                }
+              />
             </Stack>
           </Stack>
         </Card.ImgOverlay>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using api.Dtos.Product;
+using api.Helpers;
 using api.Interfaces;
 using api.Mappers;
 using api.Models;
@@ -24,13 +25,13 @@ namespace api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllProducts()
+        public async Task<IActionResult> GetAllProducts([FromQuery] ProductQueryParameters queryParameters)
         {
             try
             {
-                var productModels = await _productRepository.GetAllProductsAsync();
+                var (totalCount, productModels) = await _productRepository.GetAllProductsAsync(queryParameters);
                 var productDtos = productModels.Select(p => p.ToProductDtoFromProduct());
-                return Ok(productDtos);
+                return Ok(new { TotalCount = totalCount, Products = productDtos });
             }
             catch (Exception ex)
             {

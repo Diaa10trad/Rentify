@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Dtos.Product;
+using api.Helpers;
 using api.Models;
 
 namespace api.Interfaces
 {
     public interface IProductRepository
     {
-        Task<List<Product>> GetAllProductsAsync();
+        Task<(int TotalCount, List<Product> Products)> GetAllProductsAsync(ProductQueryParameters queryParameters);
         Task<Product?> GetProductByIdAsync(int id);
         Task<Product?> CreateProductAsync(Product productModel);
         Task<Product?> UpdateProductAsync(int id, ProductUpdateDTO productDto, string OwnerId);

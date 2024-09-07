@@ -60,9 +60,13 @@ namespace api.Repositories
             return favoriteModel;
         }
 
-        public async Task<Favorite?> DeleteFavoriteAsync(int id)
+        public async Task<Favorite?> DeleteFavoriteAsync(int itemId, string itemType, string RequesterId)
         {
-            var favoriteModel = await _dbContext.Favorites.FirstOrDefaultAsync(F => F.FavoriteId == id);
+            Favorite? favoriteModel = null;
+            if (itemType == "product")
+                favoriteModel = await _dbContext.Favorites.FirstOrDefaultAsync(F => F.ItemType == itemType && F.ProductId == itemId && F.UserId == RequesterId);
+            else if (itemType == "service")
+                favoriteModel = await _dbContext.Favorites.FirstOrDefaultAsync(F => F.ItemType == itemType && F.ServiceId == itemId && F.UserId == RequesterId);
 
             if (favoriteModel == null)
             {
@@ -83,11 +87,16 @@ namespace api.Repositories
                                              .ToListAsync();
         }
 
-        public async Task<Favorite?> GetFavoriteByIdAsync(int id, string userId)
+
+
+        public async Task<Favorite?> GetFavoriteOneAsync(int itemId, string itemType, string userId)
         {
-            return await _dbContext.Favorites.Include(F => F.Product)
-                                            .Include(F => F.Service)
-                                             .FirstOrDefaultAsync(F => F.FavoriteId == id && F.UserId == userId);
+            if (itemType == "product")
+                return await _dbContext.Favorites.FirstOrDefaultAsync(F => F.ItemType == "product" && F.ProductId == itemId && F.UserId == userId);
+            else if (itemType == "service")
+                return await _dbContext.Favorites.FirstOrDefaultAsync(F => F.ItemType == "service" && F.ServiceId == itemId && F.UserId == userId);
+
+            return null;
         }
     }
 }

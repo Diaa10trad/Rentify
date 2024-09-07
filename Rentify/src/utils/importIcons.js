@@ -31,6 +31,7 @@ const importIcons = async (categoryType) => {
         id: category.id,
         categoryName: category.categoryName,
         icon: mod.default || "Category",
+        categoryType: categoryType,
       };
     }
   });

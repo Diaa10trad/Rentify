@@ -7,11 +7,18 @@ export default function SearchBarContainer() {
   const navigate = useNavigate();
   const search = (e) => {
     e.preventDefault();
-    navigate(
-      `/Results?type=${selectedType}&query=${encodeURIComponent(
-        query.current
-      )}&PageNumber=1`
-    );
+
+    const trimmedQuery = query.current.trim();
+    const encodedQuery = encodeURIComponent(trimmedQuery);
+
+    const queryString = trimmedQuery ? `&query=${encodedQuery}` : "";
+
+    // Construct the URL
+    const url = `/Results?type=${encodeURIComponent(
+      selectedType
+    )}${queryString}&PageNumber=1`;
+
+    navigate(url);
   };
   const onTypeChange = (e) => setSelectedType(e.currentTarget.value);
 

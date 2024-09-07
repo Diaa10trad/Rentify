@@ -9,15 +9,20 @@ export default function CategoriesForm({
     <Form.Group>
       {categories.map((category, index) => (
         <Form.Check
-          key={index}
+          key={category.id}
           type="checkbox"
-          label={category}
-          id={category}
-          checked={selectedCategories[`Category${index}`] == category}
+          label={category.categoryName}
+          id={category.categoryName}
+          checked={
+            selectedCategories[`Category${category.id}`] ==
+            category.categoryName
+          }
           onChange={(event) => {
             setSelectedCategories({
               ...selectedCategories,
-              [`Category${index}`]: event.target.checked ? category : "",
+              [`Category${category.id}`]: event.target.checked
+                ? category.categoryName
+                : "",
             });
           }}
         />

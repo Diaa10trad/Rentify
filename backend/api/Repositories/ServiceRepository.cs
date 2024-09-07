@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using api.Data;
 using api.Dtos.Service;
+using api.Helpers;
 using api.Interfaces;
 using api.Models;
 using Microsoft.EntityFrameworkCore;
@@ -72,9 +73,9 @@ namespace api.Repositories
             return serviceModel;
         }
 
-        public async Task<IEnumerable<Service>> GetAllAsync()
+        public async Task<(int TotalCount, List<Service> Services)> GetAllAsync(ServiceQueryParameters queryParameters)
         {
-            return await _dbContext.Services.Include(S => S.CancellationPolicy)
+            var queriedServices = _dbContext.Services.Include(S => S.CancellationPolicy)
                                             .Include(S => S.Owner)
                                            .Include(S => S.Location)
                                            .Include(S => S.Images)
@@ -82,7 +83,32 @@ namespace api.Repositories
                                            .Include(S => S.Reviews)
                                            .ThenInclude(r => r.Reviewer)
 
-                                           .ToListAsync();
+                                           .AsQueryable();
+
+            if (!string.IsNullOrEmpty(queryParameters.Query))
+            {
+                queriedServices = queriedServices.Where(p => p.Title.Contains(queryParameters.Query) || p.Description.Contains(queryParameters.Query));
+            }
+            if (queryParameters.Categories.Any())
+            {
+
+                var categories = queryParameters.Categories.Values.ToList();
+
+                queriedServices = queriedServices.Where(p => categories.Contains(p.Category.CategoryName));
+            }
+
+            if (queryParameters.Distance.HasValue)
+            {
+                queriedServices = queriedServices.Where(p => ApplicationDBContext.CalculateDistance((double)p.Location.Latitude, (double)p.Location.Longitude, (double)queryParameters.Latitude, (double)queryParameters.Longitude) <= queryParameters.Distance.Value);
+            }
+            var totalCount = await queriedServices.CountAsync();
+
+            int pageNumber = Math.Max(queryParameters.PageNumber, 1);
+            int pageSize = 24; // Adjust page size as needed
+            int skip = (pageNumber - 1) * pageSize;
+
+            var services = await queriedServices.Skip(skip).Take(pageSize).ToListAsync();
+            return (totalCount, services);
 
         }
 

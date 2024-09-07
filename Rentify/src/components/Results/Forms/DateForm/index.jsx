@@ -25,16 +25,6 @@ export default function DateForm({ selectedDates, onChange }) {
           onChange("toDate", e.target.value);
         }}
       />
-
-      <Form.Check
-        type="checkbox"
-        label="فترة متصلة"
-        id="continuousDate"
-        checked={selectedDates["continuousDate"] || false}
-        onChange={(e) => {
-          onChange("continuousDate", e.target.checked);
-        }}
-      />
     </Form.Group>
   );
 }

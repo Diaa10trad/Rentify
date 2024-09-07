@@ -11,35 +11,45 @@ import axios from "axios";
 import getOneFromUrl from "@/utils/getOneFromUrl.js";
 import { useEffect, useState } from "react";
 import NoContentBox from "@/components/NoContentBox";
+import { useLocation } from "react-router-dom";
 export default function ResultsPage() {
   const type = getOneFromUrl("type");
+  const pageSize = 24;
   const [items, setItems] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const pageNumber = parseInt(queryParams.get("PageNumber"));
+
   useEffect(() => {
     // Replace with your actual API endpoint
     const apiUrl = `http://localhost:5079/api/${type}`;
 
     // Replace with your actual JWT token
     const token = localStorage.getItem("token");
-
     // Make the GET request with the Authorization header
     axios
       .get(apiUrl, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
+        params: queryParams,
       })
       .then((response) => {
         setItems(response.data);
         setLoading(false);
-        console.log(response.data);
       })
       .catch((error) => {
         setError(error);
       });
-  }, []); // Empty dependency array means this effect runs once on mount
+  }, [location.search]); // Empty dependency array means this effect runs once on
 
+  const getShownRange = (currentPage, pageSize, totalCount) => {
+    const start = (currentPage - 1) * pageSize + 1;
+    const end = Math.min(start + pageSize - 1, totalCount);
+    return `${start} - ${end}`;
+  };
   if (error) {
     return <div>Error: {error.message}</div>;
   }
@@ -61,22 +71,25 @@ export default function ResultsPage() {
 
       <Row className="justify-content-between gap-4 gap-lg-0">
         <Col xs={12} className="mb-lg-4">
-          <ResultsHeader />
+          <ResultsHeader
+            totalCount={items.totalCount}
+            shownRange={getShownRange(pageNumber, pageSize, items.totalCount)}
+          />
         </Col>
         <Col xs={12} lg={4} xxl={3} className="p-0">
           <FilterSidebar />
         </Col>
-        {items && items.length > 0 ? (
+        {items && items[`${type}s`].length > 0 ? (
           <Col xs={12} lg={8} xxl={9}>
             <Row className="g-4">
-              {items.map((item, index) => (
+              {items[`${type}s`].map((item, index) => (
                 <Col key={index} xs={12} sm={6} xxl={4}>
                   <ItemCard type={type} details={item} />
                 </Col>
               ))}
             </Row>
             <Row className="justify-content-center my-4  align-items-center">
-              <Pager />
+              <Pager pageSize={pageSize} totalItems={items.totalCount} />
             </Row>
           </Col>
         ) : (

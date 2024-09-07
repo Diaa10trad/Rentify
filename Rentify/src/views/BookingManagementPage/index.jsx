@@ -16,6 +16,7 @@ import {
 import axios from "axios";
 import { getToken, getSenderId } from "@/utils/AuthUtils";
 import ErrorPage from "../ErrorPage";
+import ReviewButton from "../../components/ReviewButton";
 export default function BookingManagementPage() {
   const token = getToken();
   const { itemType, userRole, bookingId } = useParams();
@@ -87,6 +88,7 @@ export default function BookingManagementPage() {
 
       if (response.status === 200) {
         alert(`تم إرسال الرمز ${code} بنجاح!`);
+        window.location.reload();
       } else {
         alert(`حدث خطأ: ${response.data.message || "فشل في إرسال الرمز"}`);
       }
@@ -124,6 +126,7 @@ export default function BookingManagementPage() {
 
       if (response.status === 200) {
         alert("تم إلغاء الحجز بنجاح!");
+        window.location.reload();
       } else {
         alert(`حدث خطأ: ${response.data.message || "فشل إلغاء الحجز"}`);
       }
@@ -374,6 +377,17 @@ export default function BookingManagementPage() {
                 ) : null}
               </>
             )}
+
+          <ReviewButton
+            isRenter={userRole == "renter"}
+            status={bookingDetails.status}
+            itemType={itemType}
+            itemId={
+              itemType === "product"
+                ? bookingDetails.product.productId
+                : bookingDetails.service.serviceId
+            }
+          />
         </Col>
       </Row>
     </Card>

@@ -64,12 +64,19 @@ namespace api.Repositories
                                             .ToListAsync();
         }
 
-        public async Task<Review?> GetReviewByIdAsync(int id)
+        public async Task<Review?> GetReviewOneAsync(string itemType, int itemId, string RequesterId)
         {
-            return await _dbContext.Reviews.Include(R => R.Product)
-                                            .Include(R => R.Reviewer)
-                                            .Include(R => R.Service)
-                                            .FirstOrDefaultAsync(R => R.ReviewId == id);
+            if (itemType == "product")
+                return await _dbContext.Reviews.Include(R => R.Product)
+                                                .Include(R => R.Service)
+                                                .Include(R => R.Reviewer)
+                                                .FirstOrDefaultAsync(R => R.ItemType == "product" && R.ProductId == itemId && R.ReviewerId == RequesterId);
+            else if (itemType == "service")
+                return await _dbContext.Reviews.Include(R => R.Product)
+                                                .Include(R => R.Service)
+                                                .Include(R => R.Reviewer)
+                                                .FirstOrDefaultAsync(R => R.ItemType == "service" && R.ServiceId == itemId && R.ReviewerId == RequesterId);
+            return null;
         }
 
         public async Task<Review?> UpdateReviewAsync(int id, Review reviewModel, string RequesterId)

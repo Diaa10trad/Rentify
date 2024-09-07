@@ -19,11 +19,13 @@ import SignupPage from "@/views/SignupPage";
 import BookingManagementPage from "@/views/BookingManagementPage";
 import { AuthProvider } from "@/context/AuthContext";
 import CompleteBookingPage from "@/views/CompleteBookingPage";
+import ScrollToTop from "@/utils/ScrollToTop";
 function App() {
   return (
     <>
       <AuthProvider>
         <BrowserRouter>
+          <ScrollToTop />
           <NavigationBar />
           <Container fluid>
             <Col>

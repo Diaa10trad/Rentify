@@ -33,11 +33,19 @@ namespace api.Controllers
             return Ok(reviewDto);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{itemType}/{itemId}")]
 
-        public async Task<IActionResult> GetById([FromRoute] int id)
+        public async Task<IActionResult> GetOne([FromRoute] string itemType, [FromRoute] int itemId)
         {
-            var review = await _reviewRepository.GetReviewByIdAsync(id);
+
+            var RequesterId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (RequesterId == null)
+            {
+                return Unauthorized();
+            }
+
+            var review = await _reviewRepository.GetReviewOneAsync(itemType, itemId, RequesterId);
 
             if (review == null)
             {
@@ -69,17 +77,22 @@ namespace api.Controllers
             var reviewModel = reviewDto.ToReviewFromReviewCreateDto();
             reviewModel.ReviewerId = RequesterId;
             reviewModel.ItemType = itemType;
+
+            int mappedId = 0;
             if (itemType == "product")
             {
                 reviewModel.ProductId = itemId;
+                mappedId = reviewModel.ProductId.Value;
+
             }
             else if (itemType == "service")
             {
                 reviewModel.ServiceId = itemId;
+                mappedId = reviewModel.ServiceId.Value;
             }
             await _reviewRepository.CreateReviewAsync(reviewModel, RequesterId);
 
-            return CreatedAtAction(nameof(GetById), new { id = reviewModel.ReviewId }, reviewModel.ToReviewDtoFromReview());
+            return CreatedAtAction(nameof(GetOne), new { itemType = reviewModel.ItemType, itemId = mappedId }, reviewModel.ToReviewDtoFromReview());
 
         }
 

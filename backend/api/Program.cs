@@ -1,5 +1,6 @@
 using api.Controllers;
 using api.Data;
+using api.Helpers;
 using api.Hubs;
 using api.Interfaces;
 using api.Models;

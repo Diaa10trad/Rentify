@@ -743,9 +743,6 @@ namespace api.Migrations
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
-                    b.Property<string>("RenterId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("ReviewerId")
                         .HasColumnType("nvarchar(450)");
 
@@ -755,8 +752,6 @@ namespace api.Migrations
                     b.HasKey("ReviewId");
 
                     b.HasIndex("ProductId");
-
-                    b.HasIndex("RenterId");
 
                     b.HasIndex("ReviewerId");
 
@@ -1033,10 +1028,6 @@ namespace api.Migrations
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.NoAction);
 
-                    b.HasOne("api.Models.AppUser", "Renter")
-                        .WithMany()
-                        .HasForeignKey("RenterId");
-
                     b.HasOne("api.Models.AppUser", "Reviewer")
                         .WithMany()
                         .HasForeignKey("ReviewerId");
@@ -1047,8 +1038,6 @@ namespace api.Migrations
                         .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Product");
-
-                    b.Navigation("Renter");
 
                     b.Navigation("Reviewer");
 

@@ -5,8 +5,10 @@ using System.Net;
 using System.Threading.Tasks;
 using api.Data;
 using api.Dtos.Product;
+using api.Helpers;
 using api.Interfaces;
 using api.Models;
+using api.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Repositories
@@ -16,16 +18,18 @@ namespace api.Repositories
         private readonly ApplicationDBContext _dbContext;
         private readonly ICategoryRepository _categoryRepository;
         private readonly ICloudinaryImageService _cloudinaryImageService;
+
         public ProductRepository(ApplicationDBContext context, ICategoryRepository categoryRepository, ICloudinaryImageService cloudinaryImageService)
         {
             _dbContext = context;
             _categoryRepository = categoryRepository;
             _cloudinaryImageService = cloudinaryImageService;
+
         }
 
-        public async Task<List<Product>> GetAllProductsAsync()
+        public async Task<(int TotalCount, List<Product> Products)> GetAllProductsAsync(ProductQueryParameters queryParameters)
         {
-            return await _dbContext.Products
+            var queriedProducts = _dbContext.Products
                                 .Include(product => product.CancellationPolicy)
                                 .Include(product => product.Location)
                                 .Include(product => product.Owner)
@@ -34,7 +38,90 @@ namespace api.Repositories
                                 .Include(product => product.Reviews)
                                 .ThenInclude(r => r.Reviewer)
 
-                                .ToListAsync();
+                                .AsQueryable();
+
+
+
+            if (!string.IsNullOrEmpty(queryParameters.Query))
+            {
+                queriedProducts = queriedProducts.Where(p => p.Title.Contains(queryParameters.Query) || p.Description.Contains(queryParameters.Query));
+            }
+
+            if (queryParameters.PriceDailyFrom.HasValue)
+            {
+                queriedProducts = queriedProducts.Where(p => p.PriceDaily >= queryParameters.PriceDailyFrom.Value);
+            }
+
+            if (queryParameters.PriceDailyTo.HasValue)
+            {
+                queriedProducts = queriedProducts.Where(p => p.PriceDaily <= queryParameters.PriceDailyTo.Value);
+            }
+
+            if (queryParameters.PriceWeeklyFrom.HasValue)
+            {
+                queriedProducts = queriedProducts.Where(p => p.PriceWeekly >= queryParameters.PriceWeeklyFrom.Value);
+            }
+
+            if (queryParameters.PriceWeeklyTo.HasValue)
+            {
+                queriedProducts = queriedProducts.Where(p => p.PriceWeekly <= queryParameters.PriceWeeklyTo.Value);
+            }
+
+            if (queryParameters.PriceMonthlyFrom.HasValue)
+            {
+                queriedProducts = queriedProducts.Where(p => p.PriceMonthly >= queryParameters.PriceMonthlyFrom.Value);
+            }
+
+            if (queryParameters.PriceMonthlyTo.HasValue)
+            {
+                queriedProducts = queriedProducts.Where(p => p.PriceMonthly <= queryParameters.PriceMonthlyTo.Value);
+            }
+
+
+            if (queryParameters.Categories.Any())
+            {
+
+                var categories = queryParameters.Categories.Values.ToList();
+
+                queriedProducts = queriedProducts.Where(p => categories.Contains(p.Category.CategoryName));
+            }
+
+            if (queryParameters.ProductConditions.Any())
+            {
+
+                var productConditions = queryParameters.ProductConditions.Values.ToList();
+
+                queriedProducts = queriedProducts.Where(p => productConditions.Contains(p.ProductCondition));
+            }
+
+            if (queryParameters.FromDate.HasValue && queryParameters.ToDate.HasValue)
+            {
+
+                var productIds = await _dbContext.Bookings
+                                                .Where(booking => booking.StartDate >= queryParameters.FromDate && booking.EndDate <= queryParameters.ToDate && booking.ProductId != null && (booking.Status == "booked" || booking.Status == "in-use"))
+                                                .Select(booking => booking.ProductId)
+                                                .Distinct()
+                                                .ToListAsync();
+                queriedProducts = queriedProducts.Where(p => !productIds.Contains(p.ProductId));
+            }
+
+            if (queryParameters.Distance.HasValue)
+            {
+                queriedProducts = queriedProducts.Where(p => ApplicationDBContext.CalculateDistance((double)p.Location.Latitude, (double)p.Location.Longitude, (double)queryParameters.Latitude, (double)queryParameters.Longitude) <= queryParameters.Distance.Value);
+            }
+
+            if (queryParameters.Quantity.HasValue)
+            {
+                queriedProducts = queriedProducts.Where(p => p.Quantity >= queryParameters.Quantity.Value);
+            }
+            var totalCount = await queriedProducts.CountAsync();
+
+            int pageNumber = Math.Max(queryParameters.PageNumber, 1);
+            int pageSize = 24; // Adjust page size as needed
+            int skip = (pageNumber - 1) * pageSize;
+
+            var products = await queriedProducts.Skip(skip).Take(pageSize).ToListAsync();
+            return (totalCount, products);
         }
 
         public async Task<Product?> GetProductByIdAsync(int id)

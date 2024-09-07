@@ -6,6 +6,7 @@ import Button from "react-bootstrap/Button";
 import { LinkContainer } from "react-router-bootstrap";
 import EarnMoney from "@/assets/images/earnMoney.jpg";
 import RentAnything from "@/assets/images/rentAnything.jpg";
+import { Stack } from "react-bootstrap";
 export default function CTASection() {
   return (
     <Container fluid className="p-4">
@@ -24,7 +25,7 @@ export default function CTASection() {
             انشر إعلانك الآن واستفد من كل قطعة لديك! انضم إلى مجتمع Rentify
             وابدأ بتحقيق دخل إضافي من منتجاتك وخدماتك.
           </p>
-          <LinkContainer to="/List-Item">
+          <LinkContainer to="/AddItem">
             <Button className="text-white" variant="primary">
               انشر ما لديك
             </Button>
@@ -45,11 +46,28 @@ export default function CTASection() {
             الحاجة للشراء أو التخزين. من الأدوات المنزلية إلى الخدمات المتخصصة،
             كل ما تحتاجه في متناول يدك.
           </p>
-          <LinkContainer to="/List-Item">
-            <Button className="text-white" variant="primary">
-              تفقد المنتجات
-            </Button>
-          </LinkContainer>
+          <Stack direction={"horizontal"} className="gap-4">
+            <LinkContainer
+              to={{
+                pathname: "/Results",
+                search: "?type=product&PageNumber=1",
+              }}
+            >
+              <Button className="text-white" variant="primary">
+                تفقد المنتجات
+              </Button>
+            </LinkContainer>
+            <LinkContainer
+              to={{
+                pathname: "/Results",
+                search: "?type=service&PageNumber=1",
+              }}
+            >
+              <Button className="text-white" variant="primary">
+                تفقد الخدمات
+              </Button>
+            </LinkContainer>
+          </Stack>
         </Col>
         <Col
           lg={4}

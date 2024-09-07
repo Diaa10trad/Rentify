@@ -41,9 +41,9 @@ namespace api.Controllers
             return Ok(favoriteDto);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{itemType}/{itemId}")]
         [Authorize]
-        public async Task<IActionResult> GetById([FromRoute] int id)
+        public async Task<IActionResult> GetOne([FromRoute] int itemId, [FromRoute] string itemType)
         {
             var RequesterId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
@@ -52,7 +52,7 @@ namespace api.Controllers
                 return Unauthorized();
             }
 
-            var favorite = await _favoriteRepository.GetFavoriteByIdAsync(id, RequesterId);
+            var favorite = await _favoriteRepository.GetFavoriteOneAsync(itemId, itemType, RequesterId);
 
             if (favorite == null)
             {
@@ -87,25 +87,35 @@ namespace api.Controllers
                 ItemType = itemType,
             };
 
+            int mappedId = 0;
             if (itemType == "product")
             {
                 favoriteModel.ProductId = itemId;
+                mappedId = favoriteModel.ProductId.Value; // Assuming ProductId is nullable
             }
             else if (itemType == "service")
             {
                 favoriteModel.ServiceId = itemId;
+                mappedId = favoriteModel.ServiceId.Value; // Assuming ServiceId is nullable
             }
             await _favoriteRepository.CreateFavoriteAsync(favoriteModel);
 
-            return CreatedAtAction(nameof(GetById), new { id = favoriteModel.FavoriteId }, favoriteModel.ToFavoriteDtoFromFavorite());
+
+
+            return CreatedAtAction(nameof(GetOne), new { itemType = favoriteModel.ItemType, itemId = mappedId }, favoriteModel.ToFavoriteDtoFromFavorite());
 
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{itemType}/{itemId}")]
         [Authorize]
-        public async Task<IActionResult> Delete([FromRoute] int id)
+        public async Task<IActionResult> Delete([FromRoute] int itemId, [FromRoute] string itemType)
         {
-            var favoriteModel = await _favoriteRepository.DeleteFavoriteAsync(id);
+            var RequesterId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (RequesterId == null)
+            {
+                return Unauthorized();
+            }
+            var favoriteModel = await _favoriteRepository.DeleteFavoriteAsync(itemId, itemType, RequesterId);
 
             if (favoriteModel == null)
             {

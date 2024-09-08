@@ -88,12 +88,12 @@ export default function ResultsPage() {
                 </Col>
               ))}
             </Row>
-            <Row className="justify-content-center my-4  align-items-center">
+            <Row className="justify-content-center my-4 align-items-center">
               <Pager pageSize={pageSize} totalItems={items.totalCount} />
             </Row>
           </Col>
         ) : (
-          <Col xs={12} lg={8} xxl={9}>
+          <Col style={{ minHeight: "100vh" }} xs={12} lg={8} xxl={9}>
             <NoContentBox
               title={"لا توجد محتويات بعد"}
               text={"لا يوجد أي شيء لعرضه في الوقت الحالي. يرجى العودة لاحقًا!"}

@@ -62,8 +62,7 @@ export default function NavigationBar() {
             <Nav.Link as={Link} to="/Home">
               الصفحة الرئيسية
             </Nav.Link>
-            <Nav.Link href="#how-it-works">كيف يعمل الموقع</Nav.Link>
-            <Nav.Link href="#about-us">من نحن</Nav.Link>
+            <Nav.Link href="/Home#how-it-works">كيف يعمل الموقع</Nav.Link>
           </Nav>
 
           <Nav className="gap-2 col-lg-auto col-12 col-sm-10 m-lg-0 m-auto">

@@ -43,10 +43,12 @@ export default function WhyChooseUsSection() {
           </p>
         </Row>
 
-        <Row className="align-items-center m-2 gap-5">
+        <Row className="flex-column flex-lg-row gap-4 align-items-center  justify-content-center w-100 m-2">
           {WhyUs.map((step) => (
             <Col
-              className=" d-flex gy-3 flex-column text-nowrap justify-content-center align-items-center"
+              xs={12}
+              lg={2}
+              className="d-flex flex-column text-nowrap  justify-content-center align-items-center"
               key={step.id}
             >
               <Image

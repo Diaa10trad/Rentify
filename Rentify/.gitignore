@@ -1,6 +1,6 @@
 # Ignore all .env files
 *.env
-
+.env
 appsettings.json
 
 # Logs
